@@ -1,7 +1,7 @@
 
 ## About The Project
-
-The Country Guessing Game, originally developed as a project for the Advanced Programming course (CSE 121) at Egypt University of Informatics (EUI), offers a captivating and informative experience. Designed to broaden players' knowledge of countries worldwide, this game seamlessly combines educational elements with engaging gameplay. Available in both command-line and graphical user interface (GUI) versions, it caters to a diverse range of user preferences, ensuring a unique and enriching experience for everyone.
+.
+We developed a library system as a project to the OOP course (CSE 122) at Egypt University of Informatics (EUI) offering amazing accesibility and features.
 
 ### Table of Contents
 <details>
@@ -20,55 +20,33 @@ The Country Guessing Game, originally developed as a project for the Advanced Pr
 
 ### Project Overview
 
-The Country Guessing Game, available in both command-line and GUI formats, engages players with questions about various countries, their capitals, landmarks, and other intriguing facts.
+Library System, available in both command-line and GUI formats.
 
 ### Features
 
-- **Diverse Range of Questions:** Topics cover geography, history, and culture for a comprehensive learning experience.
-- **Competitive Scoring System:** Players earn points based on accuracy and speed.
-- **Dynamic Question Pool:** Each game session presents a unique set of randomized questions.
+- **D ** T .
+- **C :** P .
+- **D :** E .
 
 ### Built With
 
-The project is implemented in the C programming language, emphasizing simplicity and user-friendliness.
+The project is implemented in the C++ & Java programming languages, emphasizing simplicity and user-friendliness.
 
 ### GUI Version
 
-The GUI version of the Country Guessing Game is developed using GTK+, offering a more interactive experience.
+The GUI version of the Country Guessing Game is developed using ?? , offering a more interactive experience.
 
 #### Running the GUI Version
 
-- **Windows:**
-    1. Install GTK+ from the [GTK Download Page](https://www.gtk.org/download/index.php).
-    2. Clone the repository.
-    3. Navigate to the GUI version directory.
-    4. Compile with GCC: `gcc  "pkg-config --cflags gtk+-3.0" -o country_guessing_game_gui main.c "pkg-config --libs gtk+-3.0"`
-    5. Run the executable.
-
-- **Mac:**
-    1. Install GTK+ using Homebrew: `brew install gtk+3`.
-    2. Clone the repository.
-    3. Compile and run as on Windows.
-
-- **Linux:**
-    1. Install GTK+ if not already present: `sudo apt-get install libgtk-3-dev` (for Ubuntu).
-    2. Clone, compile, and run as on Windows.
 
 ### How to Play
 
-1. Clone the repository using `git clone https://github.com/aabougendia/CSE121_Project.git`.
-2. Follow the provided instructions to run the application.
-3. Answer questions based on provided clues.
-4. Challenge yourself to improve with each game!
-
+ 
 ### Key Learnings
 
 This project provided insights into various programming concepts, including:
 - Structured Programming
-- Linked Lists
-- Binary Trees
-- File I/O Operations
-- GTK & GUI
+ 
 
 ### Contributing
 
@@ -82,6 +60,6 @@ Special thanks to the contributors and supervisors who made this project possibl
 - [@KareemYasser101](https://github.com/KareemYasser101)
 - [@Salah-elsayed-2005](https://github.com/Salah-elsayed-2005)
 - [@aabougendia](https://github.com/aabougendia)
-- [@IbEhab25](https://github.com/IbEhab25)
+- [@HusseinHanafy207](https://github.com/HusseinHanafy207)
+- [@Soliman-Elhassanein](https://github.com/Soliman-Elhassanein)
 
-Dive into the world of geography with the Country Guessing Game – an adventure in learning and fun!
