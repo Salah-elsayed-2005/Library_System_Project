@@ -1,5 +1,20 @@
 #ifndef str_h
 #define str_h
+/*
+	Documentation
+
+ 	str x; will declare an object of class str called x
+  	str x = y; will initialize an object of class str and will copy y in x, y has to be an object of class str
+   	x = y; will copy y in x, and y must be of class str
+	x == y; will return a true or false, the returned value will be ture iff x and y are two identical strings
+
+ 	writing "x" will return the value of object x, that means "cout << x" will work as expected.
+
+	i did not implement "cin >> x" yet
+*/
+
+
+
 
 namespace OurString {
 	class str {
