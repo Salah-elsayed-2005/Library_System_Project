@@ -8,10 +8,11 @@
   	str x = y; will initialize an object of class str and will copy y in x, y has to be an object of class str
    	x = y; will copy y in x, and y must be of class str
 	x == y; will return a true or false, the returned value will be ture iff x and y are two identical strings
-
+	x.len(); will return the length of the string.
+ 
  	writing "x" will return the value of object x, that means "cout << x" will work as expected.
 
-	i did not implement "cin >> x" yet because it got a couple of problems.
+	I did not implement "cin >> x" yet because it got a couple of problems.
 */
 
 
