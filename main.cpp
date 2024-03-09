@@ -7,7 +7,6 @@ using namespace OurString;
 int main()
 {
 
-    cout<<"hussein\n";
 	/* Testing str class, and all its functions
 		str x = "hiiiiii";
 		str y = x;
