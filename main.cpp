@@ -2,11 +2,9 @@
 #include "str.h"
 using namespace std;
 using namespace OurString;
-
-
 int main()
 {
-
+    // hi hussien
 	/* Testing str class, and all its functions
 		str x = "hiiiiii";
 		str y = x;
