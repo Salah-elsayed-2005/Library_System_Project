@@ -6,8 +6,7 @@ using namespace OurString;
 
 int main()
 {
-
-	/* Testing str class, and all its functions
+	/* Testing
 		str x = "hiiiiii";
 		str y = x;
 		cout << x << endl;
@@ -26,7 +25,20 @@ int main()
 
 		x = y;
 		cout << x << endl;
-	*/
 
+		x = x + y;
+
+		cout << x << endl;
+
+		x += x;
+
+		cout << x << endl;
+
+		cin >> x;
+
+		cout << x;
+
+		*/
+		
 }
 
