@@ -3,4 +3,5 @@ project(First_Patch___Github)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(First_Patch___Github main.cpp CustomString.h Classes.h Classes.cpp)
+add_executable(First_Patch___Github main.cpp CustomString.h Classes.h Classes.cpp
+        str.cpp)

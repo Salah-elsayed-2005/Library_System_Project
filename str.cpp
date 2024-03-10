@@ -1,5 +1,6 @@
 #include <iostream>
 #include "str.h"
+
 using namespace OurString;
 
 int str::len_local(const char* String) const {

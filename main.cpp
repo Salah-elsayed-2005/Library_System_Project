@@ -1,12 +1,20 @@
 #include <iostream>
 #include "str.h"
+#include "Classes.h"
+
 using namespace std;
 using namespace OurString;
+using namespace OurClasses;
 
 
 int main()
 {
-	/* Testing
+    /*Test
+        book book1("Atomic Habits","James Clear","32563464575",2018,"Self help",true);
+        book1.PrintData();
+    */
+
+	 /*Testing
 		str x = "hiiiiii";
 		str y = x;
 		cout << x << endl;
@@ -36,9 +44,8 @@ int main()
 
 		cin >> x;
 
-		cout << x;
+		cout << x;*/
 
-		*/
-		
+
 }
 

@@ -1,6 +1,6 @@
 #ifndef str_h
 #define str_h
-
+#include <istream>
 namespace OurString {
 	class str {
 	private:
