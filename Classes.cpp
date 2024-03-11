@@ -1,12 +1,12 @@
-#include "Classes.h"
-#include "str.h"
 #include <iostream>
+#include "str.h"
+#include "Classes.h"
 
+using namespace std;
 using namespace OurString;
 using namespace OurClasses;
-using namespace std;
 
-book::book(){}                                                                                              //default constructor
+book::book(){}                                                                                                  //default constructor
 book::book(str title,str author,str ISBN, short publicationYear, str genre, bool availability){                //parameterized constructor
     _title=title;
     _author=author;
@@ -64,3 +64,5 @@ void book::PrintData() {                                                        
     cout<<"Availability     : "<<(_availability ? "Available" : "Not available")<<endl;
     cout<<"-----------------------------------------------------------"<<endl;
 }
+
+book::~book() {}             //destructor

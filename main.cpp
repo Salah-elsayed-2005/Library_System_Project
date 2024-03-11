@@ -6,12 +6,12 @@ using namespace std;
 using namespace OurString;
 using namespace OurClasses;
 
-
 int main()
 {
-    /*Test
+    /*  Test
         book book1("Atomic Habits","James Clear","32563464575",2018,"Self help",true);
         book1.PrintData();
+        cout<<"\nAuthor : "<<book1.GetAuthor()<<endl;
     */
 
 	 /*Testing
@@ -46,6 +46,6 @@ int main()
 
 		cout << x;*/
 
-
+     return 0;
 }
 
