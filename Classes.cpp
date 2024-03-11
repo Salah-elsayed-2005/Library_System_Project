@@ -7,7 +7,7 @@ using namespace OurClasses;
 using namespace std;
 
 //*********************************** BOOK CLASS IMPLEMENTATION ***********************************
-book::book(){}                                                                                              //default constructor
+book::book(){}                                                                                                  //default constructor
 book::book(str title,str author,str ISBN, short publicationYear, str genre, bool availability){                //parameterized constructor
     _title=title;
     _author=author;
@@ -65,6 +65,10 @@ void book::PrintData() {                                                        
     cout<<"Availability     : "<<(_availability ? "Available" : "Not available")<<endl;
     cout<<"-----------------------------------------------------------"<<endl;
 }
+book::~book() {}             //destructor
+
+
+
 
 //*********************************** LOAN CLASS IMPLEMENTATION ***********************************
 void loan::ViewLoans(str MemberId="NONE", str ISBN="NONE", str BorrowDate="NONE", str DueDate="NONE"){

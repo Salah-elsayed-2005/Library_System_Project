@@ -33,6 +33,7 @@ namespace OurClasses{
         str GetGenre();
         bool GetAvailability();
         void PrintData();
+        ~book();
     };
 
     class member{
@@ -40,15 +41,29 @@ namespace OurClasses{
         str _name;
         str _id;
         str _type;
+        str _password;
         vector<book>_checkedOutBooks;
         short _fines;
+    protected:                                       //only librarian can set the member data
+        void SetName(str name);
+        void SetID(str ID);
+        void SetType(str type);
+        void SetPassword(str password);
+        void AddBookToCheckedOutBooks(book newBook);
+        void SetFines(short fines);
     public:
-        member();
-        member(str name,str id, str type,vector<book>checkedOutBooks);
+        member();           //default constructor
+        member(str name,str id, str type,str password,vector<book>checkedOutBooks);          //parameterized constructor
+        str GetName();
+        str GetID();
+        str GetType();
+        vector<book> GetCheckedOutBooks();
+        short GetFines();
         book SearchForBook(str title);
         void ViewBooks();
         void AskForLoan();
         book ReturnBorrowedBooks(book borrowed);
+        ~member();     //destructor
     };
 
     class librarian :public book, member, loan{
