@@ -69,6 +69,13 @@ book::~book() {}             //destructor
 
 
 
+//*********************************** Member CLASS IMPLEMENTATION ***********************************
+ member::member(){_name="NONE";_id="NONE",_type="NONE",_password="NONE",_checkedOutBooks={};}
+ member::member(str name, str id="NONE", str type="NONE", str password="NONE", vector<book> checkedOutBooks={}) {}
+ str member::GetName() {return _name;}
+ str member:: GetID(){return _id;}
+ str member::GetType(){return _type;}
+ short member::GetFines(){return _fines;}
 
 //*********************************** LOAN CLASS IMPLEMENTATION ***********************************
 void loan::ViewLoans(str MemberId="NONE", str ISBN="NONE", str BorrowDate="NONE", str DueDate="NONE"){

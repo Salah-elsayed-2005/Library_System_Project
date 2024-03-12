@@ -23,7 +23,7 @@ namespace OurClasses{
         void SetPublicationYear(short year);
         void SetGenre(str genre);
         void SetAvailability(bool availability);
-    public:                                                     //seen by th whole program
+    public:                                                     //seen by the whole program
         book();
         book(str title,str author,str ISBN, short publicationYear, str genre, bool availability);
         str GetTitle();
@@ -65,6 +65,14 @@ namespace OurClasses{
         book ReturnBorrowedBooks(book borrowed);
         ~member();     //destructor
     };
+
+
+    class loan: public book, member{
+    protected:
+        //This function can track the borrowed books by Member ID or book ID or borrow date or due date
+        void ViewLoans(str MemberId, str ISBN , str BorrowDate, str DueDate);
+    };
+
 
     class librarian :public book, member, loan{
     private:
@@ -121,11 +129,7 @@ namespace OurClasses{
 
     };
 
-    class loan: public book, member{
-    protected:
-        //This function can track the borrowed books by Member ID or book ID or borrow date or due date
-        void ViewLoans(str MemberId="NONE", str ISBN="NONE", str BorrowDate, str DueDate="NONE");
-    };
+
 
 }
 

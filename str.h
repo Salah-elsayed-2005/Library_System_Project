@@ -21,7 +21,7 @@ namespace OurString {
 		str();
 
 		/*
-			When you add "const" to the constractor it is called a "Conversion Constructors", this tpye of constructor allows us to create an object using one value of another type.
+			When you add "const" to the constractor it is called a "Conversion Constructors", this type of constructor allows us to create an object using one value of another type.
 			"const" was added in the constractor to give us the ability to use the assignment operator "="
 			this constractor is used do (str x = "hi")
 		*/
