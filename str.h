@@ -71,7 +71,7 @@ namespace OurString {
 			when you add the word "friend" before a function, the compiler understands that this function is not a method of the current class.
 			the operators of ">>" and "<<" take two inputs.
 			"friend" keyword is used to say that this function has access to the private and protected data members of this class
-			"istream" is the return type of this opperator.
+			"istream" is the return type of this operator.
 			why can't I make the operators of ">>" and "<<" local operators, we have to make them friend operators.
 		*/
 		friend std::istream& operator>>(std::istream& is, str& obj);

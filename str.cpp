@@ -130,6 +130,6 @@ std::istream& OurString::operator>>(std::istream& is, str& obj){
 	char temp[1024];
 	
 	is >> temp; //store in temp
-	obj = temp; // put temp in obj, why not "is >> obj.ptr" because we do not know the length of the entered data and storing that in obj.ptr, can write the data in places byond the places we have access to. and that will cause problems
+	obj = temp; // put temp in obj, why not "is >> obj.ptr" because we do not know the length of the entered data and storing that in obj.ptr, can write the data in places beyond the places we have access to. and that will cause problems
 	return is; // Return the input stream to allow chaining of input operations
 }
