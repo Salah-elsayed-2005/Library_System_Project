@@ -122,8 +122,8 @@ namespace OurClasses{
 
         void login(); 
         /*
-        This is the mother functin, will contain all Methods 
-        and will ask for a username and password uppon calling
+        This is the mother function, will contain all Methods
+        and will ask for a username and password upon calling
         then give you access to the rest of the functions
         */ 
 
