@@ -12,10 +12,13 @@ namespace OurClasses{
     private:                                                    //can only be accessed in this class
         str _title;
         str _author;
-        str _ISBN;
+        str _ISBN; // str or Long ?
         short _publicationYear;
         str _genre;
         bool _availability;
+        // added
+        short _quantity;
+
     protected:                                                  //seen by class librarian
         void SetTitle(str title);
         void SetAuthor(str author);
@@ -23,6 +26,8 @@ namespace OurClasses{
         void SetPublicationYear(short year);
         void SetGenre(str genre);
         void SetAvailability(bool availability);
+         void SetQuantity(int quantity);
+
     public:                                                     //seen by the whole program
         book();
         book(str title,str author,str ISBN, short publicationYear, str genre, bool availability);
@@ -33,6 +38,8 @@ namespace OurClasses{
         str GetGenre();
         bool GetAvailability();
         void PrintData();
+        book SearchByISBN();
+        book SearchByTitle();
         ~book();
     };
 
@@ -68,6 +75,8 @@ namespace OurClasses{
 
 
     class loan: public book, member{
+        str _BorrowDate;
+        str _DueDate;
     protected:
         //This function can track the borrowed books by Member ID or book ID or borrow date or due date
         void ViewLoans(str MemberId, str ISBN , str BorrowDate, str DueDate);
