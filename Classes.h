@@ -26,7 +26,7 @@ namespace OurClasses{
         void SetPublicationYear(short year);
         void SetGenre(str genre);
         void SetAvailability(bool availability);
-         void SetQuantity(int quantity);
+        void SetQuantity(int quantity);
 
     public:                                                     //seen by the whole program
         book();
@@ -38,8 +38,10 @@ namespace OurClasses{
         str GetGenre();
         bool GetAvailability();
         void PrintData();
+
         book SearchByISBN();
         book SearchByTitle();
+        short GetQuantity();
         ~book();
     };
 
@@ -137,8 +139,6 @@ namespace OurClasses{
         */ 
 
     };
-
-
 
 }
 
