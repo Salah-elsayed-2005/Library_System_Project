@@ -38,9 +38,6 @@ namespace OurClasses{
         str GetGenre();
         bool GetAvailability();
         void PrintData();
-
-        book SearchByISBN();
-        book SearchByTitle();
         short GetQuantity();
         ~book();
     };
@@ -52,7 +49,7 @@ namespace OurClasses{
         str _type;
         str _password;
         vector<book>_checkedOutBooks;
-        short _fines;
+         short _fines;
     protected:                                       //only librarian can set the member data
         void SetName(str name);
         void SetID(str ID);
