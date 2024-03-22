@@ -14,8 +14,8 @@ int main()
     */
 
 	 /*Testing
-		str x = "hiiiiii";
-		str y = x;
+		Str x = "hiiiiii";
+		Str y = x;
 		cout << x << endl;
 		cout << y << endl;
 

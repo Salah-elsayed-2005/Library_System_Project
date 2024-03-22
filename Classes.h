@@ -6,135 +6,133 @@
 using namespace std;
 using namespace OurString;
 
-namespace OurClasses{
+namespace OurClasses {
 
-    class book{
-    private:                                                    //can only be accessed in this class
-        str _title;
-        str _author;
-        str _ISBN; // str or Long ?
+    class Book {
+    private: // Can only be accessed in this class
+        Str _title;
+        Str _author;
+        Str _isbn; // Str or Long?
         short _publicationYear;
-        str _genre;
+        Str _genre;
         bool _availability;
-        // added
+        // Added
         short _quantity;
 
-    protected:                                                  //seen by class librarian
-        void SetTitle(str title);
-        void SetAuthor(str author);
-        void SetISBN(str ISBN);
-        void SetPublicationYear(short year);
-        void SetGenre(str genre);
-        void SetAvailability(bool availability);
-        void SetQuantity(int quantity);
+    protected: // Seen by class Librarian
+        void setTitle(Str title);
+        void setAuthor(Str author);
+        void setIsbn(Str isbn);
+        void setPublicationYear(short year);
+        void setGenre(Str genre);
+        void setAvailability(bool availability);
+        void setQuantity(int quantity);
 
-    public:                                                     //seen by the whole program
-        book();
-        book(str title,str author,str ISBN, short publicationYear, str genre, bool availability);
-        str GetTitle();
-        str GetAuthor();
-        str GetISBN();
-        short GetPublicationYear();
-        str GetGenre();
-        bool GetAvailability();
-        void PrintData();
-        short GetQuantity();
-        ~book();
+    public: // Seen by the whole program
+        Book();
+        Book(Str title, Str author, Str isbn, short publication_year, Str genre, bool availability);
+        Str getTitle();
+        Str getAuthor();
+        Str getIsbn();
+        short getPublicationYear();
+        Str getGenre();
+        bool getAvailability();
+        void printData();
+        short getQuantity();
+        ~Book();
     };
 
-    class member{
+    class Member {
     private:
-        str _name;
-        str _id;
-        str _type;
-        str _password;
-        vector<book>_checkedOutBooks;
-         short _fines;
-    protected:                                       //only librarian can set the member data
-        void SetName(str name);
-        void SetID(str ID);
-        void SetType(str type);
-        void SetPassword(str password);
-        void AddBookToCheckedOutBooks(book newBook);
-        void SetFines(short fines);
+        Str _name;
+        Str _id;
+        Str _type;
+        Str _password;
+        vector<Book> _checkedOutBooks;
+        short _fines;
+
+    protected: // Only Librarian can set the member data
+        void setName(Str name);
+        void setID(Str ID);
+        void setType(Str type);
+        void setPassword(Str password);
+        void addBookToCheckedOutBooks(Book newBook);
+        void setFines(short fines);
+
     public:
-        member();           //default constructor
-        member(str name,str id, str type,str password,vector<book>checkedOutBooks);          //parameterized constructor
-        str GetName();
-        str GetID();
-        str GetType();
-        vector<book> GetCheckedOutBooks();
-        short GetFines();
-        book SearchForBook(str title);
-        void ViewBooks();
-        void AskForLoan();
-        book ReturnBorrowedBooks(book borrowed);
-        ~member();     //destructor
+        Member(); // Default constructor
+        Member(Str name, Str id, Str type, Str password, vector<Book> checked_out_books); // Parameterized constructor
+        Str getName();
+        Str getID();
+        Str getType();
+        vector<Book> getCheckedOutBooks();
+        short getFines();
+        Book searchForBook(Str title);
+        void viewBooks();
+        void askForLoan();
+        Book returnBorrowedBooks(Book borrowed);
+        ~Member(); // Destructor
     };
 
-
-    class loan: public book, member{
-        str _BorrowDate;
-        str _DueDate;
-    protected:
-        //This function can track the borrowed books by Member ID or book ID or borrow date or due date
-        void ViewLoans(str MemberId, str ISBN , str BorrowDate, str DueDate);
-    };
-
-
-    class librarian :public book, member, loan{
+    class Loan : public Book, public Member {
     private:
-    //Data members
-        str _Username;
-        int _Password;
-        str _Id;
-    
-    //Member functions
-    
-        //************** operations on books **************
+        Str _borrow_date;
+        Str _due_date;
 
-        // (use allocation for new books and use setters for assigning values)
-        void AddBook();
-        void RemoveBook();
-        void UpdateBookInfo();
+    protected:
+        // This function can track the borrowed books by Member ID or book ID or borrow date or due date
+        void viewLoans(Str member_id, Str isbn, Str borrow_date, Str due_date);
+    };
 
-        //************** operations on members **************
+    class Librarian : public Book, public Member, public Loan {
+    private:
+        // Data members
+        Str _username;
+        int _password;
+        Str _id;
 
-        //waiting for setters and getters function for member class (hussein)
+        // Member functions
 
-        //use "new" to make a new member object and assign values
-        void Register_Member();
+        // ************** Operations on books **************
 
-        // use "delete" to deallocate the member object
-        void Remove_Member();
+        // (Use allocation for new books and use setters for assigning values)
+        void addBook();
+        void removeBook();
+        void updateBookInfo();
 
-        //************** operations on loans **************
+        // ************** Operations on members **************
 
-        // assign book for member then update the book availability and assign borrow date and due date
-        void AssignBookToMember();
+        // Use "new" to make a new member object and assign values
+        void registerMember();
 
-        //receive book from member then update the book availability
-        void ReceiveReturns(); 
+        // Use "delete" to deallocate the member object
+        void removeMember();
+
+        // ************** Operations on loans **************
+
+        // Assign book for member then update the book availability and assign borrow date and due date
+        void assignBookToMember();
+
+        // Receive book from member then update the book availability
+        void receiveReturns();
 
         // Generate a report for borrowed and overdue books for a certain member
-        void ShowBorrowedBooks();
+        void showBorrowedBooks();
 
     public:
-        //Default constructor
-        librarian();
+        // Default constructor
+        Librarian();
 
-        //Parametarized constructor
-        librarian(str username, int pass, int id);
+        // Parameterized constructor
+        Librarian(Str username, int password, Str id);
 
-        //METHODS "Note: all functions will ask for the object's unique identity and search for it then do it's operations"
-
-        void login(); 
+        // Methods "Note: all functions will ask for the object's unique identity and search for it then do its operations"
+        void login();
         /*
         This is the mother function, will contain all Methods
         and will ask for a username and password upon calling
         then give you access to the rest of the functions
-        */ 
-
+        */
     };
 
 }
