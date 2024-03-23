@@ -5,6 +5,7 @@
 #include "User.h"
 
 using namespace OurString;
+
 #ifndef LIBRARY_SYSTEM_PROJECT_LOAN_H
 #define LIBRARY_SYSTEM_PROJECT_LOAN_H
 

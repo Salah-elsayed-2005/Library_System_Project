@@ -1,10 +1,23 @@
-//
-// Created by Asteroid on 3/23/2024.
-//
-#include "Book.h"
 #include "User.h"
 using namespace OurUser;
-using namespace OurBook;
+///////////////////////////        USER FUNCTIONS
+Str User::getUsername() const {
+    return username;
+}
+Str User::getPassword() const{
+    return password;
+}
+void User::setUsername(Str un){
+    username = un;
+}
+void User::setPassword(Str pass){
+    password = pass;
+}
+
+
+
+
+///////////////////////////         MEMBER FUNCTIONS
 /***********    Search For Books   ************/
 Book* Member::searchForBook_t(const vector<Book*>& library_books, const Str& title){
     for(auto it : library_books){
@@ -57,3 +70,68 @@ void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borro
 void Member::requestLoan(){
 
 }
+
+/////////////////////////   LIBRARIAN FUNCTIONS
+
+void Librarian::addBook(vector<Book*> & list, Book* &book){
+    /*
+    Str title;
+    Str author;
+    Str isbn; // Str or Long?
+    unsigned short publication_year;
+    Str genre;
+
+    cout << "Enter book title : ";         cin >> title;                book->setTitle(title);
+    cout << "Enter book author : ";        cin >> author;               book->setAuthor(author);
+    cout << "Enter book ISBN : ";          cin >> isbn;                 book->setIsbn(isbn);
+    cout << "Enter publication year : ";   cin >> publication_year;     book->setPublicationYear(publication_year);
+    cout << "Enter book genre : ";         cin >> genre;                book->setGenre(genre);
+*/
+    book->setAvailability(true);
+    book->setQuantity(book->getQuantity() + 1);
+
+    list.push_back(book);
+}
+void removeBook(vector<Book*> &list, Book* &book){
+    for(auto it = list.begin(); it != list.end(); it++){
+        if((*it)->getTitle() == book->getTitle()){
+            list.erase(it);
+        }
+    }
+}
+void updateBookTitle(Book* & book){
+    Str new_title;
+    cout << "New title: "; cin >> new_title;
+    book->setTitle(new_title);
+}
+void updateBookAuthor(Book* & book){
+    Str new_author;
+    cout << "New author: "; cin >> new_author;
+    book->setAuthor(new_author);
+}
+void updateBookISBN(Book* & book){
+    Str new_isbn;
+    cout << "New ISBN: "; cin >> new_isbn;
+    book->setIsbn(new_isbn);
+}
+void updatePublicationYear(Book* & book){
+    unsigned short new_publication_year;
+    cout << "New publication year: "; cin >> new_publication_year;
+    book->setPublicationYear(new_publication_year);
+}
+void updateBookGenre(Book* & book){
+    Str new_genre;
+    cout << "New title: "; cin >> new_genre;
+    book->setGenre(new_genre);
+}
+void updateBookAvailabitlity(Book* & book){
+    bool new_availability;
+    cout << "New Availability status: "; cin >> new_availability;
+    book->setAvailability(new_availability);
+}
+void updateBookQuantity(Book* & book){
+    unsigned short new_quantity;
+    cout << "New title: "; cin >> new_quantity;
+    book->setQuantity(new_quantity);
+}
+

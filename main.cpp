@@ -1,51 +1,30 @@
 #include <iostream>
+#include <vector>
 #include "Str.h"
 #include "Book.h"
 #include "User.h"
+#include "Loan.h"
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
 using namespace OurUser;
 int main()
 {
-    vector<
-    /*  Test
-        book book1("Atomic Habits","James Clear","32563464575",2018,"Self help",true);
-        book1.PrintData();
-        cout<<"\nAuthor : "<<book1.GetAuthor()<<endl;
-    */
+    vector<Book*> library_books;
+    vector<User*> library_users;
+    vector<Loan*> library_loans;
 
-	 /*Testing
-		Str x = "hiiiiii";
-		Str y = x;
-		cout << x << endl;
-		cout << y << endl;
+    Book* book = new Book;
+    book->setTitle("Calculus");
+    book->setAuthor("Stewart");
+    book->setPublicationYear(2012);
+    book->setAvailability(true);
+    book->setGenre("Math");
+    book->setIsbn("8624625635653");
+    book->setQuantity(32);
 
-		cout << (x == y) << endl;
-
-		y = "hiiiiix";
-		cout << (x == y) << endl;
-
-
-		y = "hiiiy";
-		cout << (x == y) << endl;
-
-		cout << y.len() << endl;
-
-		x = y;
-		cout << x << endl;
-
-		x = x + y;
-
-		cout << x << endl;
-
-		x += x;
-
-		cout << x << endl;
-
-		cin >> x;
-
-		cout << x;*/
+    Librarian lib;
+    lib.addBook(library_books, book);
 
      return 0;
 }

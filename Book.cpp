@@ -1,14 +1,8 @@
 #include "Book.h"
-#include "Str.h"
-#include <iostream>
-
-using namespace OurString;
 using namespace OurBook;
-using namespace std;
-
 //*********************************** Book CLASS IMPLEMENTATION ***********************************
-Book::Book() : _title(""), _author(""), _isbn(""), _publicationYear(0), _genre(""), _availability(false) {} // Default constructor
-Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre, bool availability) : _title(title), _author(author), _isbn(isbn), _publicationYear(publicationYear), _genre(genre), _availability(availability) {} // Parameterized constructor
+Book::Book() : _title(""), _author(""), _isbn(""), _publication_year(0), _genre(""), _availability(false) {} // Default constructor
+Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre, bool availability) : _title(title), _author(author), _isbn(isbn), _publication_year(publicationYear), _genre(genre), _availability(availability) {} // Parameterized constructor
 
 // Setters and getters
 void Book::setTitle(Str title) {
@@ -30,10 +24,10 @@ Str Book::getIsbn() {
     return _isbn;
 }
 void Book::setPublicationYear(unsigned short year) {
-    _publicationYear = year;
+    _publication_year = year;
 }
-short Book::getPublicationYear() const {
-    return _publicationYear;
+unsigned short Book::getPublicationYear() const {
+    return _publication_year;
 }
 void Book::setGenre(Str genre) {
     _genre = genre;
@@ -50,7 +44,7 @@ bool Book::getAvailability() const {
 void Book::setQuantity(unsigned short quantity) {
     _quantity = quantity;
 }
-unsigned short Book::getQuantity() const{
+unsigned short Book::getQuantity() {
     return _quantity;
 }
 void Book::printData() { // Print the data of the book
@@ -58,13 +52,13 @@ void Book::printData() { // Print the data of the book
     cout << "Title            : " << _title << endl;
     cout << "Author           : " << _author << endl;
     cout << "ISBN             : " << _isbn << endl;
-    cout << "Publication Year : " << _publicationYear << endl;
+    cout << "Publication Year : " << _publication_year << endl;
     cout << "Genre            : " << _genre << endl;
     cout << "Availability     : " << (_availability ? "Available" : "Not available") << endl;
     cout << "-----------------------------------------------------------" << endl;
 }
     Book::~Book(){}
-
+unsigned short Book::_quantity = 0;
 // Destructor
 /*
 //*********************************** Member CLASS IMPLEMENTATION ***********************************

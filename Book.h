@@ -1,8 +1,9 @@
-#ifndef Book_h
-#define Book_h
-
+#include <iostream>
 #include <vector>
 #include "Str.h"
+#ifndef LIBRARY_SYSTEM_PROJECT_BOOK_H
+#define LIBRARY_SYSTEM_PROJECT_BOOK_H
+
 using namespace std;
 using namespace OurString;
 
@@ -13,34 +14,38 @@ namespace OurBook {
         Str _title;
         Str _author;
         Str _isbn; // Str or Long?
-        unsigned short _publicationYear;
+        unsigned short _publication_year;
         Str _genre;
         bool _availability;
         // Added
-        unsigned short _quantity;
+        static unsigned short _quantity;
 
-    protected: // Seen by class Librarian
-        void setTitle(Str title);
-        void setAuthor(Str author);
-        void setIsbn(Str isbn);
-        void setPublicationYear(unsigned short year);
-        void setGenre(Str genre);
+    public:        ///////////// made public for now
+        void setTitle(Str);
+        void setAuthor(Str);
+        void setIsbn(Str);
+        void setPublicationYear(unsigned short);
+        void setGenre(Str);
 
     public: // Seen by the whole program
         Book();
         Book(Str title, Str author, Str isbn, short publication_year, Str genre, bool availability);
-        void setAvailability(bool availability);
-        void setQuantity(unsigned short quantity);
+        void setAvailability(bool);
+        static void setQuantity(unsigned short);
         Str getTitle();
         Str getAuthor();
         Str getIsbn();
-        short getPublicationYear() const;
+        unsigned short getPublicationYear() const;
         Str getGenre();
         bool getAvailability() const;
         void printData();
-        unsigned short getQuantity() const;
+        static unsigned short getQuantity() ;
         ~Book();
+
     };
+}
+#endif
+
 
 /*
     class Librarian : public Book, public Member, public Loan {
@@ -93,7 +98,6 @@ namespace OurBook {
         then give you access to the rest of the functions
         */
 
-    };
 
 /*
     class Member {
@@ -128,4 +132,3 @@ namespace OurBook {
         ~Member(); // Destructor
     };
 */
-#endif
