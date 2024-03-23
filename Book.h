@@ -1,89 +1,48 @@
-#ifndef Classes_h
-#define Classes_h
+#ifndef Book_h
+#define Book_h
 
 #include <vector>
-#include "str.h"
+#include "Str.h"
 using namespace std;
 using namespace OurString;
 
-namespace OurClasses {
+namespace OurBook {
 
     class Book {
     private: // Can only be accessed in this class
         Str _title;
         Str _author;
         Str _isbn; // Str or Long?
-        short _publicationYear;
+        unsigned short _publicationYear;
         Str _genre;
         bool _availability;
         // Added
-        short _quantity;
+        unsigned short _quantity;
 
     protected: // Seen by class Librarian
         void setTitle(Str title);
         void setAuthor(Str author);
         void setIsbn(Str isbn);
-        void setPublicationYear(short year);
+        void setPublicationYear(unsigned short year);
         void setGenre(Str genre);
-        void setAvailability(bool availability);
-        void setQuantity(int quantity);
 
     public: // Seen by the whole program
         Book();
         Book(Str title, Str author, Str isbn, short publication_year, Str genre, bool availability);
+        void setAvailability(bool availability);
+        void setQuantity(unsigned short quantity);
         Str getTitle();
         Str getAuthor();
         Str getIsbn();
-        short getPublicationYear();
+        short getPublicationYear() const;
         Str getGenre();
-        bool getAvailability();
+        bool getAvailability() const;
         void printData();
-        short getQuantity();
+        unsigned short getQuantity() const;
         ~Book();
     };
 
-    class Member {
-    private:
-        Str _name;
-        Str _id;
-        Str _type;
-        Str _password;
-        vector<Book> _checkedOutBooks;
-        short _fines;
-
-    protected: // Only Librarian can set the member data
-        void setName(Str name);
-        void setID(Str ID);
-        void setType(Str type);
-        void setPassword(Str password);
-        void addBookToCheckedOutBooks(Book newBook);
-        void setFines(short fines);
-
-    public:
-        Member(); // Default constructor
-        Member(Str name, Str id, Str type, Str password, vector<Book> checked_out_books); // Parameterized constructor
-        Str getName();
-        Str getID();
-        Str getType();
-        vector<Book> getCheckedOutBooks();
-        short getFines();
-        Book searchForBook(Str title);
-        void viewBooks();
-        void askForLoan();
-        Book returnBorrowedBooks(Book borrowed);
-        ~Member(); // Destructor
-    };
-
-    class Loan : public Book, public Member {
-    private:
-        Str _borrow_date;
-        Str _due_date;
-
-    protected:
-        // This function can track the borrowed books by Member ID or book ID or borrow date or due date
-        void viewLoans(Str member_id, Str isbn, Str borrow_date, Str due_date);
-    };
-
+/*
     class Librarian : public Book, public Member, public Loan {
     private:
         // Data members
@@ -128,13 +87,45 @@ namespace OurClasses {
 
         // Methods "Note: all functions will ask for the object's unique identity and search for it then do its operations"
         void login();
-        /*
+
         This is the mother function, will contain all Methods
         and will ask for a username and password upon calling
         then give you access to the rest of the functions
         */
+
     };
 
-}
+/*
+    class Member {
+    private:
+        Str _name;
+        Str _id;
+        Str _type;
+        Str _password;
+        vector<Book> _checkedOutBooks;
+        short _fines;
 
+    protected: // Only Librarian can set the member data
+        void setName(Str name);
+        void setID(Str ID);
+        void setType(Str type);
+        void setPassword(Str password);
+        void addBookToCheckedOutBooks(Book newBook);
+        void setFines(short fines);
+
+    public:
+        Member(); // Default constructor
+        Member(Str name, Str id, Str type, Str password, vector<Book> checked_out_books); // Parameterized constructor
+        Str getName();
+        Str getID();
+        Str getType();
+        vector<Book> getCheckedOutBooks();
+        short getFines();
+        Book searchForBook(Str title);
+        void viewBooks();
+        void askForLoan();
+        Book returnBorrowedBooks(Book borrowed);
+        ~Member(); // Destructor
+    };
+*/
 #endif

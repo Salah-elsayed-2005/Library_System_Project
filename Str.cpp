@@ -1,5 +1,5 @@
 #include <iostream>
-#include "str.h"
+#include "Str.h"
 
 using namespace OurString;
 
