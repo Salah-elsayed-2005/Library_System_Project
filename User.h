@@ -37,9 +37,11 @@ namespace OurUser {
 
         /****** public methods ******/
     public:
-        Book* searchForBook_t(const vector<Book*> &, const Str &title);
-        Book* searchForBook_a(const vector<Book*> &, const Str &author);
-        Book* searchForBook_g(const vector<Book*> &, const Str &genre);
+        Book* searchForBook_title(const vector<Book*> &, const Str &title);
+        Book* searchForBook_author(const vector<Book*> &, const Str &author);
+        Book* searchForBook_genre(const vector<Book*> &, const Str &genre);
+        Book* searchForBook_isbn(const vector<Book*> &, const Str &isbn);
+        Book* searchForBook_publicationyear(const vector<Book*> &, const short &publicationyear);
 
         void viewCheckedOutBooks();
         void requestLoan();

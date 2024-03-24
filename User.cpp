@@ -19,23 +19,37 @@ void User::setPassword(Str pass){
 
 ///////////////////////////         MEMBER FUNCTIONS
 /***********    Search For Books   ************/
-Book* Member::searchForBook_t(const vector<Book*>& library_books, const Str& title){
+Book* Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
     for(auto it : library_books){
         if(it->getTitle() == title)
             return it;
     }
     return nullptr;
 }
-Book* Member::searchForBook_a(const vector<Book*>& library_books, const Str& author){
+Book* Member::searchForBook_author(const vector<Book*>& library_books, const Str& author){
     for(auto it : library_books){
         if(it->getAuthor() == author)
             return it;
     }
     return nullptr;
 }
-Book* Member::searchForBook_g(const vector<Book*>& library_books, const Str& genre){
+Book* Member::searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
     for(auto it : library_books){
         if(it->getGenre() == genre)
+            return it;
+    }
+    return nullptr;
+}
+Book*Member::searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
+    for(auto it : library_books){
+        if(it->getIsbn() == isbn)
+            return it;
+    }
+    return nullptr;
+}
+Book*Member::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
+    for(auto it : library_books){
+        if(it->getPublicationYear() == year)
             return it;
     }
     return nullptr;
