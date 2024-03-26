@@ -19,40 +19,47 @@ void User::setPassword(Str pass){
 
 ///////////////////////////         MEMBER FUNCTIONS
 /***********    Search For Books   ************/
-Book* Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
+vector<Book *> Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
+    vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getTitle() == title)
-            return it;
+            //return it;
+            Search_results.push_back(it);
     }
-    return nullptr;
+    return Search_results;
+   // return nullptr;
 }
-Book* Member::searchForBook_author(const vector<Book*>& library_books, const Str& author){
+vector<Book *> Member::searchForBook_author(const vector<Book*>& library_books, const Str& author){
+    vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getAuthor() == author)
-            return it;
+            Search_results.push_back(it);
     }
-    return nullptr;
+    //return nullptr;
 }
-Book* Member::searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
+vector<Book *> Member::searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
+    vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getGenre() == genre)
-            return it;
+            Search_results.push_back(it);
     }
-    return nullptr;
+    //return nullptr;
 }
-Book*Member::searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
+vector<Book *>Member::searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
+    vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getIsbn() == isbn)
-            return it;
+            Search_results.push_back(it);
     }
-    return nullptr;
+   // return nullptr;
 }
-Book*Member::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
+vector<Book *>Member::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
+    vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getPublicationYear() == year)
-            return it;
+            Search_results.push_back(it);
     }
-    return nullptr;
+    //return nullptr;
 }
 
 /****************             ******************/

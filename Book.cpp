@@ -55,6 +55,7 @@ void Book::printData() { // Print the data of the book
     cout << "Publication Year : " << _publication_year << endl;
     cout << "Genre            : " << _genre << endl;
     cout << "Availability     : " << (_availability ? "Available" : "Not available") << endl;
+    cout << "Quantity         : " << _quantity<<endl;
     cout << "-----------------------------------------------------------" << endl;
 }
     Book::~Book(){}
