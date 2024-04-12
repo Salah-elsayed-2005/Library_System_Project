@@ -40,10 +40,11 @@ int main()
     //lib.addBook(library_books, book2);
 
     Member Mem;
-    Search_results=Mem.searchForBook_title(library_books,"Calculus");
+    // Search_results=Mem.searchForBook_title(library_books,"Calculus");
     for (auto it :Search_results) {
         it->printData();
     }
+    Mem.requestLoan(Mem, lib, library_books);
      return 0;
 }
 

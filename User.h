@@ -10,6 +10,7 @@ using namespace OurBook;
 
 
 namespace OurUser {
+    class Librarian;
 
     class User {
         Str username;
@@ -30,23 +31,22 @@ namespace OurUser {
 
         /****** attributes ******/
         Str id;
-        vector<Book*> checkedOutBooks;
-        float overdue_fines;
+        float overdue_fines = 0;
         /****** private methods ******/
     private:
 
         /****** public methods ******/
     public:
-        vector<Book *> searchForBook_title(const vector<Book*> &, const Str &title);
+        Book* searchForBook_title(const vector<Book*> &, const Str &title);
         vector<Book *> searchForBook_author(const vector<Book*> &, const Str &author);
         vector<Book *>  searchForBook_genre(const vector<Book*> &, const Str &genre);
         vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &isbn);
         vector<Book *>  searchForBook_publicationyear(const vector<Book*> &, const short &publicationyear);
 
+        vector<Book*> checkedOutBooks;
         void viewCheckedOutBooks();
-        void requestLoan();
+        void requestLoan(Member&, Librarian &, const vector<Book*> &);
         void returnBorrowedBooks(const vector<Book*> &, Book *borrowed);
-
 
     };
 
@@ -62,7 +62,7 @@ namespace OurUser {
 
     };
 
-    class Librarian : public User, public Book {
+    class Librarian : public User, public Book, public Loan {
     public:
         // ************** Operations on books **************
 
@@ -78,7 +78,8 @@ namespace OurUser {
         void updateBookGenre(Book* &);
         void updateBookAvailabitlity(Book* &);
         void updateBookQuantity(Book* & );
-
+        void processLoanRequest(Member &,Loan &);
+        void PrintTime();
 
     };
 

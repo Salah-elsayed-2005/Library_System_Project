@@ -1,4 +1,10 @@
 #include "User.h"
+#include "Loan.h"
+
+#include <ctime>
+time_t now = time(0);
+tm *ltm = localtime(&now);
+
 using namespace OurUser;
 ///////////////////////////        USER FUNCTIONS
 Str User::getUsername() const {
@@ -19,14 +25,14 @@ void User::setPassword(Str pass){
 
 ///////////////////////////         MEMBER FUNCTIONS
 /***********    Search For Books   ************/
-vector<Book *> Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
+Book* Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
     vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getTitle() == title)
-            //return it;
-            Search_results.push_back(it);
+            return it;
+            // Search_results.push_back(it);
     }
-    return Search_results;
+    // return Search_results;
    // return nullptr;
 }
 vector<Book *> Member::searchForBook_author(const vector<Book*>& library_books, const Str& author){
@@ -88,8 +94,32 @@ void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borro
         }
     }
 }
-void Member::requestLoan(){
-
+void Member::requestLoan(Member & member, Librarian &librarian, const vector<Book*> & library_books){
+    // Librarian must receive request and save the loan details in the loan class
+    Str book_title;
+    cout<<"Enter book title: "<<endl;
+    cin>>book_title;
+    unsigned int duedate_day;
+    unsigned int duedate_month;
+    unsigned int duedate_year;
+    cout<<"Enter due date day: "<<endl;
+    cin>>duedate_day;
+    cout<<"Enter due date month: "<<endl;
+    cin>>duedate_month;
+    cout<<"Enter due date year: "<<endl;
+    cin>>duedate_year;
+    Str member_id = member.id;
+    Loan loan(member_id, duedate_day, duedate_month, duedate_year);
+    if(loan.get_overduefines()!=0){
+        cout<<"Can not take loan due to having an existing overdue!"<<endl;
+    }
+    else if(loan.CheckAvailability(book_title, library_books)){
+        Book* book = member.searchForBook_title(library_books, book_title);
+        loan.complete_loanProcess(loan, member, librarian, book);
+    }
+    else{
+        cout<<"Book does not exist in library!"<<endl;
+    }
 }
 
 /////////////////////////   LIBRARIAN FUNCTIONS
@@ -154,5 +184,14 @@ void updateBookQuantity(Book* & book){
     unsigned short new_quantity;
     cout << "New title: "; cin >> new_quantity;
     book->setQuantity(new_quantity);
+}
+void processLoanRequest(Member & member, Loan & loan){ 
+    loan.set_loanconfstat(true);
+}
+
+void PrintTime(){
+    cout<< ltm->tm_mday<<"/"
+        << 1 + ltm->tm_mon << "/" 
+        << 1900 +ltm->tm_year<<endl;
 }
 
