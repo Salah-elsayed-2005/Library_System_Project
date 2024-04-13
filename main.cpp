@@ -18,6 +18,7 @@ int main()
     Member tst1;
     Librarian lib;
 
+    User* usptr = &tst1;
    /* Book* book = new Book;
     book->setTitle("Calculus");
     book->setAuthor("Stewart");

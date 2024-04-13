@@ -1,4 +1,3 @@
-#if 0
 
 #include <iostream>
 #include <vector>
@@ -10,9 +9,9 @@
 time_t now = time(0);
 tm *ltm = localtime(&now);
 
-/*using namespace OurString;
+using namespace OurString;
 using namespace OurUser;
-using namespace OurBook;*/
+using namespace OurBook;
 
 #ifndef LIBRARY_SYSTEM_PROJECT_LOAN_H
 #define LIBRARY_SYSTEM_PROJECT_LOAN_H
@@ -48,4 +47,3 @@ public:
 
 
 #endif //LIBRARY_SYSTEM_PROJECT_LOAN_H
-#endif

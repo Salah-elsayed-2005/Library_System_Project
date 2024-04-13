@@ -7,22 +7,21 @@
 
 using namespace OurUser;
 /*********************/ /// why implement user functions ?
-# if 0
+
 ///////////////////////////        USER FUNCTIONS
 
 ///getters
-Str User::getUsername() const {return username;}
-Str User::getPassword() const{return password;}
 Str User::getName() const {return  name;}
 Str User::getId() const {return id;}
+Str User::getPassword() const{return password;}
+
 /// setters
-void User::setUsername(Str un){username = un;}
-void User::setPassword(Str pass){password = pass;}
 void User::setName(Str s) {name=s;}
 void User::setId(Str i) {id=i;}
-# endif
+void User::setPassword(Str pass){password = pass;}
 
 
+/**********************************************************************
 ///////////////////////////         MEMBER FUNCTIONS
 Str Member::getUsername() const {return username;}
 Str Member::getPassword() const{return password;}
@@ -46,6 +45,40 @@ void Member::showdata() {
         cout<<"Type :   Faculty"<<endl;
     cout<<"******************"<<endl;
 }
+ ****************************************************************/
+/********** Constructors ***********/
+Member::Member():User("", "", ""), overdue_fines(0.0){}
+Member::Member(Str name, Str id, Str pass, vector<Book*> bk_list, vector<Loan*> ln_list, float o_fines):
+        User(name, id, pass), checked_out_books(bk_list), member_loans(ln_list), overdue_fines(o_fines){}
+
+Member::Member(Member& obj) {
+    this->name = obj.name;
+    this->id = obj.id;
+    this->checked_out_books = obj.checked_out_books;
+    this->member_loans = obj.member_loans;
+    this->overdue_fines = obj.overdue_fines;
+}
+/********** Setters and Getters **********/
+void Member::setCheckedOutBooks(vector<Book*> &co_books){
+    checked_out_books = co_books;
+}
+void Member::setMemberLoans(vector<Loan *> &loans_list) {
+    member_loans = loans_list;
+}
+void Member::setOverdueFines(float& fines){
+    overdue_fines = fines;
+}
+
+vector<Book*> Member::getCheckedOutBooks() const {
+    return checked_out_books;
+}
+vector<Loan*> Member::getMemberLoans() const {
+    return member_loans;
+}
+float Member::getOverdueFines() const {
+    return overdue_fines;
+}
+
 /***********    Search For Books   ************/
 vector <Book *> Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
     vector<Book*> Search_results;
@@ -90,10 +123,10 @@ vector<Book *>Member::searchForBook_publicationyear(const vector<Book *> &librar
     //return nullptr;
 }
 
-/****************             ******************/
+/****************       Member functions      ******************/
 void Member::viewCheckedOutBooks(){
     cout << "Your books: " << endl;
-    for(auto it : checkedOutBooks){
+    for(auto it : checked_out_books){
         cout << "Title: "<< it->getTitle() << endl;
         cout << "Author: " << it->getAuthor() << endl;
         cout << "Due Date: " << "//////// will be added" << endl;
@@ -110,9 +143,9 @@ void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borro
         }
 
     }
-    for(auto it = checkedOutBooks.begin(); it != checkedOutBooks.end(); it++){
+    for(auto it = checked_out_books.begin(); it != checked_out_books.end(); it++){
         if((*it)->getTitle() == borrowed->getTitle()){
-            checkedOutBooks.erase(it);
+            checked_out_books.erase(it);
         }
     }
 }
@@ -145,6 +178,7 @@ void Member::requestLoan(Member & member, Librarian &librarian, const vector<Boo
     }
 }
 */
+/***********************************************************
 /////////////////////////   LIBRARIAN FUNCTIONS
 Str Librarian::getUsername() const {return username;}
 Str Librarian::getPassword() const{return password;}
@@ -162,6 +196,12 @@ void Librarian::showdata() {
         <<"ID   :   "<<id<<endl;
     cout<<"******************"<<endl;
 }
+ ***************************************************************/
+ /*****************   Constructors *****************/
+Librarian::Librarian():User(){}
+Librarian::Librarian(Str n, Str i, Str p):User(n, i, p){}
+
+
 void Librarian::addBook(vector<Book*> & list, Book* &book){
     /*
     Str title;
@@ -180,40 +220,40 @@ void Librarian::addBook(vector<Book*> & list, Book* &book){
     book->setAvailability();
     list.push_back(book);
 }
-void removeBook(vector<Book*> &list, Book* &book){
+void Librarian::removeBook(vector<Book*> &list, Book* &book){
     for(auto it = list.begin(); it != list.end(); it++){
         if((*it)->getIsbn() == book->getIsbn()){
             list.erase(it);
         }
     }
 }
-void updateBookTitle(Book* & book){
+void Librarian::updateBookTitle(Book* & book){
     Str new_title;
     cout << "New title: "; cin >> new_title;
     book->setTitle(new_title);
 }
-void updateBookAuthor(Book* & book){
+void Librarian::updateBookAuthor(Book* & book){
     Str new_author;
     cout << "New author: "; cin >> new_author;
     book->setAuthor(new_author);
 }
-void updateBookISBN(Book* & book){
+void Librarian::updateBookISBN(Book* & book){
     Str new_isbn;
     cout << "New ISBN: "; cin >> new_isbn;
     book->setIsbn(new_isbn);
 }
-void updatePublicationYear(Book* & book){
+void Librarian::updatePublicationYear(Book* & book){
     unsigned short new_publication_year;
     cout << "New publication year: "; cin >> new_publication_year;
     book->setPublicationYear(new_publication_year);
 }
-void updateBookGenre(Book* & book){
+void Librarian::updateBookGenre(Book* & book){
     Str new_genre;
     cout << "New title: "; cin >> new_genre;
     book->setGenre(new_genre);
 }
 
-void updateBookQuantity(Book* & book){
+void Librarian::updateBookQuantity(Book* & book){
     unsigned short new_quantity;
     cout << "New title: "; cin >> new_quantity;
     book->setQuantity(new_quantity);

@@ -8,33 +8,63 @@
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
-enum UserType{member,staff,faculty};
+//enum UserType{member,staff,faculty};
  namespace OurUser {
     class Librarian;
+    class Member;
 
     class User {
     protected:
-        Str username;
-        Str password;
         Str name;
         Str id;
-        int type=0;
+        Str password;
     public:
-        User() : username("Null"), password("Null"), name("Null"),id("Null"){}
-        User(const Str &un, const Str &pass, const Str &n,const Str &i) : username(un), password(pass), name(n),id(i){}
+        User() : name(""), password(""), id(""){}
+        User(const Str &n, const Str &i, const Str &pass) : name(n), id(i), password(pass){}
 
-        virtual Str getUsername() const=0;
-        virtual Str getPassword() const=0;
-        virtual Str getName()const=0;
-        virtual Str getId()const=0;
+        Str getName() const;
+        Str getId() const;
+        Str getPassword() const;
 
-        virtual void setUsername(Str)=0;
-        virtual void setPassword(Str)=0;
-        virtual void setName(Str)=0;
-        virtual void setId(Str)=0;
+        void setName(Str s);
+        void setId(Str i);
+        void setPassword(Str pass);
 
-        virtual void showdata()=0;
+        //virtual void showdata()=0;
 
+        /************ MEMBER METHODS ***********/
+        virtual void setCheckedOutBooks(vector<Book*>&) = 0;
+        virtual void setMemberLoans(vector<Loan*>&) = 0;
+        virtual void setOverdueFines(float&) = 0;
+
+        virtual vector<Book*> getCheckedOutBooks() const = 0;
+        virtual vector<Loan*> getMemberLoans() const = 0;
+        virtual float getOverdueFines() const = 0;
+
+        virtual vector<Book *> searchForBook_title(const vector<Book*> &, const Str &) = 0;
+        virtual vector<Book *> searchForBook_author(const vector<Book*> &, const Str &) = 0;
+        virtual vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &) = 0;
+        virtual vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &) = 0;
+        virtual vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &) = 0;
+
+        virtual void viewCheckedOutBooks() = 0;
+        virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
+        virtual void returnBorrowedBooks(const vector<Book*> &, Book*) = 0;
+
+        /*************** LIBRARIAN METHODS *************/
+        virtual void addBook(vector<Book*> &, Book* &book) = 0;
+        virtual void removeBook(vector<Book*> &, Book* &book) = 0;
+
+
+        virtual void updateBookTitle(Book* &) = 0;
+        virtual void updateBookAuthor(Book* &) = 0;
+        virtual void updateBookISBN(Book* &) = 0;
+        virtual void updatePublicationYear(Book* &) = 0;
+        virtual void updateBookGenre(Book* &) = 0;
+        virtual void updateBookAvailabitlity(Book* &) = 0;
+        virtual void updateBookQuantity(Book* & ) = 0;
+        //  virtual void processLoanRequest(Member &,Loan &) = 0;
+        virtual void PrintTime() = 0;
         ~User(){}
     };
 
@@ -43,13 +73,16 @@ enum UserType{member,staff,faculty};
     /****************************************************************************************/
 
     class Member : public User {
-    private:
+    protected:
         /****** attributes ******/
+        vector<Book*> checked_out_books;
+        vector<Loan*> member_loans;
         float overdue_fines = 0;
         /****** private methods ******/
 
     public:
         /****** public methods ******/
+        /************************************************
         Str getUsername() const;
         Str getPassword() const;
         Str getName()const;
@@ -60,21 +93,32 @@ enum UserType{member,staff,faculty};
         void setName(Str);
         void setId(Str);
 
-        void showdata();
-        vector<Book *>searchForBook_title(const vector<Book*> &, const Str &title);
-        vector<Book *> searchForBook_author(const vector<Book*> &, const Str &author);
-        vector<Book *>  searchForBook_genre(const vector<Book*> &, const Str &genre);
-        vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &isbn);
-        vector<Book *>  searchForBook_publicationyear(const vector<Book*> &, const short &publicationyear);
+        ***************************************************/
 
-        vector<Book*> checkedOutBooks;
-        void viewCheckedOutBooks();
-        void requestLoan(Member&, Librarian &, const vector<Book*> &);
-        void returnBorrowedBooks(const vector<Book*> &, Book *borrowed);
+        Member();
+        Member(Str, Str, Str, vector<Book*>, vector<Loan*>, float);
+        Member(Member&);
 
+        void setCheckedOutBooks(vector<Book*>&) override;
+        void setMemberLoans(vector<Loan*>&) override;
+        void setOverdueFines(float&) override;
+
+        vector<Book*> getCheckedOutBooks() const override;
+        vector<Loan*> getMemberLoans() const override;
+        float getOverdueFines() const override;
+
+        vector<Book *> searchForBook_title(const vector<Book*> &, const Str &) override;
+        vector<Book *> searchForBook_author(const vector<Book*> &, const Str &) override;
+        vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &) override;
+        vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &) override;
+        vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &) override;
+
+        void viewCheckedOutBooks() override;
+        void requestLoan(Member&, Librarian &, const vector<Book*> &) override;
+        void returnBorrowedBooks(const vector<Book*> &, Book *) override;
+
+       // void showdata() override;
     };
-
-# if 0
   ///  Do we really need classes for each type ?
     class Student : public Member {
 
@@ -87,20 +131,23 @@ enum UserType{member,staff,faculty};
     class Staff : public Member {
 
     };
-# endif
-    class Librarian : public User, public Book {
+
+    class Librarian : public User{
     public:
-        Str getUsername() const;
-        Str getPassword() const;
-        Str getName()const;
-        Str getId()const;
+//        Str getUsername() const;
+//        Str getPassword() const;
+//        Str getName()const;
+//        Str getId()const;
+//
+//        void setUsername(Str);
+//        void setPassword(Str);
+//        void setName(Str);
+//        void setId(Str);
 
-        void setUsername(Str);
-        void setPassword(Str);
-        void setName(Str);
-        void setId(Str);
+        //void showdata();
 
-        void showdata();
+        Librarian();
+        Librarian(Str, Str, Str);
         // ************** Operations on books **************
 
         // (Use allocation for new books and use setters for assigning values)
@@ -115,9 +162,8 @@ enum UserType{member,staff,faculty};
         void updateBookGenre(Book* &);
         void updateBookAvailabitlity(Book* &);
         void updateBookQuantity(Book* & );
-      //  void processLoanRequest(Member &,Loan &);
+        //  void processLoanRequest(Member &,Loan &);
         void PrintTime();
-
     };
 
 }
