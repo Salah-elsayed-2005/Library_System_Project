@@ -1,15 +1,33 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <sqlite3.h>
 #include "Str.h"
 #include "Book.h"
 #include "User.h"
 #include "Loan.h"
+#include "DatabaseManager.h"
+
+
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
 using namespace OurUser;
-int main()
-{
+int main(){
+    DatabaseManager dbManager("test.db");
+    dbManager.createTable();
+    dbManager.insertSampleData();
+    dbManager.insertBook("9780132350884", "Effective C++", "Scott Meyers", 2005, "Programming", true, 10);
+    dbManager.insertBook("9780132350000", "Not Effective C++", "Fouad", 2010, "Programming", true, 1);
+    dbManager.searchBooks("Title","Not Effective C++");
+    dbManager.searchBooks("ISBN","9780132350884");
+    dbManager.displayBooks();
+    dbManager.decrementBookQuantity("9780132350000");
+    dbManager.deleteBook("9780132350884");
+    dbManager.displayBooks();
+
+
+
     vector<Book*> library_books={};
     vector<User*> library_users;
     vector<Loan*> library_loans;

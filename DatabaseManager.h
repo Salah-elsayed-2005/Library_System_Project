@@ -1,0 +1,35 @@
+//
+// Created by Fouad Hashesh on 13/04/2024.
+//
+
+#ifndef LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
+#define LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
+
+#include <sqlite3.h>
+#include <string>
+
+class DatabaseManager {
+public:
+    explicit DatabaseManager(const std::string& databaseName);
+    ~DatabaseManager();
+
+    void createTable();
+    void insertSampleData();
+    void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
+                    int publicationYear, const std::string& genre, bool availability, int quantity);
+    void deleteBook(const std::string& isbn);  // Use ISBN instead of ID for book identification
+    void displayBooks();
+    void searchBooks(const std::string& attribute, const std::string& value);
+    void decrementBookQuantity(const std::string& isbn);
+
+private:
+    sqlite3* db;
+
+    static int callback(void *NotUsed, int argc, char **argv, char **azColName);
+    int execute_sql(const std::string& sql, int (*callback)(void*,int,char**,char**) = nullptr, void* data = nullptr);
+};
+
+
+
+
+#endif //LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
