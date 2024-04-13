@@ -4,40 +4,64 @@
 #include <vector>
 #include "Str.h"
 #include "Book.h"
+#include "Loan.h"
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
-
-
-namespace OurUser {
+enum UserType{member,staff,faculty};
+ namespace OurUser {
     class Librarian;
 
     class User {
+    protected:
         Str username;
         Str password;
         Str name;
+        Str id;
+        int type=0;
     public:
-        User() : username(""), password(""), name(""){}
-        User(const Str &un, const Str &pass, const Str &n) : username(un), password(pass), name(n) {}
+        User() : username("Null"), password("Null"), name("Null"),id("Null"){}
+        User(const Str &un, const Str &pass, const Str &n,const Str &i) : username(un), password(pass), name(n),id(i){}
 
-        Str getUsername() const;
-        Str getPassword() const;
-        void setUsername(Str);
-        void setPassword(Str);
+        virtual Str getUsername() const=0;
+        virtual Str getPassword() const=0;
+        virtual Str getName()const=0;
+        virtual Str getId()const=0;
 
+        virtual void setUsername(Str)=0;
+        virtual void setPassword(Str)=0;
+        virtual void setName(Str)=0;
+        virtual void setId(Str)=0;
+
+        virtual void showdata()=0;
+
+        ~User(){}
     };
 
-    class Member : public User {
 
+
+    /****************************************************************************************/
+
+    class Member : public User {
+    private:
         /****** attributes ******/
-        Str id;
         float overdue_fines = 0;
         /****** private methods ******/
-    private:
 
-        /****** public methods ******/
     public:
-        Book* searchForBook_title(const vector<Book*> &, const Str &title);
+        /****** public methods ******/
+        Str getUsername() const;
+        Str getPassword() const;
+        Str getName()const;
+        Str getId()const;
+
+        void setUsername(Str);
+        void setPassword(Str);
+        void setName(Str);
+        void setId(Str);
+
+        void showdata();
+        vector<Book *>searchForBook_title(const vector<Book*> &, const Str &title);
         vector<Book *> searchForBook_author(const vector<Book*> &, const Str &author);
         vector<Book *>  searchForBook_genre(const vector<Book*> &, const Str &genre);
         vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &isbn);
@@ -50,6 +74,8 @@ namespace OurUser {
 
     };
 
+# if 0
+  ///  Do we really need classes for each type ?
     class Student : public Member {
 
     };
@@ -61,9 +87,20 @@ namespace OurUser {
     class Staff : public Member {
 
     };
-
-    class Librarian : public User, public Book, public Loan {
+# endif
+    class Librarian : public User, public Book {
     public:
+        Str getUsername() const;
+        Str getPassword() const;
+        Str getName()const;
+        Str getId()const;
+
+        void setUsername(Str);
+        void setPassword(Str);
+        void setName(Str);
+        void setId(Str);
+
+        void showdata();
         // ************** Operations on books **************
 
         // (Use allocation for new books and use setters for assigning values)
@@ -78,7 +115,7 @@ namespace OurUser {
         void updateBookGenre(Book* &);
         void updateBookAvailabitlity(Book* &);
         void updateBookQuantity(Book* & );
-        void processLoanRequest(Member &,Loan &);
+      //  void processLoanRequest(Member &,Loan &);
         void PrintTime();
 
     };

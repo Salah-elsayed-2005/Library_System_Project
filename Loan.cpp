@@ -4,6 +4,10 @@
 #include "Loan.h"
 #include "Book.h"
 #include "User.h"
+# if 0
+
+
+
 
 Loan::Loan(Str memberid, unsigned int dueday, unsigned int duemonth ,unsigned int dueyear){
     member_id = memberid;
@@ -22,7 +26,7 @@ bool Loan::CheckAvailability(Str booktitle, const vector<Book*> & library_books)
 
 void Loan::complete_loanProcess(Loan & loan, Member & member, Librarian &librarian, Book* &book){
     book->setQuantity(book->getQuantity()-1);
-    if(book->getQuantity>=0)
+    if(book->getQuantity() >=0)
         librarian.processLoanRequest(member, loan);
     else
         book->setAvailability(false);
@@ -39,3 +43,7 @@ void Loan::ProceedToCheckout(Member & member){
     }
     
 }
+
+
+
+# endif

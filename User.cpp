@@ -2,37 +2,59 @@
 #include "Loan.h"
 
 #include <ctime>
-time_t now = time(0);
-tm *ltm = localtime(&now);
+//time_t now = time(0);
+//tm *ltm = localtime(&now);
 
 using namespace OurUser;
+/*********************/ /// why implement user functions ?
+# if 0
 ///////////////////////////        USER FUNCTIONS
-Str User::getUsername() const {
-    return username;
-}
-Str User::getPassword() const{
-    return password;
-}
-void User::setUsername(Str un){
-    username = un;
-}
-void User::setPassword(Str pass){
-    password = pass;
-}
 
-
+///getters
+Str User::getUsername() const {return username;}
+Str User::getPassword() const{return password;}
+Str User::getName() const {return  name;}
+Str User::getId() const {return id;}
+/// setters
+void User::setUsername(Str un){username = un;}
+void User::setPassword(Str pass){password = pass;}
+void User::setName(Str s) {name=s;}
+void User::setId(Str i) {id=i;}
+# endif
 
 
 ///////////////////////////         MEMBER FUNCTIONS
+Str Member::getUsername() const {return username;}
+Str Member::getPassword() const{return password;}
+Str Member::getName() const {return  name;}
+Str Member::getId() const {return id;}
+/// setters
+void Member::setUsername(Str un){username = un;}
+void Member::setPassword(Str pass){password = pass;}
+void Member::setName(Str s) {name=s;}
+void Member::setId(Str i) {id=i;}
+///showdata
+void Member::showdata() {
+    cout<<"Name :   "<<name<<endl
+        <<"ID   :   "<<id<<endl
+        <<"Fines:   "<<overdue_fines<<endl;
+    if (type==0)
+        cout<<"Type :   Member"<<endl;
+    else if (type==1)
+        cout<<"Type :   Staff"<<endl;
+    else
+        cout<<"Type :   Faculty"<<endl;
+    cout<<"******************"<<endl;
+}
 /***********    Search For Books   ************/
-Book* Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
+vector <Book *> Member::searchForBook_title(const vector<Book*>& library_books, const Str& title){
     vector<Book*> Search_results;
     for(auto it : library_books){
         if(it->getTitle() == title)
-            return it;
-            // Search_results.push_back(it);
+    //        return it;
+             Search_results.push_back(it);
     }
-    // return Search_results;
+     return Search_results;
    // return nullptr;
 }
 vector<Book *> Member::searchForBook_author(const vector<Book*>& library_books, const Str& author){
@@ -84,7 +106,7 @@ void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borro
 
         if((*it)->getTitle() == borrowed->getTitle()){
             (*it)->setQuantity(((*it)->getQuantity()) + 1);
-            (*it)->setAvailability(true);
+           // (*it)->setAvailability();
         }
 
     }
@@ -94,6 +116,7 @@ void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borro
         }
     }
 }
+/*
 void Member::requestLoan(Member & member, Librarian &librarian, const vector<Book*> & library_books){
     // Librarian must receive request and save the loan details in the loan class
     Str book_title;
@@ -121,9 +144,24 @@ void Member::requestLoan(Member & member, Librarian &librarian, const vector<Boo
         cout<<"Book does not exist in library!"<<endl;
     }
 }
-
+*/
 /////////////////////////   LIBRARIAN FUNCTIONS
-
+Str Librarian::getUsername() const {return username;}
+Str Librarian::getPassword() const{return password;}
+Str Librarian::getName() const {return  name;}
+Str Librarian::getId() const {return id;}
+/// setters
+void Librarian::setUsername(Str un){username = un;}
+void Librarian::setPassword(Str pass){password = pass;}
+void Librarian::setName(Str s) {name=s;}
+void Librarian::setId(Str i) {id=i;}
+///showdata
+void Librarian::showdata() {
+    cout<<"Type :   Librarian"<<endl
+        <<"Name :   "<<name<<endl
+        <<"ID   :   "<<id<<endl;
+    cout<<"******************"<<endl;
+}
 void Librarian::addBook(vector<Book*> & list, Book* &book){
     /*
     Str title;
@@ -138,14 +176,13 @@ void Librarian::addBook(vector<Book*> & list, Book* &book){
     cout << "Enter publication year : ";   cin >> publication_year;     book->setPublicationYear(publication_year);
     cout << "Enter book genre : ";         cin >> genre;                book->setGenre(genre);
 */
-    book->setAvailability(true);
     book->setQuantity(book->getQuantity() + 1);
-
+    book->setAvailability();
     list.push_back(book);
 }
 void removeBook(vector<Book*> &list, Book* &book){
     for(auto it = list.begin(); it != list.end(); it++){
-        if((*it)->getTitle() == book->getTitle()){
+        if((*it)->getIsbn() == book->getIsbn()){
             list.erase(it);
         }
     }
@@ -175,16 +212,14 @@ void updateBookGenre(Book* & book){
     cout << "New title: "; cin >> new_genre;
     book->setGenre(new_genre);
 }
-void updateBookAvailabitlity(Book* & book){
-    bool new_availability;
-    cout << "New Availability status: "; cin >> new_availability;
-    book->setAvailability(new_availability);
-}
+
 void updateBookQuantity(Book* & book){
     unsigned short new_quantity;
     cout << "New title: "; cin >> new_quantity;
     book->setQuantity(new_quantity);
+    book->setAvailability();
 }
+/*
 void processLoanRequest(Member & member, Loan & loan){ 
     loan.set_loanconfstat(true);
 }
@@ -195,3 +230,4 @@ void PrintTime(){
         << 1900 +ltm->tm_year<<endl;
 }
 
+*/
