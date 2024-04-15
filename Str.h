@@ -50,6 +50,8 @@ namespace OurString {
         // Friend function to allow input operations with >> operator.
         // It has access to private and protected members of this class.
         friend std::istream& operator>>(std::istream& is, Str& obj);
+
+        friend Str operator+ (const char* prefix, const Str& obj);
     };
 }
 

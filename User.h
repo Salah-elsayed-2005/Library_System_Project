@@ -4,169 +4,154 @@
 #include <vector>
 #include "Str.h"
 #include "Book.h"
-#include "Loan.h"
+
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
 //enum UserType{member,staff,faculty};
- namespace OurUser {
-    class Librarian;
-    class Member;
 
-    class User {
-    protected:
-        Str name;
-        Str id;
-        Str password;
-    public:
-        User() : name(""), password(""), id(""){}
-        User(const Str &n, const Str &i, const Str &pass) : name(n), id(i), password(pass){}
+class Librarian;
+class Member;
+class Loan;
 
-        Str getName() const;
-        Str getId() const;
-        Str getPassword() const;
+class User {
+protected:
+    Str name;
+    Str id;
+    Str password;
+public:
+    User() : name(""), password(""), id(""){}
+    User(const Str &n, const Str &i, const Str &pass) : name(n), id(i), password(pass){}
 
-        void setName(Str s);
-        void setId(Str i);
-        void setPassword(Str pass);
+    Str getName() const;
+    Str getId() const;
+    Str getPassword() const;
 
-        //virtual void showdata()=0;
+    void setName(Str s);
+    void setPassword(Str pass);
 
-        /************ MEMBER METHODS ***********/
-        virtual void setCheckedOutBooks(vector<Book*>&) = 0;
-        virtual void setMemberLoans(vector<Loan*>&) = 0;
-        virtual void setOverdueFines(float&) = 0;
+    /******** overriden methods **********/
+    virtual void displayInfo() const = 0;
+    virtual void setId(Str i)  = 0;
 
-        virtual vector<Book*> getCheckedOutBooks() const = 0;
-        virtual vector<Loan*> getMemberLoans() const = 0;
-        virtual float getOverdueFines() const = 0;
-
-        virtual vector<Book *> searchForBook_title(const vector<Book*> &, const Str &) = 0;
-        virtual vector<Book *> searchForBook_author(const vector<Book*> &, const Str &) = 0;
-        virtual vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &) = 0;
-        virtual vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &) = 0;
-        virtual vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &) = 0;
-
-        virtual void viewCheckedOutBooks() = 0;
-        virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
-        virtual void returnBorrowedBooks(const vector<Book*> &, Book*) = 0;
-
-        /*************** LIBRARIAN METHODS *************/
-        virtual void addBook(vector<Book*> &, Book* &book) = 0;
-        virtual void removeBook(vector<Book*> &, Book* &book) = 0;
+    vector<Book *> searchForBook_title(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
 
 
-        virtual void updateBookTitle(Book* &) = 0;
-        virtual void updateBookAuthor(Book* &) = 0;
-        virtual void updateBookISBN(Book* &) = 0;
-        virtual void updatePublicationYear(Book* &) = 0;
-        virtual void updateBookGenre(Book* &) = 0;
-        virtual void updateBookAvailabitlity(Book* &) = 0;
-        virtual void updateBookQuantity(Book* & ) = 0;
-        //  virtual void processLoanRequest(Member &,Loan &) = 0;
-        virtual void PrintTime() = 0;
-        ~User(){}
-    };
+    virtual ~User(){}
+};
 
 
 
-    /****************************************************************************************/
+/****************************************************************************************/
 
-    class Member : public User {
-    protected:
-        /****** attributes ******/
-        vector<Book*> checked_out_books;
-        vector<Loan*> member_loans;
-        float overdue_fines = 0;
-        /****** private methods ******/
+class Member : public User {
+protected:
+    /****** attributes ******/
+    vector<Book*> checked_out_books;
+    vector<Loan*> member_loans;
+    float overdue_fines = 0;
 
-    public:
-        /****** public methods ******/
-        /************************************************
-        Str getUsername() const;
-        Str getPassword() const;
-        Str getName()const;
-        Str getId()const;
+    /****** private methods ******/
 
-        void setUsername(Str);
-        void setPassword(Str);
-        void setName(Str);
-        void setId(Str);
+public:
+    /****** public methods ******/
 
-        ***************************************************/
+    Member();
+    Member(Str, Str, Str, vector<Book*>, vector<Loan*>, float);
+    Member(Member&);
 
-        Member();
-        Member(Str, Str, Str, vector<Book*>, vector<Loan*>, float);
-        Member(Member&);
+    void setCheckedOutBooks(vector<Book*>&);
+    void setMemberLoans(vector<Loan*>&);
+    void setOverdueFines(float&);
 
-        void setCheckedOutBooks(vector<Book*>&) override;
-        void setMemberLoans(vector<Loan*>&) override;
-        void setOverdueFines(float&) override;
+    vector<Book*> getCheckedOutBooks() const;
+    vector<Loan*> getMemberLoans() const;
+    float getOverdueFines() const;
 
-        vector<Book*> getCheckedOutBooks() const override;
-        vector<Loan*> getMemberLoans() const override;
-        float getOverdueFines() const override;
+    /********* Member Methods ********/
+    void viewCheckedOutBooks() const;
 
-        vector<Book *> searchForBook_title(const vector<Book*> &, const Str &) override;
-        vector<Book *> searchForBook_author(const vector<Book*> &, const Str &) override;
-        vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &) override;
-        vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &) override;
-        vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &) override;
+    /********** Loan related methods ********/
+    /*
+    virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
+    virtual void returnBorrowedBooks(const vector<Book*> &, Book *) = 0;
+    */
+};
 
-        void viewCheckedOutBooks() override;
-        void requestLoan(Member&, Librarian &, const vector<Book*> &) override;
-        void returnBorrowedBooks(const vector<Book*> &, Book *) override;
+class Librarian : public User, private Book{
+public:
+    /************ Constructors ***********/
+    Librarian();
+    Librarian(Str, Str, Str);
 
-       // void showdata() override;
-    };
-  ///  Do we really need classes for each type ?
-    class Student : public Member {
+     /********** overriden methods **********/
+     void displayInfo() const override;
+     void setId(Str i) override;
 
-    };
+     // ************** Operations on books **************
 
-    class Faculty : public Member {
+    // (Use allocation for new books and use setters for assigning values)
+    void viewBooks(vector<Book*>&) const;
+    void addBook(vector<Book*> &, Book* &book);
+    void removeBook(vector<Book*> &, Book* &book);
 
-    };
+    void updateBookTitle(Book* &);
+    void updateBookAuthor(Book* &);
+    void updateBookISBN(Book* &);
+    void updatePublicationYear(Book* &);
+    void updateBookGenre(Book* &);
+    void updateBookAvailabitlity(Book* &);
+    void updateBookQuantity(Book* &);
 
-    class Staff : public Member {
+    /******************* Opeerations on Members *****************/
+    void addMember(vector<User *> &, Member*);
+    void removeMember(vector<User *> &, Member*);
+    void updateMemberName(Member*);
+    void updateMemberId(Member*);
 
-    };
+    /******************** Operations on Loans ***************/
+    //  void processLoanRequest(Member &,Loan &);
+    void PrintTime();
+};
 
-    class Librarian : public User{
-    public:
-//        Str getUsername() const;
-//        Str getPassword() const;
-//        Str getName()const;
-//        Str getId()const;
-//
-//        void setUsername(Str);
-//        void setPassword(Str);
-//        void setName(Str);
-//        void setId(Str);
+class Student : public Member {
+public:
+    void setId(Str i) override;
+    void displayInfo() const override;
+/*
+    void requestLoan(Member&, Librarian &, const vector<Book*> &);
+    void returnBorrowedBooks(const vector<Book*> &, Book *);
+*/
+    friend class Librarian;
+};
 
-        //void showdata();
+class Faculty : public Member {
+public:
+    void setId(Str i) override;
+    void displayInfo() const override;
+/*
+    void requestLoan(Member&, Librarian &, const vector<Book*> &);
+    void returnBorrowedBooks(const vector<Book*> &, Book *);
+*/
+    friend class Librarian;
+};
 
-        Librarian();
-        Librarian(Str, Str, Str);
-        // ************** Operations on books **************
+class Staff : public Member {
+public:
+    void setId(Str i) override;
+    void displayInfo() const override;
+/*
+    void requestLoan(Member&, Librarian &, const vector<Book*> &);
+    void returnBorrowedBooks(const vector<Book*> &, Book *);
+*/
+    friend class Librarian;
+};
 
-        // (Use allocation for new books and use setters for assigning values)
-        void addBook(vector<Book*> &, Book* &book);
-        void removeBook(vector<Book*> &, Book* &book);
 
-
-        void updateBookTitle(Book* &);
-        void updateBookAuthor(Book* &);
-        void updateBookISBN(Book* &);
-        void updatePublicationYear(Book* &);
-        void updateBookGenre(Book* &);
-        void updateBookAvailabitlity(Book* &);
-        void updateBookQuantity(Book* & );
-        //  void processLoanRequest(Member &,Loan &);
-        void PrintTime();
-    };
-
-}
 
 
 #endif //LIBRARY_SYSTEM_PROJECT_USER_H
