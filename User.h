@@ -8,12 +8,11 @@
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
-//enum UserType{member,staff,faculty};
 
 class Librarian;
 class Member;
 class Loan;
-
+/*****************************************/
 class User {
 protected:
     Str name;
@@ -81,6 +80,7 @@ public:
     virtual void returnBorrowedBooks(const vector<Book*> &, Book *) = 0;
     */
 };
+/****************************************************************************************/
 
 class Librarian : public User, private Book{
 public:
@@ -117,6 +117,7 @@ public:
     //  void processLoanRequest(Member &,Loan &);
     void PrintTime();
 };
+/****************************************************************************************/
 
 class Student : public Member {
 public:
@@ -151,7 +152,6 @@ public:
     friend class Librarian;
 };
 
-
-
+/****************************************************************************************/
 
 #endif //LIBRARY_SYSTEM_PROJECT_USER_H

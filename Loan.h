@@ -1,4 +1,4 @@
-
+# if 0
 #include <iostream>
 #include <vector>
 #include "User.h"
@@ -10,8 +10,7 @@ time_t now = time(0);
 tm *ltm = localtime(&now);
 
 using namespace OurString;
-using namespace OurUser;
-using namespace OurBook;
+ using namespace OurBook;
 
 #ifndef LIBRARY_SYSTEM_PROJECT_LOAN_H
 #define LIBRARY_SYSTEM_PROJECT_LOAN_H
@@ -35,8 +34,8 @@ private:
 public:
     Loan(Str, unsigned int, unsigned int ,unsigned int);
     bool CheckAvailability(Str, const vector<OurBook::Book*> &);
-    void complete_loanProcess(Loan &, OurUser::Member & ,OurUser:: Librarian &, Book * &);
-    void ProceedToCheckout(OurUser::Member &);
+    void complete_loanProcess(Loan &,  Member & , Librarian &, Book * &);
+    void ProceedToCheckout( Member &);
 
     //Getters
     float get_overduefines();
@@ -47,3 +46,4 @@ public:
 
 
 #endif //LIBRARY_SYSTEM_PROJECT_LOAN_H
+#endif
