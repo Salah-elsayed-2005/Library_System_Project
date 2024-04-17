@@ -17,92 +17,12 @@ Str User::getName() const {return  name;}
 Str User::getId() const {return id;}
 Str User::getPassword() const{return password;}
 
-
-/***********    Search For Books   ************/
-vector <Book *> User::searchForBook_title(const vector<Book*>& library_books, const Str& title){
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getTitle() == title)
-            //        return it;
-            Search_results.push_back(it);
-    }
-    return Search_results;
- }
-vector<Book *> User::searchForBook_author(const vector<Book*>& library_books, const Str& author){
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getAuthor() == author)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-
- }
-vector<Book *> User::searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getGenre() == genre)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-
- }
-vector<Book *>User::searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getIsbn() == isbn)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-
- }
-vector<Book *>User::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getPublicationYear() == year)
-            Search_results.push_back(it);
-    }
-    return Search_results;
- }
-
-
-/**********************************************************************
-///////////////////////////         MEMBER FUNCTIONS
-Str Member::getUsername() const {return username;}
-Str Member::getPassword() const{return password;}
-Str Member::getName() const {return  name;}
-Str Member::getId() const {return id;}
-/// setters
-void Member::setUsername(Str un){username = un;}
-void Member::setPassword(Str pass){password = pass;}
-void Member::setName(Str s) {name=s;}
-void Member::setId(Str i) {id=i;}
-///showdata
-void Member::showdata() {
-    cout<<"Name :   "<<name<<endl
-        <<"ID   :   "<<id<<endl
-        <<"Fines:   "<<overdue_fines<<endl;
-    if (type==0)
-        cout<<"Type :   Member"<<endl;
-    else if (type==1)
-        cout<<"Type :   Staff"<<endl;
-    else
-        cout<<"Type :   Faculty"<<endl;
-    cout<<"******************"<<endl;
-}
- ****************************************************************/
+ /****************************************************************/
 /********** Constructors ***********/
 Member::Member():User("", "", ""), overdue_fines(0.0){}
 Member::Member(Str name, Str id, Str pass, vector<Book*> bk_list, vector<Loan*> ln_list, float o_fines):
         User(name, id, pass), checked_out_books(bk_list), member_loans(ln_list), overdue_fines(o_fines){}
-/*
-Member::Member(Member& obj) {
-    this->name = obj.name;
-    this->id = obj.id;
-    this->checked_out_books = obj.checked_out_books;
-    this->member_loans = obj.member_loans;
-    this->overdue_fines = obj.overdue_fines;
-}
-*/
+
 /********** Setters and Getters **********/
 void Member::setCheckedOutBooks(vector<Book*> &co_books){
     checked_out_books = co_books;
@@ -123,9 +43,6 @@ vector<Loan*> Member::getMemberLoans() const {
 float Member::getOverdueFines() const {
     return overdue_fines;
 }
-    /********** overriden methods **********/
-
-
 
 
 /****************       Member functions      ******************/
@@ -138,53 +55,6 @@ void Member::viewCheckedOutBooks() const{
         cout << "__________________________________________" << endl;
     }
 }
-/*********************************
-void Member::returnBorrowedBooks(const vector<Book*>& library_books, Book* borrowed){
-    for(auto it = library_books.begin(); it != library_books.end(); it++){
-
-        if((*it)->getTitle() == borrowed->getTitle()){
-            (*it)->setQuantity(((*it)->getQuantity()) + 1);
-           // (*it)->setAvailability();
-        }
-
-    }
-    for(auto it = checked_out_books.begin(); it != checked_out_books.end(); it++){
-        if((*it)->getTitle() == borrowed->getTitle()){
-            checked_out_books.erase(it);
-        }
-    }
-}
-************************************/
-
-/*
-void Member::requestLoan(Member & member, Librarian &librarian, const vector<Book*> & library_books){
-    // Librarian must receive request and save the loan details in the loan class
-    Str book_title;
-    cout<<"Enter book title: "<<endl;
-    cin>>book_title;
-    unsigned int duedate_day;
-    unsigned int duedate_month;
-    unsigned int duedate_year;
-    cout<<"Enter due date day: "<<endl;
-    cin>>duedate_day;
-    cout<<"Enter due date month: "<<endl;
-    cin>>duedate_month;
-    cout<<"Enter due date year: "<<endl;
-    cin>>duedate_year;
-    Str member_id = member.id;
-    Loan loan(member_id, duedate_day, duedate_month, duedate_year);
-    if(loan.get_overduefines()!=0){
-        cout<<"Can not take loan due to having an existing overdue!"<<endl;
-    }
-    else if(loan.CheckAvailability(book_title, library_books)){
-        Book* book = member.searchForBook_title(library_books, book_title);
-        loan.complete_loanProcess(loan, member, librarian, book);
-    }
-    else{
-        cout<<"Book does not exist in library!"<<endl;
-    }
-}
-*/
 
 
      /*****************   Constructors *****************/
@@ -208,19 +78,7 @@ void Librarian::viewBooks(vector<Book*>& book_list) const{
 
 }
 void Librarian::addBook(vector<Book*> & list, Book* &book){
-    /*
-    Str title;
-    Str author;
-    Str isbn; // Str or Long?
-    unsigned short publication_year;
-    Str genre;
 
-    cout << "Enter book title : ";         cin >> title;                book->setTitle(title);
-    cout << "Enter book author : ";        cin >> author;               book->setAuthor(author);
-    cout << "Enter book ISBN : ";          cin >> isbn;                 book->setIsbn(isbn);
-    cout << "Enter publication year : ";   cin >> publication_year;     book->setPublicationYear(publication_year);
-    cout << "Enter book genre : ";         cin >> genre;                book->setGenre(genre);
-*/
     book->setQuantity(book->getQuantity() + 1);
     book->setAvailability();
     list.push_back(book);

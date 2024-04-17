@@ -33,11 +33,7 @@ public:
     virtual void displayInfo() const = 0;
     virtual void setId(Str i)  = 0;
 
-    vector<Book *> searchForBook_title(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_isbn(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
+
 
 
     virtual ~User(){}
