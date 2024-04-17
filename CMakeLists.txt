@@ -8,6 +8,7 @@ add_executable(Library_System_Project main.cpp
         Book.h
         Loan.h
         User.h
+        DatabaseManager.h
         str.cpp
         Book.cpp
         Loan.cpp
