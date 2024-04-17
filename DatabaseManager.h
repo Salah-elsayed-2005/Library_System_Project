@@ -17,7 +17,7 @@ public:
     void insertSampleData();
     void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                     int publicationYear, const std::string& genre, bool availability, int quantity);
-    void deleteBook(const std::string& isbn);  // Use ISBN instead of ID for book identification
+    void deleteBook(const std::string& isbn);
     void displayBooks();
     void searchBooks(const std::string& attribute, const std::string& value);
     void decrementBookQuantity(const std::string& isbn);
