@@ -12,6 +12,8 @@ Book*  searchForBook_isbn(const vector<Book*> &, const Str &);
 vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
 vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
 vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
+
+User* login(const vector<User*>&);
 int main() {
     vector<Book*> library_books; // Assuming you have a vector to store Book objects
     vector<User*> library_users;
@@ -19,8 +21,25 @@ int main() {
     vector<Book*> Cart;
 
     Librarian lib;
-    Student st;
-
+    Student student;
+    Staff staff;
+    Faculty faculty;
+    student.setName("Ziad");
+    student.setId("101285");
+    student.setPassword("242004");
+    staff.setName("Marwan");
+    staff.setId("3akeedo");
+    staff.setPassword("<reham>");
+    faculty.setName("Elshabeeh");
+    faculty.setId("69420");
+    faculty.setPassword("password");
+    User *user1=&student;
+    User *user2=&staff;
+    User *user3=&faculty;
+    library_users.push_back(user1);
+    library_users.push_back(user2);
+    library_users.push_back(user3);
+    User* user=login(library_users);
 
     Str cart_input;
     // Adding books to the library
@@ -37,6 +56,7 @@ int main() {
     library_books.push_back(book3);
     library_books.push_back(book4);
     library_books.push_back(book5);
+    library_books.push_back(book5);
 
     // Main loop
     while (true) {
@@ -50,7 +70,8 @@ int main() {
              << "4- View Cart "<<endl
              << "5- Exit system : ";
         cin >> menuoption_intro;
-
+        bool cartfound= false;
+        Book* cartbook;
         switch (menuoption_intro) {
             case 1: {
                 int case1_option;
@@ -121,7 +142,18 @@ int main() {
             case 3:
                 cout<<"Please Enter the title or isbn of the needed book :";
                 cin>>cart_input;
-                Cart.push_back(searchForBook_title(library_books,cart_input));
+                for (auto it:library_books) {
+                    if ((it->getTitle() == cart_input || it->getIsbn() == cart_input) && it->getAvailability()) {
+                        cartfound = true;
+                        cartbook = it;
+                    }
+                }
+                if (cartfound){
+                    cout<<"Book added to Cart successfully!"<<endl;
+                    Cart.push_back(cartbook);
+                    cartbook->setQuantity(cartbook->getQuantity()-1);
+
+                }
                 break;
             case 4:
                 for(auto it:Cart){
@@ -186,6 +218,29 @@ vector<Book *>searchForBook_publicationyear(const vector<Book *> &library_books,
             Search_results.push_back(it);
     }
     return Search_results;
+}
+User*login(const vector<User*>& library_users){
+    label:
+    Str id,password;
+    cout<<"Please Enter your ID : ";
+    cin>>id;
+    cout<<"Please Enter your Password : ";
+    cin>>password;
+    bool flag= false;
+    User*toreturn;
+    for (auto it:library_users) {
+        if (id==it->getId() && password==it->getPassword()){
+            toreturn=it;
+            flag= true;
+            cout<<"Login successful"<<endl;
+        }
+    }
+    if (!flag) {
+        cout << "Check Id or password "<<endl;
+        goto label;
+    }
+
+     return toreturn;
 }
 
 #if 0

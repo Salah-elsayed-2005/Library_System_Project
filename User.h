@@ -57,7 +57,7 @@ public:
 
     Member();
     Member(Str, Str, Str, vector<Book*>, vector<Loan*>, float);
-    Member(Member&);
+    virtual ~Member(){}
 
     void setCheckedOutBooks(vector<Book*>&);
     void setMemberLoans(vector<Loan*>&);
