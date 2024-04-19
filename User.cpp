@@ -53,7 +53,6 @@ Book* User::searchForBook_isbn(const vector<Book *> &library_books, const Str &i
             Search_results=it;
     }
     return Search_results;
-
 }
 vector<Book *> User::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
     vector<Book*> Search_results;
@@ -63,7 +62,9 @@ vector<Book *> User::searchForBook_publicationyear(const vector<Book *> &library
     }
     return Search_results;
 }
- /****************************************************************/
+
+
+/****************************************************************/
 /********** Constructors ***********/
 Member::Member():User("", "", ""), overdue_fines(0.0){}
 Member::Member(Str name, Str id, Str pass, vector<Book*> bk_list, vector<Loan*> ln_list, float o_fines):
@@ -168,7 +169,6 @@ void Librarian::updateBookQuantity(Book* & book){
     book->setQuantity(new_quantity);
     book->setAvailability();
 }
-
 /************* Operation on Members ***********/
 
 void Librarian::addMember(vector<User *> & users_list, Member* member){
@@ -192,11 +192,24 @@ void Librarian::updateMemberId(Member* member){
     cout << "New Id: "; cin >> new_id;
     member->setId(new_id);
 }
+Member* Librarian::Searchformember(vector<User*>library_users,Str id){
+    for (auto it:library_users) {
+        if (it->getId()==id) {
+            Member*toreturn=dynamic_cast<Member *>(it);
+            return toreturn;
+        }
+    }
+    cout<<"User not found";
+    return nullptr;
+}
+
+/************* Librarian Methods ***********/
 
 void Librarian::setId(Str i) {
     Str prefix = "lib-";
     id = prefix + i;
 }
+
 
 /*************** Operations on Loans *************/
 /*

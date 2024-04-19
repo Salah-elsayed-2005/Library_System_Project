@@ -95,7 +95,7 @@ public:
      void displayInfo() const override;
      void setId(Str i) override;
 
-     // ************** Operations on books **************
+     /************** Operations on books **************/
 
     // (Use allocation for new books and use setters for assigning values)
     void viewBooks(vector<Book*>&) const;
@@ -107,7 +107,6 @@ public:
     void updateBookISBN(Book* &);
     void updatePublicationYear(Book* &);
     void updateBookGenre(Book* &);
-    void updateBookAvailabitlity(Book* &);
     void updateBookQuantity(Book* &);
 
     /******************* Opeerations on Members *****************/
@@ -115,6 +114,7 @@ public:
     void removeMember(vector<User *> &, Member*);
     void updateMemberName(Member*);
     void updateMemberId(Member*);
+    Member* Searchformember(vector<User*>,Str);
 
     /******************** Operations on Loans ***************/
     //  void processLoanRequest(Member &,Loan &);
