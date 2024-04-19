@@ -126,3 +126,4 @@ std::istream& OurString::operator>>(std::istream& is, Str& obj) {
     obj = temp; // Put temp in obj
     return is; // Return the input stream to allow chaining of input operations
 }
+

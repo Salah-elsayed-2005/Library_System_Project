@@ -2,7 +2,7 @@
 using namespace OurBook;
 //*********************************** Book CLASS IMPLEMENTATION ***********************************
 Book::Book() : _title(""), _author(""), _isbn(""), _publication_year(0), _genre(""), _availability(false) {} // Default constructor
-Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre, bool availability) : _title(title), _author(author), _isbn(isbn), _publication_year(publicationYear), _genre(genre), _availability(availability) {} // Parameterized constructor
+Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre) : _title(title), _author(author), _isbn(isbn), _publication_year(publicationYear), _genre(genre) {} // Parameterized constructor
 
 // Setters and getters
 void Book::setTitle(Str title) {
@@ -35,14 +35,17 @@ void Book::setGenre(Str genre) {
 Str Book::getGenre() {
     return _genre;
 }
-void Book::setAvailability(bool availability) {
-    _availability = availability;
-}
+
 bool Book::getAvailability() const {
     return _availability;
 }
 void Book::setQuantity(unsigned short quantity) {
     _quantity = quantity;
+    if (quantity)
+        _availability= true;
+}
+void Book::setAvailability() {
+    _availability=_quantity>0;
 }
 unsigned short Book::getQuantity() {
     return _quantity;
@@ -59,8 +62,7 @@ void Book::printData() { // Print the data of the book
     cout << "-----------------------------------------------------------" << endl;
 }
     Book::~Book(){}
-unsigned short Book::_quantity = 0;
-// Destructor
+ // Destructor
 /*
 //*********************************** Member CLASS IMPLEMENTATION ***********************************
 Member::Member() : _name("NONE"), _id("NONE"), _type("NONE"), _password("NONE"), _fines(0) {} // Default constructor

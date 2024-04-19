@@ -8,17 +8,15 @@ using namespace std;
 using namespace OurString;
 
 namespace OurBook {
-
     class Book {
     private: // Can only be accessed in this class
         Str _title;
         Str _author;
-        Str _isbn; // Str or Long?
+        Str _isbn;
         unsigned short _publication_year;
         Str _genre;
-        bool _availability;
-        // Added
-        static unsigned short _quantity;
+        bool _availability= false;
+        unsigned short _quantity=0;
 
     public:        ///////////// made public for now
         void setTitle(Str);
@@ -26,12 +24,12 @@ namespace OurBook {
         void setIsbn(Str);
         void setPublicationYear(unsigned short);
         void setGenre(Str);
+        void setAvailability();
+        void setQuantity(unsigned short);
 
     public: // Seen by the whole program
         Book();
-        Book(Str title, Str author, Str isbn, short publication_year, Str genre, bool availability);
-        void setAvailability(bool);
-        static void setQuantity(unsigned short);
+        Book(Str title, Str author, Str isbn, short publication_year, Str genre );
         Str getTitle();
         Str getAuthor();
         Str getIsbn();
@@ -39,9 +37,10 @@ namespace OurBook {
         Str getGenre();
         bool getAvailability() const;
         void printData();
-        static unsigned short getQuantity() ;
+        unsigned short getQuantity() ;
         ~Book();
 
+    friend class Librarian;
     };
 }
 #endif
