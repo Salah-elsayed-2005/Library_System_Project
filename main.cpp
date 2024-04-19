@@ -7,16 +7,15 @@
 using namespace std;
 using namespace OurString;
 using namespace OurBook;
-Book*  searchForBook_title(const vector<Book*> &, const Str &);
-Book*  searchForBook_isbn(const vector<Book*> &, const Str &);
-vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
-vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
-vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
+
 
 User* login(const vector<User*>&);
+
 int main() {
     vector<Book*> library_books; // Assuming you have a vector to store Book objects
     vector<User*> library_users;
+    vector<Loan*> library_loans;
+
     vector<Book*> Search_results; // Defined for every search the user needs and will be cleared after each search
     vector<Book*> Cart;
 
@@ -24,6 +23,7 @@ int main() {
     Student student;
     Staff staff;
     Faculty faculty;
+
     student.setName("Ziad");
     student.setId("101285");
     student.setPassword("242004");
@@ -39,7 +39,7 @@ int main() {
     library_users.push_back(user1);
     library_users.push_back(user2);
     library_users.push_back(user3);
-    User* user=login(library_users);
+    User* user = login(library_users);
 
     Str cart_input;
     // Adding books to the library
@@ -70,7 +70,7 @@ int main() {
              << "4- View Cart "<<endl
              << "5- Exit system : ";
         cin >> menuoption_intro;
-        bool cartfound= false;
+        bool cartfound = false;
         Book* cartbook;
         switch (menuoption_intro) {
             case 1: {
@@ -174,69 +174,25 @@ int main() {
 
     return 0;
 }
-/***********    Search For Books   ************/
-Book*  searchForBook_title(const vector<Book*>& library_books, const Str& title){
-    Book* Search_results;
-    for(auto it : library_books){
-        if(it->getIsbn() == title)
-            Search_results=it;
-    }
-    return Search_results;
 
-}
-vector<Book *>searchForBook_author(const vector<Book*>& library_books, const Str& author){
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getAuthor() == author)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-
-}
-vector<Book *> searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getGenre() == genre)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-
-}
-Book* searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
-    Book* Search_results;
-    for(auto it : library_books){
-        if(it->getIsbn() == isbn)
-            Search_results=it;
-    }
-    return Search_results;
-
-}
-vector<Book *>searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
-    vector<Book*> Search_results;
-    for(auto it : library_books){
-        if(it->getPublicationYear() == year)
-            Search_results.push_back(it);
-    }
-    return Search_results;
-}
-User*login(const vector<User*>& library_users){
+User* login(const vector<User*>& library_users){
     label:
     Str id,password;
     cout<<"Please Enter your ID : ";
     cin>>id;
     cout<<"Please Enter your Password : ";
     cin>>password;
-    bool flag= false;
+    bool flag = false;
     User*toreturn;
     for (auto it:library_users) {
         if (id==it->getId() && password==it->getPassword()){
             toreturn=it;
             flag= true;
-            cout<<"Login successful"<<endl;
+            cout << "Login successful" <<endl;
         }
     }
     if (!flag) {
-        cout << "Check Id or password "<<endl;
+        cout << "Check Id or password " <<endl;
         goto label;
     }
 

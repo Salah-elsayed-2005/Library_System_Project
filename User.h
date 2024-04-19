@@ -33,6 +33,12 @@ public:
     virtual void displayInfo() const = 0;
     virtual void setId(Str i)  = 0;
 
+    /********* User methods *********/
+    Book*  searchForBook_title(const vector<Book*> &, const Str &);
+    Book*  searchForBook_isbn(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
+    vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
 
 
 
@@ -75,6 +81,7 @@ public:
     virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
     virtual void returnBorrowedBooks(const vector<Book*> &, Book *) = 0;
     */
+
 };
 /****************************************************************************************/
 

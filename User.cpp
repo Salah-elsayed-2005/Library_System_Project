@@ -17,6 +17,52 @@ Str User::getName() const {return  name;}
 Str User::getId() const {return id;}
 Str User::getPassword() const{return password;}
 
+/***********    Search For Books   ************/
+
+Book*  User::searchForBook_title(const vector<Book*>& library_books, const Str& title){
+    Book* Search_results;
+    for(auto it : library_books){
+        if(it->getIsbn() == title)
+            Search_results=it;
+    }
+    return Search_results;
+
+}
+vector<Book *> User::searchForBook_author(const vector<Book*>& library_books, const Str& author){
+    vector<Book*> Search_results;
+    for(auto it : library_books){
+        if(it->getAuthor() == author)
+            Search_results.push_back(it);
+    }
+    return Search_results;
+
+}
+vector<Book *> User::searchForBook_genre(const vector<Book*>& library_books, const Str& genre){
+    vector<Book*> Search_results;
+    for(auto it : library_books){
+        if(it->getGenre() == genre)
+            Search_results.push_back(it);
+    }
+    return Search_results;
+
+}
+Book* User::searchForBook_isbn(const vector<Book *> &library_books, const Str &isbn) {
+    Book* Search_results;
+    for(auto it : library_books){
+        if(it->getIsbn() == isbn)
+            Search_results=it;
+    }
+    return Search_results;
+
+}
+vector<Book *> User::searchForBook_publicationyear(const vector<Book *> &library_books, const short &year) {
+    vector<Book*> Search_results;
+    for(auto it : library_books){
+        if(it->getPublicationYear() == year)
+            Search_results.push_back(it);
+    }
+    return Search_results;
+}
  /****************************************************************/
 /********** Constructors ***********/
 Member::Member():User("", "", ""), overdue_fines(0.0){}
