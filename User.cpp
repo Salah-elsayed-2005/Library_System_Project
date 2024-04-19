@@ -67,8 +67,7 @@ vector<Book *> User::searchForBook_publicationyear(const vector<Book *> &library
 /****************************************************************/
 /********** Constructors ***********/
 Member::Member():User("", "", ""), overdue_fines(0.0){}
-Member::Member(Str name, Str id, Str pass, vector<Book*> bk_list, vector<Loan*> ln_list, float o_fines):
-        User(name, id, pass), checked_out_books(bk_list), member_loans(ln_list), overdue_fines(o_fines){}
+Member::Member(Str name, Str id, Str pass):User(name, id, pass), overdue_fines(0.0){}
 
 /********** Setters and Getters **********/
 void Member::setCheckedOutBooks(vector<Book*> &co_books){
@@ -213,18 +212,22 @@ void Librarian::setId(Str i) {
 
 /*************** Operations on Loans *************/
 /*
-void processLoanRequest(Member & member, Loan & loan){ 
-    loan.set_loanconfstat(true);
-}
-
-void PrintTime(){
-    cout<< ltm->tm_mday<<"/"
-        << 1 + ltm->tm_mon << "/" 
-        << 1900 +ltm->tm_year<<endl;
+bool Librarian::checkRequestValidity(){
+    float maxOverdueFines = 10;
+    int maxNumberofCheckedOutBooks = 4;
+    for (auto &&request : Requests)
+    {
+        if( (request.first->getOverdueFines() < maxOverdueFines) && (request.first->getCheckedOutBooksSize() < maxNumberofCheckedOutBooks)){
+            //set validity of loan to true "default value is false"
+        }
+    }
 }
 
 */
 /************* Student Methods **********/
+Student::Student():Member(){}
+Student::Student(Str n, Str i, Str p):Member(n, i, p){}
+
 void Student::setId(Str i) {
     Str prefix = "stu-";
     id = prefix + i;
@@ -236,6 +239,9 @@ void Student::displayInfo() const{
     cout << "Access type: Student" << endl;
 }
 /************* Faculty Methods **********/
+Faculty::Faculty():Member(){}
+Faculty::Faculty(Str n, Str i, Str p):Member(n, i, p){}
+
 void Faculty::setId(Str i) {
     Str prefix = "fac-";
     id = prefix + i;
@@ -247,6 +253,9 @@ void Faculty::displayInfo() const{
     cout << "Access type: Faculty Member" << endl;
 }
 /************* Staff Methods **********/
+Staff::Staff():Member(){}
+Staff::Staff(Str n, Str i, Str p):Member(n, i, p){}
+
 void Staff::setId(Str i) {
     Str prefix = "sta-";
     id = prefix + i;

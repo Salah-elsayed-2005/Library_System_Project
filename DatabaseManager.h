@@ -1,12 +1,14 @@
-//
-// Created by Fouad Hashesh on 13/04/2024.
-//
-
 #ifndef LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
 #define LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
 
-#include <sqlite3.h>
+#include "sqlite3.h"
 #include <string>
+#include "Str.h"
+#include "Book.h"
+#include "User.h"
+
+using namespace OurString;
+using namespace OurBook;
 
 class DatabaseManager {
 public:
@@ -17,6 +19,11 @@ public:
     void insertSampleData();
     void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                     int publicationYear, const std::string& genre, bool availability, int quantity);
+    void insertbook(const Book* &);
+    void insertUser(const User* &);
+    void insertLoan(const Loan* &);
+
+
     void deleteBook(const std::string& isbn);
     void displayBooks();
     void searchBooks(const std::string& attribute, const std::string& value);

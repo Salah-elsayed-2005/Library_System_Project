@@ -57,7 +57,25 @@ void DatabaseManager::insertBook(const std::string& isbn, const std::string& tit
     std::cout << "Inserting a new book record..." << std::endl;
     execute_sql(sql);
 }
+void DatabaseManager::insertUser(const std::string& isbn, const std::string& title, const std::string& author,
+                                 int publicationYear, const std::string& genre, bool availability, int quantity) {
+    std::string sql = "INSERT OR REPLACE INTO Books (ISBN, Title, Author, PublicationYear, Genre, Availability, Quantity) VALUES ('" +
+                      isbn + "', '" + title + "', '" + author + "', " +
+                      std::to_string(publicationYear) + ", '" + genre + "', " + (availability ? "1" : "0") + ", " +
+                      std::to_string(quantity) + ");";
+    std::cout << "Inserting a new book record..." << std::endl;
+    execute_sql(sql);
+}
 
+void DatabaseManager::insertbook(const Book* & book) {
+
+    std::string sql = "INSERT OR REPLACE INTO Books (ISBN, Title, Author, PublicationYear, Genre, Availability, Quantity) VALUES ('" +
+            book->getIsbn() + "', '" + book->getTitle() + "', '" + book->getAuthor() + "', " +
+            std::to_string(book->getPublicationYear()) + ", '" + book->getGenre() + "', " + (book->getAvailability() ? "1" : "0") + ", " +
+                      std::to_string(book->getQuantity()) + ");";
+    std::cout << "Inserting a new book record..." << std::endl;
+    execute_sql(sql);
+}
 void DatabaseManager::deleteBook(const std::string& isbn) {
     std::string sql = "DELETE FROM Books WHERE ISBN = '" + isbn + "';";
     std::cout << "Deleting book with ISBN " << isbn << "..." << std::endl;
@@ -112,4 +130,6 @@ void DatabaseManager::insertSampleData() {
     std::cout << "Inserting sample data..." << std::endl;
     execute_sql(sql);
 }
+
+
 

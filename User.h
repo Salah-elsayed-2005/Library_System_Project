@@ -62,8 +62,8 @@ public:
     /****** public methods ******/
 
     Member();
-    Member(Str, Str, Str, vector<Book*>, vector<Loan*>, float);
-    virtual ~Member(){}
+    Member(Str, Str, Str);
+    ~Member() override{}
 
     void setCheckedOutBooks(vector<Book*>&);
     void setMemberLoans(vector<Loan*>&);
@@ -90,7 +90,7 @@ public:
     /************ Constructors ***********/
     Librarian();
     Librarian(Str, Str, Str);
-
+    ~Librarian() override{}
      /********** overriden methods **********/
      void displayInfo() const override;
      void setId(Str i) override;
@@ -124,6 +124,10 @@ public:
 
 class Student : public Member {
 public:
+    Student();
+    Student(Str, Str, Str);
+    ~Student() override{}
+
     void setId(Str i) override;
     void displayInfo() const override;
 /*
@@ -135,6 +139,10 @@ public:
 
 class Faculty : public Member {
 public:
+    Faculty();
+    Faculty(Str, Str, Str);
+    ~Faculty() override{}
+
     void setId(Str i) override;
     void displayInfo() const override;
 /*
@@ -145,6 +153,9 @@ public:
 };
 
 class Staff : public Member {
+    Staff();
+    Staff(Str, Str, Str);
+    ~Staff() override{}
 public:
     void setId(Str i) override;
     void displayInfo() const override;

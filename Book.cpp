@@ -8,31 +8,31 @@ Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre) : 
 void Book::setTitle(Str title) {
     _title = title;
 }
-Str Book::getTitle() {
+Str Book::getTitle() const{
     return _title;
 }
 void Book::setAuthor(Str author) {
     _author = author;
 }
-Str Book::getAuthor() {
+Str Book::getAuthor() const{
     return _author;
 }
 void Book::setIsbn(Str isbn) {
     _isbn = isbn;
 }
-Str Book::getIsbn() {
+Str Book::getIsbn() const{
     return _isbn;
 }
 void Book::setPublicationYear(unsigned short year) {
     _publication_year = year;
 }
-unsigned short Book::getPublicationYear() const {
+unsigned short Book::getPublicationYear() const{
     return _publication_year;
 }
 void Book::setGenre(Str genre) {
     _genre = genre;
 }
-Str Book::getGenre() {
+Str Book::getGenre() const{
     return _genre;
 }
 
@@ -47,10 +47,10 @@ void Book::setQuantity(unsigned short quantity) {
 void Book::setAvailability() {
     _availability=_quantity>0;
 }
-unsigned short Book::getQuantity() {
+unsigned short Book::getQuantity() const{
     return _quantity;
 }
-void Book::printData() { // Print the data of the book
+void Book::printData() const{ // Print the data of the book
     cout << "----------------------Book Info----------------------------\n";
     cout << "Title            : " << _title << endl;
     cout << "Author           : " << _author << endl;

@@ -47,11 +47,15 @@ namespace OurString {
         // Checks if two Str objects are equal.
         bool operator== (const Str& obj) const;
 
+        explicit operator std::string() {
+            return
+        }
         // Friend function to allow input operations with >> operator.
         // It has access to private and protected members of this class.
         friend std::istream& operator>>(std::istream& is, Str& obj);
 
         friend Str operator+ (const char* prefix, const Str& obj);
+
     };
 }
 

@@ -29,16 +29,17 @@ namespace OurBook {
 
     public: // Seen by the whole program
         Book();
-        Book(Str title, Str author, Str isbn, short publication_year, Str genre );
-        Str getTitle();
-        Str getAuthor();
-        Str getIsbn();
-        unsigned short getPublicationYear() const;
-        Str getGenre();
-        bool getAvailability() const;
-        void printData();
-        unsigned short getQuantity() ;
+        Book(Str title, Str author, Str isbn, short publication_year, Str genre);
         ~Book();
+
+        Str getTitle() const;
+        Str getAuthor() const;
+        Str getIsbn() const;
+        unsigned short getPublicationYear() const;
+        Str getGenre() const;
+        bool getAvailability() const;
+        void printData() const;
+        unsigned short getQuantity() const;
 
     friend class Librarian;
     };

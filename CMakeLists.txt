@@ -4,6 +4,8 @@ project(Library_System_Project)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Library_System_Project main.cpp
+        sqlite3.h
+        sqlite3.c
         str.h
         Book.h
         Loan.h

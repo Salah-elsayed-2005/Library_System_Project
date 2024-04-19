@@ -127,3 +127,7 @@ std::istream& OurString::operator>>(std::istream& is, Str& obj) {
     return is; // Return the input stream to allow chaining of input operations
 }
 
+Str OurString::operator+(const char *prefix, const Str &obj) {
+    return Str();
+}
+

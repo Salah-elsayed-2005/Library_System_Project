@@ -1,6 +1,4 @@
-//
-// Created by Asteroid on 3/23/2024.
-//
+
 #include "Loan.h"
 #include "Book.h"
 #include "User.h"
