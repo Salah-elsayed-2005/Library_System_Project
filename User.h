@@ -66,26 +66,31 @@ public:
     ~Member() override{}
 
     void setCheckedOutBooks(vector<Book*>&);
+    void addToCheckedOutBooks(Book* &);
     void setMemberLoans(vector<Loan*>&);
     void setOverdueFines(float&);
 
     vector<Book*> getCheckedOutBooks() const;
     vector<Loan*> getMemberLoans() const;
     float getOverdueFines() const;
+    int getCheckedOutBooksSize() const;
 
     /********* Member Methods ********/
     void viewCheckedOutBooks() const;
 
     /********** Loan related methods ********/
-    /*
+
     virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
     virtual void returnBorrowedBooks(const vector<Book*> &, Book *) = 0;
-    */
+
 
 };
 /****************************************************************************************/
 
 class Librarian : public User, private Book{
+private:
+    bool validateLoan(Loan* &);
+    void proceedToCheckOut(Loan* &);
 public:
     /************ Constructors ***********/
     Librarian();
@@ -116,9 +121,10 @@ public:
     void updateMemberId(Member*);
     Member* Searchformember(vector<User*>,Str);
 
-    /******************** Operations on Loans ***************/
-    //  void processLoanRequest(Member &,Loan &);
-    void PrintTime();
+    /******************** Operations on Loans ****************/
+    void processLoan(Loan* &);
+    void printAllLoans(vector<Loan*>) const;
+    void printPendingLoans(vector<Loan*>) const;
 };
 /****************************************************************************************/
 
@@ -130,10 +136,10 @@ public:
 
     void setId(Str i) override;
     void displayInfo() const override;
-/*
-    void requestLoan(Member&, Librarian &, const vector<Book*> &);
+
+    void requestLoan(Book* &, vector<Loan*> &);
     void returnBorrowedBooks(const vector<Book*> &, Book *);
-*/
+
     friend class Librarian;
 };
 

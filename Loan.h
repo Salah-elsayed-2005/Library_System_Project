@@ -1,4 +1,4 @@
-# if 0
+
 #include <iostream>
 #include <vector>
 #include "User.h"
@@ -18,32 +18,23 @@ using namespace OurString;
 
 class Loan{
 private:
-    Str member_id;
-    vector<OurBook::Book*> borrowed_books;
-
-    unsigned int borrow_date_day = ltm->tm_mday;
-    unsigned int borrow_date_month = 1 + ltm->tm_mon;
-    unsigned int borrow_date_year = 1900 + ltm->tm_year;
-
-    unsigned int due_date_day;
-    unsigned int due_date_month;
-    unsigned int due_date_year;
-
-    bool loan_confirmation_status = false;
+    Member* borrower ;
+    Book* borrowed_book;
+    Date borrowing_date;
+    Date Due_date;
+    bool loan_status;
 
 public:
-    Loan(Str, unsigned int, unsigned int ,unsigned int);
-    bool CheckAvailability(Str, const vector<OurBook::Book*> &);
-    void complete_loanProcess(Loan &,  Member & , Librarian &, Book * &);
-    void ProceedToCheckout( Member &);
-
+    Loan(Member*, Book*);
     //Getters
-    float get_overduefines();
-
+    Member* getBorrower();
+    Book* getBorrowedBook();
+    bool getStatus();
     //Setters
-    void set_loanconfstat(bool);
+    void set_status(bool);
+    void set_borrowingDate(Date);
+    void set_dueDate(Date);
 };
 
 
 #endif //LIBRARY_SYSTEM_PROJECT_LOAN_H
-#endif

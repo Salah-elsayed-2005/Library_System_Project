@@ -73,6 +73,9 @@ Member::Member(Str name, Str id, Str pass):User(name, id, pass), overdue_fines(0
 void Member::setCheckedOutBooks(vector<Book*> &co_books){
     checked_out_books = co_books;
 }
+void Member::addToCheckedOutBooks(Book* &book) {
+    checked_out_books.push_back(book);
+}
 void Member::setMemberLoans(vector<Loan *> &loans_list) {
     member_loans = loans_list;
 }
@@ -89,7 +92,9 @@ vector<Loan*> Member::getMemberLoans() const {
 float Member::getOverdueFines() const {
     return overdue_fines;
 }
-
+int Member::getCheckedOutBooksSize() const {
+    return checked_out_books.size();
+}
 
 /****************       Member functions      ******************/
 void Member::viewCheckedOutBooks() const{
@@ -222,8 +227,79 @@ bool Librarian::checkRequestValidity(){
         }
     }
 }
-
 */
+void Librarian::processLoan(Loan* &loan){
+    if(validateLoan(loan)){
+        proceedToCheckOut(loan);
+    }
+}
+bool Librarian::validateLoan(Loan* &loan) {
+    if(Student* ptr = dynamic_cast<Student*>(loan->getBorrower())){
+        float maxOverdueFines = 5; // Limit of overdue fines
+        int maxNumberofCheckedOutBooks = 2; // Limit of books borrowed
+        Book* book = loan->getBorrowedBook();
+        int book_quantity = book->getQuantity();
+        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
+            loan->set_status(true);
+            return true;
+        }
+    }
+    else if(Staff* ptr = dynamic_cast<Staff*>(loan->getBorrower())){
+        float maxOverdueFines = 10;
+        int maxNumberofCheckedOutBooks = 4;
+        Book* book = loan->getBorrowedBook();
+        int book_quantity = book->getQuantity();
+        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
+            loan->set_status(true);
+            return true;
+        }
+    }
+    else if(Faculty* ptr = dynamic_cast<Faculty*>(loan->getBorrower())){
+        float maxOverdueFines = 20;
+        int maxNumberofCheckedOutBooks = 6;
+        Book* book = loan->getBorrowedBook();
+        int book_quantity = book->getQuantity();
+        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
+            loan->set_status(true);
+            return true;
+        }
+    }
+    return false;
+}
+void Librarian::proceedToCheckOut(Loan* & loan) {
+    loan->set_borrowingDate(); // to be continued
+
+    Member* member = loan->getBorrower();
+    Book* book = loan->getBorrowedBook();
+    member->addToCheckedOutBooks(book);// add book to member checked out books
+
+    int book_quantity = book->getQuantity();
+    book->setQuantity( book_quantity - 1 ); // decrease the book quantity by 1
+}
+void Librarian::printAllLoans(vector<Loan*> loans) const {
+    cout<<"\t\t--All requests received by members--"<<endl;
+    for (auto &&loan : loans)
+    {
+        cout<<"-----------------------------------------"<<endl;
+        cout<<"Member: "<<loan->getBorrower()->getName()<<" "<<loan->getBorrower()->getId();
+        cout<<"\tBook requested: "<<loan->getBorrowedBook()->getTitle();
+        cout<<"-----------------------------------------"<<endl;
+    }
+
+}
+void Librarian::printPendingLoans(vector<Loan*> loans) const {
+    cout<<"\t\t--Pending requests received by members--"<<endl;
+    for (auto &&loan : loans)
+    {
+        if(!loan->getStatus()) {
+            cout << "-----------------------------------------" << endl;
+            cout << "Member: " << loan->getBorrower()->getName() << " " << loan->getBorrower()->getId();
+            cout << "\tBook requested: " << loan->getBorrowedBook()->getTitle();
+            cout << "-----------------------------------------" << endl;
+        }
+    }
+
+}
 /************* Student Methods **********/
 Student::Student():Member(){}
 Student::Student(Str n, Str i, Str p):Member(n, i, p){}
@@ -237,6 +313,11 @@ void Student::displayInfo() const{
     cout << "Name: " << name << endl;
     cout << "Id: " << id << endl;
     cout << "Access type: Student" << endl;
+}
+
+void Student::requestLoan(Book* &book, vector<Loan*> &loans_list) {
+    Loan* new_loan = new Loan(this, book);
+    loans_list.push_back(new_loan);
 }
 /************* Faculty Methods **********/
 Faculty::Faculty():Member(){}
