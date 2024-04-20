@@ -76,8 +76,24 @@ void Member::setCheckedOutBooks(vector<Book*> &co_books){
 void Member::addToCheckedOutBooks(Book* &book) {
     checked_out_books.push_back(book);
 }
+void Member::removeFromCheckedOutBooks(Book* &book){
+    vector<Book*>::iterator it;
+    for (auto it = checked_out_books.begin(); it != checked_out_books.end(); it++)
+    {
+        if((*it) == book)
+            checked_out_books.erase(it);
+    }
+}
 void Member::setMemberLoans(vector<Loan *> &loans_list) {
     member_loans = loans_list;
+}
+void Member::removeFromMemberLoans(Loan* &loan){
+    vector<Loan*>::iterator it;
+    for (auto it = member_loans.begin(); it != member_loans.end(); it++)
+    {
+        if((*it)->getBorrowedBook()->getIsbn() == loan->getBorrowedBook()->getIsbn())
+            member_loans.erase(it);
+    }
 }
 void Member::setOverdueFines(float& fines){
     overdue_fines = fines;
@@ -216,65 +232,46 @@ void Librarian::setId(Str i) {
 
 
 /*************** Operations on Loans *************/
-/*
-bool Librarian::checkRequestValidity(){
-    float maxOverdueFines = 10;
-    int maxNumberofCheckedOutBooks = 4;
-    for (auto &&request : Requests)
-    {
-        if( (request.first->getOverdueFines() < maxOverdueFines) && (request.first->getCheckedOutBooksSize() < maxNumberofCheckedOutBooks)){
-            //set validity of loan to true "default value is false"
-        }
-    }
-}
-*/
-void Librarian::processLoan(Loan* &loan){
-    if(validateLoan(loan)){
-        proceedToCheckOut(loan);
-    }
-}
-bool Librarian::validateLoan(Loan* &loan) {
-    if(Student* ptr = dynamic_cast<Student*>(loan->getBorrower())){
-        float maxOverdueFines = 5; // Limit of overdue fines
-        int maxNumberofCheckedOutBooks = 2; // Limit of books borrowed
-        Book* book = loan->getBorrowedBook();
-        int book_quantity = book->getQuantity();
-        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
-            loan->set_status(true);
-            return true;
-        }
-    }
-    else if(Staff* ptr = dynamic_cast<Staff*>(loan->getBorrower())){
-        float maxOverdueFines = 10;
-        int maxNumberofCheckedOutBooks = 4;
-        Book* book = loan->getBorrowedBook();
-        int book_quantity = book->getQuantity();
-        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
-            loan->set_status(true);
-            return true;
-        }
-    }
-    else if(Faculty* ptr = dynamic_cast<Faculty*>(loan->getBorrower())){
-        float maxOverdueFines = 20;
-        int maxNumberofCheckedOutBooks = 6;
-        Book* book = loan->getBorrowedBook();
-        int book_quantity = book->getQuantity();
-        if(book_quantity >= 0 && ptr->getOverdueFines() <= maxOverdueFines && ptr->getCheckedOutBooksSize() <= maxNumberofCheckedOutBooks) {
-            loan->set_status(true);
-            return true;
-        }
-    }
-    return false;
-}
-void Librarian::proceedToCheckOut(Loan* & loan) {
-    loan->set_borrowingDate(); // to be continued
 
-    Member* member = loan->getBorrower();
+void Librarian::processLoanRequest(Loan* &loan, bool response){
     Book* book = loan->getBorrowedBook();
-    member->addToCheckedOutBooks(book);// add book to member checked out books
-
-    int book_quantity = book->getQuantity();
-    book->setQuantity( book_quantity - 1 ); // decrease the book quantity by 1
+    Member* member = loan->getBorrower();
+    if(response){
+        //assign book to checkoutbooks 
+        member->addToCheckedOutBooks(book);
+        //Decrement book quantity by 1 
+        book->setQuantity(book->getQuantity() - 1);
+        //set borrow date 
+        loan->set_borrowingDate();
+        //set loan status true
+        loan->set_status(true);
+    }
+    else {
+        loan->set_status(false);
+    }
+}
+void Librarian::CheckForOverdues(Loan* &loan){
+    int maxborrowingdays;
+    float fineperday;
+    Member* member = loan->getBorrower();
+    if(Student* ptr = dynamic_cast<Student*>(member)){
+        maxborrowingdays = 5;
+        fineperday = 6;
+    }
+    else if(Faculty* ptr = dynamic_cast<Faculty*>(member)){
+        maxborrowingdays = 10;
+        fineperday = 5;
+    }
+    else if(Staff* ptr = dynamic_cast<Staff*>(member)){
+        maxborrowingdays = 15;
+        fineperday = 4;
+    }
+    Date borrowdate = loan->getBorrowDate();
+    if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
+        int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
+        float fineToadd = numOfLateDays * fineperday;
+        member->setOverdueFines(fineToadd);
+    }
 }
 void Librarian::printAllLoans(vector<Loan*> loans) const {
     cout<<"\t\t--All requests received by members--"<<endl;
@@ -315,9 +312,51 @@ void Student::displayInfo() const{
     cout << "Access type: Student" << endl;
 }
 
-void Student::requestLoan(Book* &book, vector<Loan*> &loans_list) {
-    Loan* new_loan = new Loan(this, book);
-    loans_list.push_back(new_loan);
+Loan* Student::requestLoan(Book* &book) {
+    float maxoverduefines = 10;
+    int maxnumberofbooksborrowed = 2;
+    if(overdue_fines < maxoverduefines){
+        if(checked_out_books.size() < maxnumberofbooksborrowed){
+            if(book->getQuantity() > 0){
+                Loan* new_loan = new Loan(this, book);
+                cout<<"Loan requested successfully!"<<endl;
+                return new_loan;
+            }
+            else {
+                cout<<"Sorry, Book is unavailable!"<<endl;
+            }
+        }
+        else{
+            cout<<"Can't request loan, you have maximum allowed number of borrowed books!"<<endl;
+        }
+    }
+    else {
+        cout<<"Can't request loan, you have maximum allowed overdue fines!"<<endl;
+    }
+    return nullptr;
+}
+void Student::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
+    int maxborrowingdays = 5;
+    float fineperday = 6;
+    vector<Loan*>::iterator it;
+    for (auto it = loans.begin(); it != loans.end(); it++)
+    {
+        Member * memberborrowed = (*it)->getBorrower();
+        Book* borrowedbook = (*it)->getBorrowedBook();
+        Date borrowdate = (*it)->getBorrowDate();
+        if( borrowedbook->getIsbn() == book->getIsbn()){
+            memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
+            memberborrowed->removeFromMemberLoans(*it);
+            borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
+            if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
+                int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
+                float fineToadd = numOfLateDays * fineperday;
+                overdue_fines = fineToadd;
+            }
+            loans.erase(it); // remove loan object from library loans in main
+            return;
+        }
+    }
 }
 /************* Faculty Methods **********/
 Faculty::Faculty():Member(){}
@@ -333,6 +372,53 @@ void Faculty::displayInfo() const{
     cout << "Id: " << id << endl;
     cout << "Access type: Faculty Member" << endl;
 }
+Loan* Faculty::requestLoan(Book* &book) {
+    float maxoverduefines = 20;
+    int maxnumberofbooksborrowed = 4;
+    if(overdue_fines < maxoverduefines){
+        if(checked_out_books.size() < maxnumberofbooksborrowed){
+            if(book->getQuantity() > 0){
+                Loan* new_loan = new Loan(this, book);
+                cout<<"Loan requested successfully!"<<endl;
+                return new_loan;
+            }
+            else {
+                cout<<"Sorry, Book is unavailable!"<<endl;
+
+            }
+        }
+        else{
+            cout<<"Can't request loan, total number of borrowed books exceed the limit!"<<endl;
+        }
+    }
+    else {
+        cout<<"Can't request loan, overdue fines exceed the limit!"<<endl;
+    }
+    return nullptr;
+}
+void Faculty::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
+    int maxborrowingdays = 10;
+    float fineperday = 5;
+    vector<Loan*>::iterator it;
+    for (auto it = loans.begin(); it != loans.end(); it++)
+    {
+        Member * memberborrowed = (*it)->getBorrower();
+        Book* borrowedbook = (*it)->getBorrowedBook();
+        Date borrowdate = (*it)->getBorrowDate();
+        if( borrowedbook->getIsbn() == book->getIsbn()){
+            memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
+            memberborrowed->removeFromMemberLoans(*it);
+            borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
+            if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
+                int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
+                float fineToadd = numOfLateDays * fineperday;
+                overdue_fines = fineToadd;
+            }
+            loans.erase(it); // remove loan object from library loans in main
+            return;
+        }
+    }
+}
 /************* Staff Methods **********/
 Staff::Staff():Member(){}
 Staff::Staff(Str n, Str i, Str p):Member(n, i, p){}
@@ -346,4 +432,51 @@ void Staff::displayInfo() const{
     cout << "Name: " << name << endl;
     cout << "Id: " << id << endl;
     cout << "Access type: Staff" << endl;
+}
+Loan* Staff::requestLoan(Book* &book) {
+    float maxoverduefines = 40;
+    int maxnumberofbooksborrowed = 6;
+    if(overdue_fines < maxoverduefines){
+        if(checked_out_books.size() < maxnumberofbooksborrowed){
+            if(book->getQuantity() > 0){
+                Loan* new_loan = new Loan(this, book);
+                cout<<"Loan requested successfully!"<<endl;
+                return new_loan;
+            }
+            else {
+                cout<<"Sorry, Book is unavailable!"<<endl;
+
+            }
+        }
+        else{
+            cout<<"Can't request loan, total number of borrowed books exceed the limit!"<<endl;
+        }
+    }
+    else {
+        cout<<"Can't request loan, overdue fines exceed the limit!"<<endl;
+    }
+    return nullptr;
+}
+void Staff::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
+    int maxborrowingdays = 15;
+    float fineperday = 4;
+    vector<Loan*>::iterator it;
+    for (auto it = loans.begin(); it != loans.end(); it++)
+    {
+        Member * memberborrowed = (*it)->getBorrower();
+        Book* borrowedbook = (*it)->getBorrowedBook();
+        Date borrowdate = (*it)->getBorrowDate();
+        if( borrowedbook->getIsbn() == book->getIsbn()){
+            memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
+            memberborrowed->removeFromMemberLoans(*it);
+            borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
+            if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
+                int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
+                float fineToadd = numOfLateDays * fineperday;
+                overdue_fines = fineToadd;
+            }
+            loans.erase(it); // remove loan object from library loans in main
+            return;
+        }
+    }
 }

@@ -21,8 +21,7 @@ private:
     Member* borrower ;
     Book* borrowed_book;
     Date borrowing_date;
-    Date Due_date;
-    bool loan_status;
+    bool loan_status = false;
 
 public:
     Loan(Member*, Book*);
@@ -30,10 +29,14 @@ public:
     Member* getBorrower();
     Book* getBorrowedBook();
     bool getStatus();
+    Date getBorrowDate();
+
     //Setters
     void set_status(bool);
-    void set_borrowingDate(Date);
-    void set_dueDate(Date);
+    void set_borrowingDate();
+
+    //Methods
+    void generateReport();
 };
 
 

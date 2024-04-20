@@ -67,7 +67,9 @@ public:
 
     void setCheckedOutBooks(vector<Book*>&);
     void addToCheckedOutBooks(Book* &);
-    void setMemberLoans(vector<Loan*>&);
+    void removeFromCheckedOutBooks(Book* &);
+    void setMemberLoans(vector<Loan*> &);
+    void removeFromMemberLoans(Loan* &);
     void setOverdueFines(float&);
 
     vector<Book*> getCheckedOutBooks() const;
@@ -80,8 +82,8 @@ public:
 
     /********** Loan related methods ********/
 
-    virtual void requestLoan(Member&, Librarian &, const vector<Book*> &) = 0;
-    virtual void returnBorrowedBooks(const vector<Book*> &, Book *) = 0;
+    virtual Loan* requestLoan(Book* &, vector<Loan*> &) = 0;
+    virtual void returnBorrowedBook(Book* &, vector<Loan*> &) = 0;
 
 
 };
@@ -89,7 +91,6 @@ public:
 
 class Librarian : public User, private Book{
 private:
-    bool validateLoan(Loan* &);
     void proceedToCheckOut(Loan* &);
 public:
     /************ Constructors ***********/
@@ -122,7 +123,8 @@ public:
     Member* Searchformember(vector<User*>,Str);
 
     /******************** Operations on Loans ****************/
-    void processLoan(Loan* &);
+    void processLoanRequest(Loan* &, bool);
+    void CheckForOverdues(Loan* &);
     void printAllLoans(vector<Loan*>) const;
     void printPendingLoans(vector<Loan*>) const;
 };
@@ -137,8 +139,8 @@ public:
     void setId(Str i) override;
     void displayInfo() const override;
 
-    void requestLoan(Book* &, vector<Loan*> &);
-    void returnBorrowedBooks(const vector<Book*> &, Book *);
+    Loan* requestLoan(Book* &);
+    void returnBorrowedBook(Book* &, vector<Loan*> &);
 
     friend class Librarian;
 };
@@ -151,10 +153,10 @@ public:
 
     void setId(Str i) override;
     void displayInfo() const override;
-/*
-    void requestLoan(Member&, Librarian &, const vector<Book*> &);
-    void returnBorrowedBooks(const vector<Book*> &, Book *);
-*/
+
+    Loan* requestLoan(Book* &);
+    void returnBorrowedBook(Book* &, vector<Loan*> &);
+
     friend class Librarian;
 };
 
@@ -165,10 +167,10 @@ class Staff : public Member {
 public:
     void setId(Str i) override;
     void displayInfo() const override;
-/*
-    void requestLoan(Member&, Librarian &, const vector<Book*> &);
-    void returnBorrowedBooks(const vector<Book*> &, Book *);
-*/
+
+    Loan* requestLoan(Book* &);
+    void returnBorrowedBook(Book* &, vector<Loan*> &);
+
     friend class Librarian;
 };
 
