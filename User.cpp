@@ -289,7 +289,8 @@ void Librarian::processLoanRequest(Loan* &loan, bool response){
         //Decrement book quantity by 1
         book->setQuantity(book->getQuantity() - 1);
         //set borrow date
-        loan->set_borrowingDate(); //TODO: SOLVE !!!!
+        loan->set_borrowingDate();
+        loan->set_dueDate();
         //set loan status true
         loan->set_status(true);
     }

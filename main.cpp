@@ -124,7 +124,22 @@ int main() {
     dbManager.displayBooks();
     dbManager.disp();
     dbManager.exportBooks(library_books);
+    if(Student* stPtr = dynamic_cast<Student*>(user1)){
+        Loan* loan1 = stPtr->requestLoan(book2);
+        Loan* loan2 = stPtr->requestLoan(book1);
+        Loan* loan3 = stPtr->requestLoan(book3);
 
+        library_loans.push_back(loan1);
+        library_loans.push_back(loan2);
+        library_loans.push_back(loan3);
+
+        Librarian* lib = new Librarian();
+
+        lib->processLoanRequest(loan1, true);
+        lib->processLoanRequest(loan2, false);
+        lib->processLoanRequest(loan3, true);
+    }
+    dbManager.insertUser(user1);
 
     memberMenu();
     //libMenu();

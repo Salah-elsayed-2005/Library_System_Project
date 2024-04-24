@@ -43,36 +43,37 @@ int DatabaseManager::execute_sql(const std::string& sql, int (*callback)(void*,i
 }
 
 void DatabaseManager::createTable() {
-    std::string sql =
     // Creating Books table
-                      "CREATE TABLE IF NOT EXISTS Books ("
-                      "ISBN VARCHAR(20) PRIMARY KEY,"
-                      "Title VARCHAR(255) NOT NULL,"
-                      "Author VARCHAR(255),"
-                      "PublicationYear INT,"
-                      "Genre VARCHAR(100),"
-                      "Availability BOOLEAN DEFAULT TRUE,"
-                      "Quantity INT DEFAULT 1);"
+    std::string sqlBooks = "CREATE TABLE IF NOT EXISTS Books ("
+                           "ISBN VARCHAR(20) PRIMARY KEY,"
+                           "Title VARCHAR(255) NOT NULL,"
+                           "Author VARCHAR(255),"
+                           "PublicationYear INT,"
+                           "Genre VARCHAR(100),"
+                           "Availability BOOLEAN DEFAULT TRUE,"
+                           "Quantity INT DEFAULT 1);";
+    execute_sql(sqlBooks);
+
     // Creating Users table
-                      "CREATE TABLE IF NOT EXISTS Users ("
-                      "ID VARCHAR(20) PRIMARY KEY,"
-                      "Name VARCHAR(255) NOT NULL,"
-                      "Password VARCHAR(255) NOT NULL"
-                      "Fines FLOAT DEFAULT 0;"
+    std::string sqlUsers = "CREATE TABLE IF NOT EXISTS Users ("
+                           "ID VARCHAR(20) PRIMARY KEY,"
+                           "Name VARCHAR(255) NOT NULL,"
+                           "Password VARCHAR(255) NOT NULL,"
+                           "Fines FLOAT DEFAULT 0);";
+    execute_sql(sqlUsers);
 
     // Creating Loans table
-                      "CREATE TABLE IF NOT EXISTS Loans ("
-                      "ID VARCHAR(20) ,"
-                      "ISBN VARCHAR(255),"
-                      "Date VARCHAR(10),"
-                      "Status BOOL DEFAULT FALSE,"
-                      "PRIMARY KEY (ID, ISBN));"
+    std::string sqlLoans = "CREATE TABLE IF NOT EXISTS Loans ("
+                           "ID VARCHAR(20),"
+                           "ISBN VARCHAR(255),"
+                           "Date VARCHAR(10),"
+                           "Status BOOLEAN DEFAULT FALSE,"
+                           "PRIMARY KEY (ID, ISBN));";
+    execute_sql(sqlLoans);
 
-                      ;
-
-    std::cout << "Creating table if not exists..." << std::endl;
-    execute_sql(sql);
+    std::cout << "Tables created if not exists." << std::endl;
 }
+
 
 void DatabaseManager::insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                                  int publicationYear, const std::string& genre, bool availability, int quantity) {
@@ -105,35 +106,43 @@ void DatabaseManager::insertBook(Book *book) {
     execute_sql(sql);
 }
 
-void DatabaseManager::insertUser(User* user_vect){
-    std::string sql;
-    if(Member* memberPtr = dynamic_cast<Member*>(user_vect)) {
+void DatabaseManager::insertUser(User* userPtr) {
+    if (Member *memberPtr = dynamic_cast<Member *>(userPtr)) {
+        // Insert user details into the Users table
+        std::string userSql = "INSERT OR REPLACE INTO Users (ID, Name, Password, Fines) VALUES ('" +
+                              memberPtr->getId().str2string() + "', '" + memberPtr->getName().str2string() + "', '" +
+                              memberPtr->getPassword().str2string() + "', '" +
+                              std::to_string(memberPtr->getOverdueFines()) + "');";
+        execute_sql(userSql);
+        std::cout << "Member record inserted..." << std::endl;
 
-        std::string sql = "INSERT OR REPLACE INTO Users (ID, Name, Password, Fines) VALUES ('" +
-                          memberPtr->getId().str2string() + "', '" + memberPtr->getName().str2string() + "', '" +
-                          memberPtr->getPassword().str2string() + "', '" + std::to_string(memberPtr->getOverdueFines()) + "');";
-        execute_sql(sql);
-        for(auto &it : memberPtr->getMemberLoans()){
-
-            std::string sql = "INSERT OR REPLACE INTO Loans (ID, ISBN, Date, Status) VALUES ('" +
-                              memberPtr->getId().str2string() + "', '" + it->getBorrowedBook()->getIsbn().str2string() + "', '" +
-                              it->getBorrowDate().getDateString() + "', '" + std::to_string(it->getStatus())+ "');";
-            execute_sql(sql);
-
+        // Insert loans details into the Loans table
+        for (auto &loan: memberPtr->getMemberLoans()) {
+            std::cout << loan->getBorrowedBook()->getIsbn().str2string();
+            std::string loanSql = "INSERT OR REPLACE INTO Loans (ID, ISBN, Date, Status) VALUES ('" +
+                                  memberPtr->getId().str2string() + "', '" +
+                                  loan->getBorrowedBook()->getIsbn().str2string() + "', '" +
+                                  loan->getBorrowDate().getDateString() + "', '" + std::to_string(loan->getStatus()) +
+                                  "');";
+            execute_sql(loanSql);
         }
-
-
+        std::cout << "Loan records inserted..." << std::endl;
+    } else if (Librarian *librarianPtr = dynamic_cast <Librarian*>(userPtr)) {
+// Insert user details into the Users table
+        std::string librarianSql = "INSERT OR REPLACE INTO Users (ID, Name, Password) VALUES ('" +
+                                   librarianPtr->getId().str2string() + "', '" + librarianPtr->getName().str2string() +
+                                   "', '" +
+                                   librarianPtr->getPassword().str2string() + "');";
+        execute_sql(librarianSql);
+        std::cout << "Librarian record inserted..." << std::endl;
+    } else {
+// If neither Member nor Librarian
+        std::cerr << "Error: User type not supported for insertion." << std::endl;
+        return;
     }
-    if(Librarian* librarianPtr = dynamic_cast<Librarian*>(user_vect)) {
-        std::string sql = "INSERT OR REPLACE INTO Users (ID, Name, Password) VALUES ('" +
-                librarianPtr->getId().str2string() + "', '" + librarianPtr->getName().str2string() + "', '" +
-                librarianPtr->getPassword().str2string() + ");";
-    }
-    std::cout << "Inserting a new book record..." << std::endl;
-    execute_sql(sql);
+    std::cout << "Inserting a new user record completed." << std::endl;
 }
-
-void DatabaseManager::deleteBook(const std::string& isbn) {
+            void DatabaseManager::deleteBook(const std::string& isbn) {
     std::string sql = "DELETE FROM Books WHERE ISBN = '" + isbn + "';";
     std::cout << "Deleting book with ISBN " << isbn << "..." << std::endl;
     execute_sql(sql);
@@ -205,7 +214,7 @@ void DatabaseManager::exportBooks(vector<Book*> &book_list) {
                     str(argv[0]),     // ISBN
                     std::stoi(argv[3]), // PublicationYear
                     str(argv[4]),    // Genre
-                    argv[5][0] == '1', // Availability (assuming '1' for true, '0' for false)
+                    argv[5], // Availability (assuming '1' for true, '0' for false)
                     std::stoi(argv[6])  // Quantity
             );
             bookList->push_back(book);
@@ -216,6 +225,8 @@ void DatabaseManager::exportBooks(vector<Book*> &book_list) {
     std::cout << "Exporting books..." << std::endl;
     execute_sql(sql, callback, &book_list);
 }
+
+//void DatabaseManager::exportUsers
 
 
 

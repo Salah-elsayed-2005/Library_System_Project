@@ -34,8 +34,8 @@ public:
 
     //Setters
     void set_status(bool);
-    void set_borrowingDate(Date&);
-    void set_dueDate(Date&);
+    void set_borrowingDate();
+    void set_dueDate();
 
     //Methods
     void generateReport();

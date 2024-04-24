@@ -14,8 +14,20 @@ Date Loan::getBorrowDate() { return borrowing_date; }
 Date Loan::getDueDate() { return due_date;}
 //Setters
 void Loan::set_status(bool status) { loan_status = status; }
-void Loan::set_borrowingDate(Date& date) {borrowing_date = date;}
-void Loan::set_dueDate(Date &){}
+void Loan::set_borrowingDate() {borrowing_date.getCurrentData();}
+void Loan::set_dueDate(){
+    if(dynamic_cast<Student*>(borrower)){
+        due_date = due_date.addDate(borrowing_date, 7);
+    }
+    if(dynamic_cast<Faculty*>(borrower)){
+        due_date = due_date.addDate(borrowing_date, 10);
+    }
+    if(dynamic_cast<Staff*>(borrower)){
+        due_date = due_date.addDate(borrowing_date, 5);
+    }
+    due_date.stringDate = std::to_string(due_date.day)+"-"+std::to_string(due_date.month)+"-"+std::to_string(due_date.year);
+
+}
 //Methods
 void Loan::generateReport(){
     cout << "-------Loan Report-------" << endl;
