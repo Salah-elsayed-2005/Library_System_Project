@@ -5,43 +5,42 @@
 #define LIBRARY_SYSTEM_PROJECT_BOOK_H
 
 using namespace std;
-using namespace OurString;
+
 
 namespace OurBook {
     class Book {
     private: // Can only be accessed in this class
-        Str _title;
-        Str _author;
-        Str _isbn;
+        str _title;
+        str _author;
+        str _isbn;
         unsigned short _publication_year;
-        Str _genre;
+        str _genre;
         bool _availability= false;
         unsigned short _quantity=0;
 
     public:        ///////////// made public for now
-        void setTitle(Str);
-        void setAuthor(Str);
-        void setIsbn(Str);
+        void setTitle(const str&);
+        void setAuthor(const str&);
+        void setIsbn(const str&);
         void setPublicationYear(unsigned short);
-        void setGenre(Str);
+        void setGenre(const str&);
         void setAvailability();
         void setQuantity(unsigned short);
 
     public: // Seen by the whole program
         Book();
-        Book(Str title, Str author, Str isbn, short publication_year, Str genre);
+        Book(const str& title, str author, str isbn, short publication_year, str genre,bool availability =0, int quantity=0);
+        str getTitle();
+        str getAuthor();
+        const str getIsbn();
+        unsigned short getPublicationYear() const;
+        str getGenre();
+        bool getAvailability() const;
+        void printData();
+        unsigned short getQuantity() const ;
         ~Book();
 
-        Str getTitle() const;
-        Str getAuthor() const;
-        Str getIsbn() const;
-        unsigned short getPublicationYear() const;
-        Str getGenre() const;
-        bool getAvailability() const;
-        void printData() const;
-        unsigned short getQuantity() const;
-
-    friend class Librarian;
+        friend class Librarian;
     };
 }
 #endif

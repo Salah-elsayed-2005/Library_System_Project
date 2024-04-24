@@ -4,18 +4,18 @@ project(Library_System_Project)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Library_System_Project main.cpp
-        sqlite3.h
-        sqlite3.c
-        str.h
+        Str.h
         Book.h
         Loan.h
         User.h
+        Date.h
         DatabaseManager.h
-        str.cpp
+        Str.cpp
         Book.cpp
         Loan.cpp
         User.cpp
         DatabaseManager.cpp
+        Date.cpp
 )
 
 find_package (SQLite3)

@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include "User.h"
@@ -6,11 +5,10 @@
 #include "Book.h"
 #include "Date.h"
 #include <ctime>
-time_t now = time(0);
-tm *ltm = localtime(&now);
 
-using namespace OurString;
- using namespace OurBook;
+using namespace OurBook;
+
+
 
 #ifndef LIBRARY_SYSTEM_PROJECT_LOAN_H
 #define LIBRARY_SYSTEM_PROJECT_LOAN_H
@@ -21,6 +19,7 @@ private:
     Member* borrower ;
     Book* borrowed_book;
     Date borrowing_date;
+    Date due_date;
     bool loan_status = false;
 
 public:
@@ -30,10 +29,13 @@ public:
     Book* getBorrowedBook();
     bool getStatus();
     Date getBorrowDate();
+    Date getDueDate();
+
 
     //Setters
     void set_status(bool);
-    void set_borrowingDate();
+    void set_borrowingDate(Date&);
+    void set_dueDate(Date&);
 
     //Methods
     void generateReport();

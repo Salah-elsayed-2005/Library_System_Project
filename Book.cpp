@@ -2,37 +2,37 @@
 using namespace OurBook;
 //*********************************** Book CLASS IMPLEMENTATION ***********************************
 Book::Book() : _title(""), _author(""), _isbn(""), _publication_year(0), _genre(""), _availability(false) {} // Default constructor
-Book::Book(Str title, Str author, Str isbn, short publicationYear, Str genre) : _title(title), _author(author), _isbn(isbn), _publication_year(publicationYear), _genre(genre) {} // Parameterized constructor
+Book::Book(const str& title, str author, str isbn, short publicationYear, str genre,bool availability, int quantity) : _title(title), _author(author), _isbn(isbn), _publication_year(publicationYear), _genre(genre),_availability(availability),_quantity(quantity) {} // Parameterized constructor
 
 // Setters and getters
-void Book::setTitle(Str title) {
+void Book::setTitle(const str& title) {
     _title = title;
 }
-Str Book::getTitle() const{
+str Book::getTitle() {
     return _title;
 }
-void Book::setAuthor(Str author) {
+void Book::setAuthor(const str& author) {
     _author = author;
 }
-Str Book::getAuthor() const{
+str Book::getAuthor() {
     return _author;
 }
-void Book::setIsbn(Str isbn) {
+void Book::setIsbn(const str& isbn) {
     _isbn = isbn;
 }
-Str Book::getIsbn() const{
+const str Book::getIsbn() {
     return _isbn;
 }
 void Book::setPublicationYear(unsigned short year) {
     _publication_year = year;
 }
-unsigned short Book::getPublicationYear() const{
+unsigned short Book::getPublicationYear() const {
     return _publication_year;
 }
-void Book::setGenre(Str genre) {
+void Book::setGenre(const str& genre) {
     _genre = genre;
 }
-Str Book::getGenre() const{
+str Book::getGenre() {
     return _genre;
 }
 
@@ -47,10 +47,10 @@ void Book::setQuantity(unsigned short quantity) {
 void Book::setAvailability() {
     _availability=_quantity>0;
 }
-unsigned short Book::getQuantity() const{
+unsigned short Book::getQuantity() const {
     return _quantity;
 }
-void Book::printData() const{ // Print the data of the book
+void Book::printData() { // Print the data of the book
     cout << "----------------------Book Info----------------------------\n";
     cout << "Title            : " << _title << endl;
     cout << "Author           : " << _author << endl;
@@ -61,8 +61,8 @@ void Book::printData() const{ // Print the data of the book
     cout << "Quantity         : " << _quantity<<endl;
     cout << "-----------------------------------------------------------" << endl;
 }
-    Book::~Book(){}
- // Destructor
+Book::~Book()= default;
+// Destructor
 /*
 //*********************************** Member CLASS IMPLEMENTATION ***********************************
 Member::Member() : _name("NONE"), _id("NONE"), _type("NONE"), _password("NONE"), _fines(0) {} // Default constructor

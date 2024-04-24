@@ -7,7 +7,6 @@
 #include "Book.h"
 #include "User.h"
 
-using namespace OurString;
 using namespace OurBook;
 
 class DatabaseManager {
@@ -19,18 +18,21 @@ public:
     void insertSampleData();
     void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                     int publicationYear, const std::string& genre, bool availability, int quantity);
-    void insertbook(const Book* &);
-    void insertUser(const User* &);
-    void insertLoan(const Loan* &);
+    void insertBook(Book*);
+    void insertUser(User*);
+    void insertLoan(Loan*);
 
 
     void deleteBook(const std::string& isbn);
     void displayBooks();
+    void disp(); // TEMP
+    void exportBooks(vector<Book*> & book_list);
+
     void searchBooks(const std::string& attribute, const std::string& value);
     void decrementBookQuantity(const std::string& isbn);
 
 private:
-    sqlite3* db;
+    sqlite3* db{};
 
     static int callback(void *NotUsed, int argc, char **argv, char **azColName);
     int execute_sql(const std::string& sql, int (*callback)(void*,int,char**,char**) = nullptr, void* data = nullptr);

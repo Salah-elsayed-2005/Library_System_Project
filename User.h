@@ -1,12 +1,13 @@
 #ifndef LIBRARY_SYSTEM_PROJECT_USER_H
 #define LIBRARY_SYSTEM_PROJECT_USER_H
 
+
+
 #include <vector>
 #include "Str.h"
 #include "Book.h"
 
 using namespace std;
-using namespace OurString;
 using namespace OurBook;
 
 class Librarian;
@@ -15,29 +16,29 @@ class Loan;
 /*****************************************/
 class User {
 protected:
-    Str name;
-    Str id;
-    Str password;
+    str name;
+    str id;
+    str password;
 public:
     User() : name(""), password(""), id(""){}
-    User(const Str &n, const Str &i, const Str &pass) : name(n), id(i), password(pass){}
+    User(const str &n, const str &i, const str &pass) : name(n), id(i), password(pass){}
 
-    Str getName() const;
-    Str getId() const;
-    Str getPassword() const;
+    str getName() const;
+    str getId() const;
+    str getPassword() const;
 
-    void setName(Str s);
-    void setPassword(Str pass);
+    void setName(str s);
+    void setPassword(str pass);
 
     /******** overriden methods **********/
     virtual void displayInfo() const = 0;
-    virtual void setId(Str i)  = 0;
+    virtual void setId(str i)  = 0;
 
     /********* User methods *********/
-    Book*  searchForBook_title(const vector<Book*> &, const Str &);
-    Book*  searchForBook_isbn(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_author(const vector<Book*> &, const Str &);
-    vector<Book *> searchForBook_genre(const vector<Book*> &, const Str &);
+    Book*  searchForBook_title(const vector<Book*> &, const str &);
+    Book*  searchForBook_isbn(const vector<Book*> &, const str &);
+    vector<Book *> searchForBook_author(const vector<Book*> &, const str &);
+    vector<Book *> searchForBook_genre(const vector<Book*> &, const str &);
     vector<Book *> searchForBook_publicationyear(const vector<Book*> &, const short &);
 
 
@@ -62,8 +63,8 @@ public:
     /****** public methods ******/
 
     Member();
-    Member(Str, Str, Str);
-    ~Member() override{}
+    Member(str, str, str);
+    //~Member() override{}
 
     void setCheckedOutBooks(vector<Book*>&);
     void addToCheckedOutBooks(Book* &);
@@ -82,10 +83,9 @@ public:
 
     /********** Loan related methods ********/
 
-    virtual Loan* requestLoan(Book* &, vector<Loan*> &) = 0;
+    virtual Loan* requestLoan(Book* &) = 0;
+
     virtual void returnBorrowedBook(Book* &, vector<Loan*> &) = 0;
-
-
 };
 /****************************************************************************************/
 
@@ -95,17 +95,17 @@ private:
 public:
     /************ Constructors ***********/
     Librarian();
-    Librarian(Str, Str, Str);
+    Librarian(str, str, str);
     ~Librarian() override{}
-     /********** overriden methods **********/
-     void displayInfo() const override;
-     void setId(Str i) override;
+    /********** overriden methods **********/
+    void displayInfo() const override;
+    void setId(str i) override;
 
-     /************** Operations on books **************/
+    /************** Operations on books **************/
 
     // (Use allocation for new books and use setters for assigning values)
     void viewBooks(vector<Book*>&) const;
-    void addBook(vector<Book*> &, Book* &book);
+    void addBook(vector<Book*> &);
     void removeBook(vector<Book*> &, Book* &book);
 
     void updateBookTitle(Book* &);
@@ -116,11 +116,11 @@ public:
     void updateBookQuantity(Book* &);
 
     /******************* Opeerations on Members *****************/
-    void addMember(vector<User *> &, Member*);
+    void addMember(vector<User *> &,int);
     void removeMember(vector<User *> &, Member*);
     void updateMemberName(Member*);
     void updateMemberId(Member*);
-    Member* Searchformember(vector<User*>,Str);
+    Member* Searchformember(vector<User*>,str);
 
     /******************** Operations on Loans ****************/
     void processLoanRequest(Loan* &, bool);
@@ -133,10 +133,10 @@ public:
 class Student : public Member {
 public:
     Student();
-    Student(Str, Str, Str);
+    Student(str, str, str);
     ~Student() override{}
 
-    void setId(Str i) override;
+    void setId(str i) override;
     void displayInfo() const override;
 
     Loan* requestLoan(Book* &);
@@ -148,10 +148,10 @@ public:
 class Faculty : public Member {
 public:
     Faculty();
-    Faculty(Str, Str, Str);
+    Faculty(str, str, str);
     ~Faculty() override{}
 
-    void setId(Str i) override;
+    void setId(str i) override;
     void displayInfo() const override;
 
     Loan* requestLoan(Book* &);
@@ -161,11 +161,11 @@ public:
 };
 
 class Staff : public Member {
-    Staff();
-    Staff(Str, Str, Str);
-    ~Staff() override{}
 public:
-    void setId(Str i) override;
+    Staff();
+    Staff(str, str, str);
+    ~Staff() override{}
+    void setId(str i) override;
     void displayInfo() const override;
 
     Loan* requestLoan(Book* &);

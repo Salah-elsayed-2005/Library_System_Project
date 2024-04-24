@@ -1,9 +1,11 @@
 //
-// Created by salah elsayed on 4/19/2024.
+// Created by Hussein on 4/19/2024.
 //
 #include <ctime>
 #include <cmath>
 #include "Date.h"
+
+using namespace std;
 
 Date::Date() :day(0), month(0), year(0) {}    // constructor
 
@@ -48,4 +50,33 @@ short Date::getDifference(short D, short M, short Y) {     //calculate the diffe
     if (isLeap(current.year) && current.month > 2)
         secondDateInDays++;
     return (abs(firstDateInDays - secondDateInDays)); // subtract them to get the difference
+}
+
+short Date::numberOfDaysInMonth(short M, short Y) {     //return number of days in a given month and year
+    if(M<1 || M>12)
+        return 0;
+    int days[12]={31,28,31,30,31,30,31,31,30,31,30,31};
+    return (M==2) ? (isLeap(Y) ? 29: 28) : days[M-1];
+}
+
+Date Date::addDate(Date D, short daysToAdd) {   //add some days to a given date and return the new date
+    daysToAdd+=D.day;
+    while(1){
+        if(daysToAdd< numberOfDaysInMonth(D.month,D.year))
+            break;
+        else
+            daysToAdd-= numberOfDaysInMonth(D.month,D.year);
+
+        D.month++;
+        if(D.month>12){
+            D.month = 1;
+            D.year++;
+        }
+    }
+    D.day=daysToAdd;
+    return D;
+}
+
+string Date::getDateString(){
+    return stringDate;
 }

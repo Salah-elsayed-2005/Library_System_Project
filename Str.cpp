@@ -1,32 +1,38 @@
 #include <iostream>
-#include "Str.h"
+#include "str.h"
+#include <string>;
 
-using namespace OurString;
+using namespace std;
 
-int Str::lenLocal(const char* string) const {
+int str::len_local(const char* String) const {
     int length = 0;
 
-    for (int i = 0; string[i] != '\0'; ++i) {
-        length++;
-    }
+    if(String != NULL)
+        for (int i = 0; String[i] != '\0'; ++i) {
+            length++;
+        }
+
     return length;
 }
 
-Str::Str() {
+str::str() {
     ptr = nullptr;
 }
 
-Str::Str(const char* string) {
-    int length = lenLocal(string);
+str::str(const char* String) {
+    int length = len_local(String);
     ptr = new char[sizeof(char) * length + 1];
 
-    for (int i = 0; i <= length; ++i) { // <= to include '\0'
-        ptr[i] = string[i];
-    }
+    if (String != NULL)
+        for (int i = 0; i <= length; ++i) { // <= to include '\0'
+            ptr[i] = String[i];
+        }
+    else
+        ptr[0] = '\0';
 }
 
-Str::Str(const Str& obj) {
-    int length = lenLocal(obj.ptr);
+str::str(const str& obj) {
+    int length = len_local(obj.ptr);
     ptr = new char[sizeof(char) * length + 1];
 
     for (int i = 0; i <= length; ++i) { // <= to include '\0'
@@ -34,24 +40,37 @@ Str::Str(const Str& obj) {
     }
 }
 
-int Str::len() const {
-    return lenLocal(ptr);
+str::str(const string& String) {
+    int length = String.size();
+    ptr = new char[sizeof(char) * length + 1];
+
+    for (int i = 0; i <= length; ++i) { // <= to include '\0'
+        ptr[i] = String[i];
+    }
 }
 
-Str::~Str() {
-    delete[] ptr; // To delete the whole array of char, "delete ptr" will delete the first location in the array;
+int str::len() const {
+    return len_local(ptr);
 }
 
-Str::operator const char* () const {
+string str::str2string() const {
+    return string(ptr);
+}
+
+str::~str() {
+    delete[] ptr; //to delete the whole array of char, "delete ptr" will delete the first location in the array;
+}
+
+str::operator const char* () const {
     return ptr;
 }
 
-void Str::operator= (const Str& obj) {
-    if (this == &obj) return; // To avoid self assignment
+void str::operator = (const str& obj) {
+    if (this == &obj) return; //to avoid self assignment
 
-    delete[] ptr; // To prevent memory leaks
+    delete[] ptr; // to prevent memory leaks, if we left that, the old
 
-    int length = lenLocal(obj.ptr);
+    int length = len_local(obj.ptr);
     ptr = new char[sizeof(char) * length + 1];
 
     for (int i = 0; i <= length; ++i) { // <= to include '\0'
@@ -59,23 +78,39 @@ void Str::operator= (const Str& obj) {
     }
 }
 
-void Str::operator= (const char* string) {
-    delete[] ptr; // To prevent memory leaks
+void str::operator = (const char* String) {
 
-    int length = lenLocal(string);
+    delete[] ptr; // to prevent memory leaks, if we left that, the old
+
+    int length = len_local(String);
     ptr = new char[sizeof(char) * length + 1];
 
     for (int i = 0; i <= length; ++i) { // <= to include '\0'
-        ptr[i] = string[i];
+        ptr[i] = String[i];
     }
 }
 
-Str Str::operator+ (const Str& obj) const {
-    int length1 = lenLocal(this->ptr);
-    int length2 = lenLocal(obj.ptr);
+void str::operator = (const string& String) {
 
-    Str result;
+    delete[] ptr; // to prevent memory leaks, if we left that, the old
+
+    int length = String.size();
+    ptr = new char[sizeof(char) * length + 1];
+
+    for (int i = 0; i <= length; ++i) { // <= to include '\0'
+        ptr[i] = String[i];
+    }
+}
+
+str str::operator + (const str& obj) const {
+
+    int length1 = len_local(this->ptr);
+    int length2 = len_local(obj.ptr);
+
+    str result;
     result.ptr = new char[sizeof(char) * (length1 + length2) + 1];
+
+
 
     for (int i = 0; i < length1; ++i) {
         result.ptr[i] = this->ptr[i];
@@ -88,12 +123,36 @@ Str Str::operator+ (const Str& obj) const {
     return result;
 }
 
-void Str::operator+= (const Str& obj) {
-    int length1 = lenLocal(this->ptr);
-    int length2 = lenLocal(obj.ptr);
+str str::operator + (const char* string) const {
+    str temp = str(string);
 
-    Str result;
+    return *this + temp;
+}
+
+str str::operator + (const string& String) const {
+
+    str result = str(String);
+
+    return *this + result;
+}
+
+str str::operator + (const int& num) const {
+
+    str result = to_string(num).c_str();
+
+    result += ptr;
+    return result;
+}
+
+void str::operator += (const str& obj) {
+
+    int length1 = len_local(this->ptr);
+    int length2 = len_local(obj.ptr);
+
+    str result;
     result.ptr = new char[sizeof(char) * (length1 + length2) + 1];
+
+
 
     for (int i = 0; i < length1; ++i) {
         result.ptr[i] = this->ptr[i];
@@ -106,28 +165,45 @@ void Str::operator+= (const Str& obj) {
     *this = result;
 }
 
-bool Str::operator== (const Str& obj) const {
-    if (lenLocal(obj.ptr) != lenLocal(this->ptr)) {
+void str::operator += (const string& String) {
+
+    str result = str(String);
+
+    *this = *this + String;
+}
+
+void str::operator += (const int& num) {
+    str result = str();
+
+    result = result + num;
+
+    *this = *this + result;
+}
+
+bool str::operator == (const str& obj) const {
+    if (len_local(obj.ptr) != len_local(this->ptr)) {
         return false;
     }
 
-    for (int i = 0; obj.ptr[i] != '\0'; i++) {
-        if (obj.ptr[i] != this->ptr[i])
+    for (int i = 0; *(obj.ptr + i) != '\0'; i++) {
+        if (*(obj.ptr + i) != *(this->ptr + i))
             return false;
     }
 
     return true;
 }
 
-std::istream& OurString::operator>>(std::istream& is, Str& obj) {
+void str::operator += (const char* String) {
+
+    str result = str(String);
+
+    *this = *this + String;
+}
+
+std::istream& operator>>(std::istream& is, str& obj){
     char temp[1024];
 
-    is >> temp; // Store in temp
-    obj = temp; // Put temp in obj
+    is >> temp; //store in temp
+    obj = temp; // put temp in obj, why not "is >> obj.ptr" because we do not know the length of the entered data and storing that in obj.ptr, can write the data in places byond the places we have access to. and that will cause problems
     return is; // Return the input stream to allow chaining of input operations
 }
-
-Str OurString::operator+(const char *prefix, const Str &obj) {
-    return Str();
-}
-
