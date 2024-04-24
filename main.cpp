@@ -76,6 +76,7 @@ int main() {
     dbManager.insertSampleData();
     dbManager.insertBook("9780132350884", "Effective C++", "Scott Meyers", 2005, "Programming", true, 10);
     dbManager.displayBooks();
+    dbManager.boomboom();
 
 
 
@@ -140,6 +141,7 @@ int main() {
         lib->processLoanRequest(loan3, true);
     }
     dbManager.insertUser(user1);
+    dbManager.boomboom();
 
     memberMenu();
     //libMenu();

@@ -66,7 +66,8 @@ void DatabaseManager::createTable() {
     std::string sqlLoans = "CREATE TABLE IF NOT EXISTS Loans ("
                            "ID VARCHAR(20),"
                            "ISBN VARCHAR(255),"
-                           "Date VARCHAR(10),"
+                           "BorrowingDate VARCHAR(10),"
+                           "DueDate VARCHAR(10),"
                            "Status BOOLEAN DEFAULT FALSE,"
                            "PRIMARY KEY (ID, ISBN));";
     execute_sql(sqlLoans);
@@ -119,10 +120,10 @@ void DatabaseManager::insertUser(User* userPtr) {
         // Insert loans details into the Loans table
         for (auto &loan: memberPtr->getMemberLoans()) {
             std::cout << loan->getBorrowedBook()->getIsbn().str2string();
-            std::string loanSql = "INSERT OR REPLACE INTO Loans (ID, ISBN, Date, Status) VALUES ('" +
+            std::string loanSql = "INSERT OR REPLACE INTO Loans (ID, ISBN, BorrowingDate, DueDate, Status) VALUES ('" +
                                   memberPtr->getId().str2string() + "', '" +
                                   loan->getBorrowedBook()->getIsbn().str2string() + "', '" +
-                                  loan->getBorrowDate().getDateString() + "', '" + std::to_string(loan->getStatus()) +
+                                  loan->getBorrowDate().getDateString() + "', '"+ loan->getDueDate().getDateString() + "', '" + std::to_string(loan->getStatus()) +
                                   "');";
             execute_sql(loanSql);
         }
@@ -142,7 +143,10 @@ void DatabaseManager::insertUser(User* userPtr) {
     }
     std::cout << "Inserting a new user record completed." << std::endl;
 }
-            void DatabaseManager::deleteBook(const std::string& isbn) {
+
+void insertLoan(Loan*){}
+
+void DatabaseManager::deleteBook(const std::string& isbn) {
     std::string sql = "DELETE FROM Books WHERE ISBN = '" + isbn + "';";
     std::cout << "Deleting book with ISBN " << isbn << "..." << std::endl;
     execute_sql(sql);
@@ -226,7 +230,24 @@ void DatabaseManager::exportBooks(vector<Book*> &book_list) {
     execute_sql(sql, callback, &book_list);
 }
 
-//void DatabaseManager::exportUsers
+
+void DatabaseManager::exportUsers(vector<User*> &user_list){
+    for(0 to end of table){
+        if(id prefix == stu-){
+            Student new_student(id, name, password, member books, member loans, overdue fines);
+            User* new_user = new
+        }
+    }
+}
 
 
+void DatabaseManager::exportLoans(vector<Loan*> &loan_list){
 
+}
+
+
+void DatabaseManager::boomboom() {
+    std::string sql ="DELETE FROM Books;DELETE FROM Users;DELETE FROM Loans;";
+    std::cout << "Clearing all Tables..." << std::endl;
+    execute_sql(sql);
+}

@@ -27,9 +27,12 @@ public:
     void displayBooks();
     void disp(); // TEMP
     void exportBooks(vector<Book*> & book_list);
+    void exportUsers(vector<User*> &user_list);
+    void exportLoans(vector<Loan*> &loan_list);
 
     void searchBooks(const std::string& attribute, const std::string& value);
     void decrementBookQuantity(const std::string& isbn);
+    void boomboom();
 
 private:
     sqlite3* db{};
