@@ -9,77 +9,84 @@
 
 using namespace OurBook;
 
+// External vectors to hold references to books, users, and loans that can be accessed globally
+extern vector<Book*> ex_library_books;
+extern vector<User*> ex_library_users;
+extern vector<Loan*> ex_library_loans;
+
 class DatabaseManager {
 public:
+    // Constructor: Initializes a DatabaseManager instance by opening a connection to the specified SQLite database
     explicit DatabaseManager(const std::string& databaseName);
+    // Destructor: Closes the database connection when the DatabaseManager instance is destroyed
     ~DatabaseManager();
 
+    // Create required tables (Books, Users, Loans) in the SQLite database
     void createTables();
+    // Insert sample data into the database tables for testing purposes
     void insertSampleData();
+    // Insert a book into the Books table using detailed book information
     void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                     int publicationYear, const std::string& genre, bool availability, int quantity);
+    // Overload of insertBook to insert a book using a Book object
     void insertBook(Book*);
+    // Insert a user into the Users table using a User object
     void insertUser(User*);
+    // Insert a loan into the Loans table using a Loan object
     void insertLoan(Loan*);
 
-    // Delete book record in table Books by ISBN
+    // Delete a book from the Books table by its ISBN
     void deleteBook(const std::string& isbn);
 
-    // Dispalay all books in the Books table
+    // Display all records in the Books table
     void displayBooks();
 
-    void disp(); // TEMP
+    void disp(); // TEMP: Temporary method for testing
 
-    // Exports all the books in table Books to vector of type Book
-    void exportBooks(vector<Book*> & book_list);
+    // Export all books from the Books table into a provided vector
+    void importBooks(vector<Book*> &book_list);
 
-    // Exports all the users in table Users to vector of type User
-    void exportUsers(vector<User*> &user_list);
+    // Export all users from the Users table into a provided vector
+    void importUsers(vector<User*> &user_list);
 
-    // Exports all the users in table Loans to vector of type Loan
-    void exportLoans(vector<Loan*> &loan_list);
+    // Export all loans from the Loans table into a provided vector
+    void importLoans(vector<Loan*> &loan_list);
 
-    //
-    void setCheckedOutBooks(Member* member);
-    void setMemberLoans(Member* member);
-
-
+    // Retrieve all books loaned by a specific user based on user ID
     vector<Book*> getLoanedBooksByUser(const std::string& userId);
 
-    vector<Loan*> getLoanedDataByUser(const std::string& userId);
-
-    // Search in Books table by providing the attribute (column name) and value (element in cell corresponding to the column)
+    // Search for books in the Books table using a specified attribute and value
     void searchBooks(const std::string& attribute, const std::string& value);
 
-    // Search in Users table by providing the attribute (column name) and value (element in cell corresponding to the column)
+    // Search for users in the Users table using a specified attribute and value
     void searchUsers(const std::string& attribute, const std::string& value);
 
-    // Search in Loans table by providing the attribute (column name) and value (element in cell corresponding to the column)
+    // Search for loans in the Loans table using a specified attribute and value
     void searchLoans(const std::string& attribute, const std::string& value);
 
-    //Decrease the value of Quantity in Books table by 1 (used in loans)
+    // Decrease the quantity of a book in the Books table by one
     void decrementBookQuantity(const std::string& isbn);
 
-    //Clear all values in all tables
+    // Clear all records from all tables
     void boomboom();
 
+    // Callback function to handle specific user data fetching scenarios
     static int userCallback(void *data, int argc, char **argv, char **azColName);
 
-    // temp for testing
+    // Temporary method for testing
     void tmep();
 
+    //   vector<Loan*> getLoanedDataByUser(const std::string& userId);
+
 private:
-    // Special variable for sqlite to function
+    // SQLite database connection handle
     sqlite3* db;
 
-    // Function to handel the incoming data from sqlite database
+    // Generic callback function to process SQL query results
     static int callback(void *NotUsed, int argc, char **argv, char **azColName);
 
-    // Function to send the queries to the sqlite database and outout an error if meet
+    // Execute an SQL query with optional callback and user data
     int execute_sql(const std::string& sql, int (*callback)(void*,int,char**,char**) = nullptr, void* data = nullptr);
 };
-
-
-
 
 #endif //LIBRARY_SYSTEM_PROJECT_DATABASEMANAGER_H
