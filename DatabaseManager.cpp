@@ -374,7 +374,7 @@ void DatabaseManager::importLoans(vector<Loan*> &loan_list){
             loan->set_borrowingDate(borrowingDate);
             loan->set_dueDate(dueDate); // format of the string: 25-4-2024
             loan->set_status(status);
-        }//try it
+        }
         return 0;
     };
 

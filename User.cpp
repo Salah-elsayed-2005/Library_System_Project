@@ -77,17 +77,6 @@ void Member::removeFromCheckedOutBooks(Book* &book){
             checked_out_books.erase(it);
     }
 }
-void Member::setMemberLoans(vector<Loan *> &loans_list) {
-    member_loans = loans_list;
-}
-void Member::removeFromMemberLoans(Loan* &loan){
-    vector<Loan*>::iterator it;
-    for (auto it = member_loans.begin(); it != member_loans.end(); it++)
-    {
-        if((*it)->getBorrowedBook()->getIsbn() == loan->getBorrowedBook()->getIsbn())
-            member_loans.erase(it);
-    }
-}
 void Member::setOverdueFines(float& fines){
     overdue_fines = fines;
 }
@@ -103,15 +92,7 @@ int Member::getCheckedOutBooksSize() const {
 }
 
 /****************       Member functions      ******************/
-void Member::viewCheckedOutBooks() const{
-    cout << "Your books: " << endl;
-    for(auto it : checked_out_books){
-        cout << "Title: "<< it->getTitle() << endl;
-        cout << "Author: " << it->getAuthor() << endl;
-        cout << "Due Date: " << "//////// will be added" << endl;
-        cout << "__________________________________________" << endl;
-    }
-}
+
 
 
 /*****************   Constructors *****************/

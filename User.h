@@ -131,11 +131,9 @@ public:
     //~Member() override{}
 
     /* setters and getters */
-    void setCheckedOutBooks(const vector<Book*>&);
+    void setCheckedOutBooks(vector<Book*>&);
     void addToCheckedOutBooks(Book* &);
     void removeFromCheckedOutBooks(Book* &);
-    void setMemberLoans(const vector<Loan*> &);
-    void removeFromMemberLoans(Loan* &);
     void setOverdueFines(float&);
 
     vector<Book*> getCheckedOutBooks() const;

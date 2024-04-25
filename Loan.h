@@ -40,8 +40,8 @@ public:
     //void set_borrower();
     void set_borrowingDate();
     void set_dueDate();
-    void set_borrowingDate(string);
-    void set_dueDate(string);
+    void set_borrowingDate(const string&);
+    void set_dueDate(const string&);
 
     //Methods
     void generateReport();
