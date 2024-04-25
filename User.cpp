@@ -95,9 +95,6 @@ void Member::setOverdueFines(float& fines){
 vector<Book*> Member::getCheckedOutBooks() const {
     return checked_out_books;
 }
-vector<Loan*> Member::getMemberLoans() const {
-    return member_loans;
-}
 float Member::getOverdueFines() const {
     return overdue_fines;
 }
@@ -349,11 +346,11 @@ void Student::displayInfo() const{
     cout << "Access type: Student" << endl;
 }
 
-Loan* Student::requestLoan(Book* &book) {
+Loan* Student::requestLoan(Book* &book, int cartSize) {
     float maxoverduefines = 10;
     int maxnumberofbooksborrowed = 2;
     if(overdue_fines < maxoverduefines){
-        if(checked_out_books.size() < maxnumberofbooksborrowed){
+        if(checked_out_books.size() + cartSize <= maxnumberofbooksborrowed){
             if(book->getQuantity() > 0){
                 Loan* new_loan = new Loan(this, book);
                 cout<<"Loan requested successfully!"<<endl;
@@ -384,7 +381,6 @@ void Student::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
 
         if( borrowedbook->getIsbn() == book->getIsbn()){
             memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
-            memberborrowed->removeFromMemberLoans(*it);
             borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
             if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
                 int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
@@ -410,11 +406,11 @@ void Faculty::displayInfo() const{
     cout << "Id: " << id << endl;
     cout << "Access type: Faculty Member" << endl;
 }
-Loan* Faculty::requestLoan(Book* &book) {
+Loan* Faculty::requestLoan(Book* &book, int cartSize) {
     float maxoverduefines = 20;
     int maxnumberofbooksborrowed = 4;
     if(overdue_fines < maxoverduefines){
-        if(checked_out_books.size() < maxnumberofbooksborrowed){
+        if(checked_out_books.size()+cartSize <= maxnumberofbooksborrowed){
             if(book->getQuantity() > 0){
                 Loan* new_loan = new Loan(this, book);
                 cout<<"Loan requested successfully!"<<endl;
@@ -445,7 +441,6 @@ void Faculty::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
         Date borrowdate = (*it)->getBorrowDate();
         if( borrowedbook->getIsbn() == book->getIsbn()){
             memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
-            memberborrowed->removeFromMemberLoans(*it);
             borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
             if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
                 int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;
@@ -471,11 +466,11 @@ void Staff::displayInfo() const{
     cout << "Id: " << id << endl;
     cout << "Access type: Staff" << endl;
 }
-Loan* Staff::requestLoan(Book* &book) {
+Loan* Staff::requestLoan(Book* &book, int cartSize) {
     float maxoverduefines = 40;
     int maxnumberofbooksborrowed = 6;
     if(overdue_fines < maxoverduefines){
-        if(checked_out_books.size() < maxnumberofbooksborrowed){
+        if(checked_out_books.size()+cartSize <= maxnumberofbooksborrowed){
             if(book->getQuantity() > 0){
                 Loan* new_loan = new Loan(this, book);
                 cout<<"Loan requested successfully!"<<endl;
@@ -506,7 +501,6 @@ void Staff::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
         Date borrowdate = (*it)->getBorrowDate();
         if( borrowedbook->getIsbn() == book->getIsbn()){
             memberborrowed->removeFromCheckedOutBooks(borrowedbook); // remove borrowed book from member checked out books
-            memberborrowed->removeFromMemberLoans(*it);
             borrowedbook->setQuantity(borrowedbook->getQuantity() + 1); // increase the book quantity by 1
             if(borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) > maxborrowingdays){
                 int numOfLateDays = borrowdate.getDifference(borrowdate.day, borrowdate.month, borrowdate.year) - maxborrowingdays;

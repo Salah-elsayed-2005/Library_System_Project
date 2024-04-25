@@ -43,13 +43,13 @@ public:
 
     void disp(); // TEMP: Temporary method for testing
 
-    // Export all books from the Books table into a provided vector
+    // import all books from the Books table into a provided vector
     void importBooks(vector<Book*> &book_list);
 
-    // Export all users from the Users table into a provided vector
+    // import all users from the Users table into a provided vector
     void importUsers(vector<User*> &user_list);
 
-    // Export all loans from the Loans table into a provided vector
+    // import all loans from the Loans table into a provided vector
     void importLoans(vector<Loan*> &loan_list);
 
     // Retrieve all books loaned by a specific user based on user ID

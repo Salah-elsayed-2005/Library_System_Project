@@ -12,13 +12,92 @@ const std::string CLEAR_COMMAND = "cls";
 #else
 const std::string CLEAR_COMMAND = "clear";
 #endif
-bool endOfProgram=false;
+bool endOfProgram= false;
 bool backToTheMainMenu=false;
 extern Librarian lib;
 extern Student student;
 extern Staff staff;
 extern Faculty faculty;
 
+bool checkBack(){
+    short back=1;
+    do {
+        cout << "\n\n[1] Back to the last page" << endl << "[2] Back to the main menu\n\n";
+        cout << "Please enter your choice : ";
+        cin >> back;
+        if (back == 2)
+            backToTheMainMenu = true;
+    }while(back!=1 && back!=2);
+    return (back==2);
+}
+bool checkClose(){
+    short back=1;
+    do {
+        cout << "\n\n[1] Back to the last page" << endl << "[2] Close the program\n\n";
+        cout << "Please enter your choice : ";
+        cin >> back;
+        if (back == 2)
+            endOfProgram = true;
+    }while(back!=1 && back!=2);
+    return (back==2);
+}
+Member* checktype(str id) {
+
+    //stu fac sta
+    str tocheck = id.str2string();
+    if(tocheck[2] == 'u' ){
+        Member* member = &student;
+        return member;
+    }
+    else if(tocheck[2] == 'c' ){
+        Member* member = &faculty;
+        return member;
+    }
+    else if(tocheck[2] == 'a' ){
+        Member* member = &staff;
+        return member;
+    }
+}
+void returnbook() {
+    system(CLEAR_COMMAND.c_str());
+
+    str id;
+    cout<<"Please enter your ID: ";
+    cin>>id;
+
+    Member* member = checktype(id);
+    vector<Book*> checkedoutbooks = member->getCheckedOutBooks();
+    Book* tocheck;
+
+    char choice;
+    cout << "Search by : " << endl
+         << "[1] isbn" << endl
+         << "[2] title" << endl;
+    cin>>choice;
+    if(choice==1){
+        str isbn;
+        cout << "Enter ISBN: ";
+        cin >> isbn;
+        if((student.searchForBook_isbn(checkedoutbooks, isbn))==nullptr)
+            cout<<"\nNo results\n";
+        else
+            tocheck = student.searchForBook_isbn(checkedoutbooks, isbn);
+    }
+    else if(choice==2) {
+        str title;
+        cout << "Enter Title : ";
+        cin >> title;
+        if((student.searchForBook_title(checkedoutbooks, title))==nullptr)
+            cout<<"\nNo results\n";
+        else
+            tocheck = student.searchForBook_title(checkedoutbooks, title);
+    }
+    for (auto book: checkedoutbooks) {
+        if(tocheck->getIsbn() == book->getIsbn() || tocheck->getTitle() == book->getTitle())
+            member->returnBorrowedBook(book, library_loans);
+    }
+
+}
 User* login(){
     User *toReturn;
     bool flag=false;
@@ -219,6 +298,12 @@ void addToCart(){
     }
     checkClose();
 }
+void loanrequest(str id){
+    Member* member = checktype(id);
+    Loan* new_loan = member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
+    library_loans.push_back(new_loan); // add new_loan object to library_loans vector in main to be checked later by librarian
+    Cart.erase(Cart.begin()); // remove book from cart to checkout
+}
 void viewCart(){
     system(CLEAR_COMMAND.c_str());
     if(Cart.empty())
@@ -410,12 +495,7 @@ void updateBookData() {
             checkBack();
     } while (!backToTheMainMenu);
 }
-void loanrequest(str id){
-    Member* member = checktype(id);
-    Loan* new_loan = member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
-    library_loans.push_back(new_loan); // add new_loan object to library_loans vector in main to be checked later by librarian
-    Cart.erase(Cart.begin()); // remove book from cart to checkout
-}
+
 void diplaydata(){
     system(CLEAR_COMMAND.c_str());
     cout<<"Please Enter Id : " ;
@@ -474,46 +554,7 @@ void checkforoverdues(){
         lib.CheckForOverdues(loan);
     }
 }
-void returnbook() {
-    system(CLEAR_COMMAND.c_str());
 
-    str id;
-    cout<<"Please enter your ID: ";
-    cin>>id;
-
-    Member* member = checktype(id);
-    vector<Book*> checkedoutbooks = member->getCheckedOutBooks();
-    Book* tocheck;
-
-    char choice;
-    cout << "Search by : " << endl
-         << "[1] isbn" << endl
-         << "[2] title" << endl;
-    cin>>choice;
-    if(choice==1){
-        str isbn;
-        cout << "Enter ISBN: ";
-        cin >> isbn;
-        if((student.searchForBook_isbn(checkedoutbooks, isbn))==nullptr)
-            cout<<"\nNo results\n";
-        else
-            tocheck = student.searchForBook_isbn(checkedoutbooks, isbn);
-    }
-    else if(choice==2) {
-        str title;
-        cout << "Enter Title : ";
-        cin >> title;
-        if((student.searchForBook_title(checkedoutbooks, title))==nullptr)
-            cout<<"\nNo results\n";
-        else
-            tocheck = student.searchForBook_title(checkedoutbooks, title);
-    }
-    for (auto book: checkedoutbooks) {
-        if(tocheck->getIsbn() == book->getIsbn() || tocheck->getTitle() == book->getTitle())
-            member->returnBorrowedBook(book, library_loans);
-    }
-
-}
 void libMenu(){
     system(CLEAR_COMMAND.c_str());
     printHeader();
@@ -550,20 +591,4 @@ void libMenu(){
     printExit();
     system("pause>0");
 }
-Member* checktype(str id) {
 
-    //stu fac sta
-    str tocheck = id.str2string();
-    if(tocheck[2] == 'u' ){
-        Member* member = &student;
-        return member;
-    }
-    else if(tocheck[2] == 'c' ){
-        Member* member = &faculty;
-        return member;
-    }
-    else if(tocheck[2] == 'a' ){
-        Member* member = &staff;
-        return member;
-    }
-}

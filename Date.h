@@ -8,9 +8,9 @@ private:
     bool isLeap(short Year);
     short numOfLeaps(short Year) ;
     short numberOfDaysInMonth(short , short );
-    std::string stringDate = std::to_string(day)+"-"+std::to_string(month)+"-"+std::to_string(year);
 public:
     short day, month, year;
+    std::string stringDate;
     Date();
     void getCurrentData();
     short getDifference(short D, short M, short Y);
@@ -18,10 +18,7 @@ public:
     std::string getDateString();
 
 
-    void operator=(const Date& obj){
-        this->day = obj.day;
-
-    }
+    void operator= (const Date&);
 
 };
 #endif //LIBRARY_SYSTEM_PROJECT_DATE_H

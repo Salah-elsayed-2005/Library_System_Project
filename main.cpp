@@ -6,13 +6,7 @@
 #include "User.h"
 #include "Loan.h"
 #include "DatabaseManager.h"
-
-
-#if defined(_WIN32) || defined(_WIN64)
-const std::string CLEAR_COMMAND = "cls";
-#else
-const std::string CLEAR_COMMAND = "clear"; 
-#endif
+#include "Functionalities.h"
 
 using namespace std;
 using namespace OurBook;
@@ -31,47 +25,38 @@ Faculty faculty;
 
 
 
-void printHeader();
-void printMemberMenu();
-void printSearchOptions();
-void printLibMenu();
-bool checkBack();
-bool checkClose();
-void printExit();
-void searchByISBN();
-void searchByYear();
-void searchByTitle();
-void searchByAuthor();
-void searchByGenre();
-void searchForBook();
-void viewAvailableBooks();
-void addToCart();
-void viewCart();
-void updateMemberData();
-void updateBookData();
-void updateMemberMenu();
-void updateBookMenu();
-void updatepassword();
-void diplaydata();
-void loanrequest();
-void viewloans();
-void processloans();
-void checkforoverdues();
-void returnbook();
-Member* checktype(str);
 
 
-vector<Book*> ex_library_books(library_books);
-vector<User*> ex_library_users(library_users);
-vector<Loan*> ex_library_loans(library_loans);
+
+//void importFromDB(){
+//   dbManager.createTables();   /* creates 3 tables in database */
+//
+//    /* importing books from database to library_books and copies it to ex_library_books to use it in DatabaseManager */
+//    dbManager.importBooks(library_books);
+//    ex_library_books = library_books;
+//
+//    /* importing Users and Loans data from database to library vectors */
+//    dbManager.importBooks(library_users);
+//    dbManager.importBooks(library_loans);
+//}
+//
+//void exportToDB(){
+//    dbManager.boomboom();   /* clearing database */
+//
+//    /* exporting library vectors to database */
+//    for(auto &it : library_books){
+//        dbManager.insertBook(it);
+//    }
+//    for(auto &it : library_users){
+//        dbManager.insertUser(it);
+//    }
+//    for(auto &it : library_loans){
+//        dbManager.insertLoan(it);
+//    }
+//}
 
 
-bool endOfProgram=false;
-bool backToTheMainMenu=false;
 
-User* login();
-void memberMenu();
-void libMenu();
 int main() {
 
     DatabaseManager dbManager("test.db");
@@ -113,7 +98,8 @@ int main() {
     book3->setQuantity(15);
     Book* book4 = new Book("Object oriented programming", "Larson", "8624625635663", 2012, "maybe Math");
     book4->setQuantity(1);
-    Book* book5 = new Book("Linear Algebra", "Stewart", "8624625635669", 2004, "Math");
+    Book* book5 = new Book("Linear Algebra", "Salah", "8624205103769", 2005, "Math");
+    book5->setQuantity(37);
     Book* book6 = new Book(*book5);
     book4->setQuantity(1);
 
@@ -130,46 +116,42 @@ int main() {
     dbManager.insertBook(book4);
     dbManager.insertBook(book1);
 
-    ex_library_books = library_books;
-
-    dbManager.displayBooks();
-    dbManager.disp();
-    dbManager.exportBooks(library_books);
-    if(Student* stPtr = dynamic_cast<Student*>(user1)){
-        Loan* loan1 = stPtr->requestLoan(book2,Cart.size());
-        Loan* loan2 = stPtr->requestLoan(book1,Cart.size());
-        Loan* loan3 = stPtr->requestLoan(book3,Cart.size());
-        Loan* loan4 = stPtr->requestLoan(book4,Cart.size());
-
-        Librarian* lib = new Librarian();
-
-        lib->processLoanRequest(loan1, true);
-        lib->processLoanRequest(loan2, false);
-        lib->processLoanRequest(loan3, true);
-        lib->processLoanRequest(loan4, true);
-
-        library_loans.push_back(loan1);
-        library_loans.push_back(loan2);
-        library_loans.push_back(loan3);
-        library_loans.push_back(loan4);
-
-        dbManager.insertLoan(loan1);
-        dbManager.insertLoan(loan2);
-        dbManager.insertLoan(loan3);
-        dbManager.insertLoan(loan4);
-
-
-        Librarian* lib = new Librarian();
-
-        lib->processLoanRequest(loan1, true);
-        lib->processLoanRequest(loan2, false);
-        lib->processLoanRequest(loan3, true);
-    }
-    dbManager.insertUser(user1);
-    dbManager.insertUser(user2);
-    dbManager.exportUsers(library_users); // NOT WORKING YET
+//    ex_library_books = library_books;
+//
+//    dbManager.displayBooks();
+// //   dbManager.disp();
+//    dbManager.importBooks(library_books);
+//    if(Student* stPtr = dynamic_cast<Student*>(user1)){
+//        Loan* loan1 = stPtr->requestLoan(book2,Cart.size());
+//        Loan* loan2 = stPtr->requestLoan(book1,Cart.size());
+//        Loan* loan3 = stPtr->requestLoan(book3,Cart.size());
+//        Loan* loan4 = stPtr->requestLoan(book4,Cart.size());
+//
+//        Librarian* lib = new Librarian();
+//
+//        lib->processLoanRequest(loan1, true);
+//        lib->processLoanRequest(loan2, false);
+//        lib->processLoanRequest(loan3, true);
+//        lib->processLoanRequest(loan4, true);
+//
+//        library_loans.push_back(loan1);
+//        library_loans.push_back(loan2);
+//        library_loans.push_back(loan3);
+//        library_loans.push_back(loan4);
+//
+//        dbManager.insertLoan(loan1);
+//        dbManager.insertLoan(loan2);
+//        dbManager.insertLoan(loan3);
+//        dbManager.insertLoan(loan4);
+//
+//
+//    }
+//    dbManager.insertUser(user1);
+//    dbManager.insertUser(user2);
+//    dbManager.importUsers(library_users); // NOT WORKING YET
     //dbManager.getLoanedBooksByUser("stu-101285");
     //dbManager.tmep();
+    dbManager.importLoans(library_loans);
     memberMenu();
     //libMenu();
 

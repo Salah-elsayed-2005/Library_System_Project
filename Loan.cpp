@@ -28,6 +28,50 @@ void Loan::set_dueDate(){
     due_date.stringDate = std::to_string(due_date.day)+"-"+std::to_string(due_date.month)+"-"+std::to_string(due_date.year);
 
 }
+void Loan::set_borrowingDate(string dateInString) {// format of the string: 25-4-2024
+    string buffer = ""; //
+    int dashCount = 0;
+    for (int i=0;dateInString[i] <= dateInString.size();i++){
+        if(dateInString[i] == '-' || dateInString[i] == '\0') {
+            if(dashCount == 0) {
+                borrowing_date.day = stoi(buffer); // there are two cases 1- if the string imported from database is imported in a wrong format
+                dashCount++;
+            }
+            else if(dashCount == 1) {
+                borrowing_date.month = stoi(buffer);
+                dashCount++;
+            }
+            else if(dashCount == 2){
+                borrowing_date.year = stoi(buffer);
+            }
+            buffer = "";
+        }
+        else
+            buffer += dateInString[i];
+    }
+}
+void Loan::set_dueDate(string dateInString) {// format of the string: 25-4-2024
+    string buffer = "";
+    int dashCount = 0;
+    for (int i=0;dateInString[i] <= dateInString.size();i++){
+        if(dateInString[i] == '-' || dateInString[i] == '\0') {
+            if(dashCount == 0) {
+                due_date.day = stoi(buffer); //try it for the last time okay
+                dashCount++;
+            }
+            else if(dashCount == 1) {
+                due_date.month = stoi(buffer);
+                dashCount++;
+            }
+            else if(dashCount == 2){
+                due_date.year = stoi(buffer);
+            }
+            buffer = "";
+        }
+        else
+            buffer += dateInString[i];
+    }
+}
 //Methods
 void Loan::generateReport(){
     cout << "-------Loan Report-------" << endl;

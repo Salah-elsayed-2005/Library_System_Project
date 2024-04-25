@@ -37,6 +37,8 @@ public:
     //void set_borrower();
     void set_borrowingDate();
     void set_dueDate();
+    void set_borrowingDate(string);
+    void set_dueDate(string);
 
     //Methods
     void generateReport();

@@ -27,6 +27,7 @@ void Date::getCurrentData() {               // get the current date
     year = now->tm_year + 1900;
     month = now->tm_mon + 1;
     day = now->tm_mday;
+    stringDate = std::to_string(day)+"-"+std::to_string(month)+"-"+std::to_string(year);
 }
 
 short Date::getDifference(short D, short M, short Y) {     //calculate the difference between a given date and the current date
@@ -76,7 +77,11 @@ Date Date::addDate(Date D, short daysToAdd) {   //add some days to a given date 
     D.day=daysToAdd;
     return D;
 }
-
+void Date::operator= (const Date& obj){
+    this->day = obj.day;
+    this->month = obj.month;
+    this->year = obj.year;
+}
 string Date::getDateString(){
     return stringDate;
 }
