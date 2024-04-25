@@ -325,9 +325,12 @@ void DatabaseManager::exportUsers(vector<User*>& user_list) {
     for (User* user : user_list) {
         Member* member = dynamic_cast<Member*>(user);
         if (member) {
-            std::string temo =member->getId().str2string();
             vector<Book*> loanedBooks = getLoanedBooksByUser(member->getId().str2string());
             member->setCheckedOutBooks(loanedBooks);
+
+
+            vector<Loan*> loanData = getLoanedDataByUser(member->getId().str2string());
+            member->setMemberLoans(loanData);
         }
     }
 }
@@ -358,9 +361,7 @@ vector<Book*> DatabaseManager::getLoanedBooksByUser(const std::string& userId) {
 
     auto callback = [](void* data, int argc, char** argv, char** azColName) -> int {
         vector<Book*>* loanedBooks = static_cast<vector<Book*>*>(data);
-        std::string dbug = argv[0];
         if (argc == 7) {
-            std::string dbugi = argv[0];
             // Create a new Book object and add it to the vector
             //  Book* book = new Book(argv[0], argv[1], argv[2], std::stoi(argv[3]), argv[4], argv[5], std::stoi(argv[6]));
             loanedBooks->push_back(getBookPtr(argv[0],ex_library_books));
@@ -374,7 +375,27 @@ vector<Book*> DatabaseManager::getLoanedBooksByUser(const std::string& userId) {
 }
 
 
+// TODO: Continue
+vector<Loan*> DatabaseManager::getLoanedDataByUser(const std::string& userId){
+    vector<Loan*> loaningMembers;
 
+    std::string sql = "SELECT ISBN, BorrowingDate, DueDate "
+                      "FROM Loans "
+                      "WHERE ID = '" + userId + "' AND Status = 1;";
+
+    auto callback = [](void* data, int argc, char** argv, char** azColName) -> int {
+        vector<Member*>* member = static_cast<vector<Member*>*>(data);
+        if (argc == 7) {
+            // Create a new Book object and add it to the vector
+            member->push_back(getMemberPtr(argv[0],ex_library_users));
+        }
+        return 0;
+    };
+
+    execute_sql(sql, callback, &loaningMembers);
+
+    return loaningMembers;
+}
 
 
 Member* getMemberPtr(str id, vector<User*> & user_list){
@@ -385,6 +406,7 @@ Member* getMemberPtr(str id, vector<User*> & user_list){
     }
     return nullptr;
 }
+
 Book* getBookPtr(str isbn, vector<Book*> & book_list){ // ex_library_books
     for(auto &it : book_list){
         if(it->getIsbn() == isbn){
@@ -394,4 +416,11 @@ Book* getBookPtr(str isbn, vector<Book*> & book_list){ // ex_library_books
     return nullptr;
 }
 
+void DatabaseManager::tmep(){
+    std::string sql =
+                      "SELECT Books.* FROM Books INNER JOIN Loans ON Books.ISBN = Loans.ISBN WHERE Loans.ID = 'stu-101285';";
+    cout << "IIIIIIIIIIIIIIIIIIIIIIIIIIII"<< endl;
+    execute_sql(sql, callback);
+    cout << endl;
+}
 

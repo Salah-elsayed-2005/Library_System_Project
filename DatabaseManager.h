@@ -35,8 +35,12 @@ public:
     void searchBooks(const std::string& attribute, const std::string& value);
     void decrementBookQuantity(const std::string& isbn);
     vector<Book*> getLoanedBooksByUser(const std::string& userId);
+    vector<Loan*> getLoanedDataByUser(const std::string& userId);
     void boomboom();
     static int userCallback(void *data, int argc, char **argv, char **azColName);
+
+    // temp
+    void tmep();
 
 private:
     sqlite3* db;
