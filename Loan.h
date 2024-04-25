@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include "User.h"
 #include "Str.h"
 #include "Book.h"
@@ -7,6 +8,8 @@
 #include <ctime>
 
 using namespace OurBook;
+using namespace std;
+
 
 
 
