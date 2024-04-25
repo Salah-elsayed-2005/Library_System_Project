@@ -76,7 +76,7 @@ int main() {
 //
 
 
-
+    importFromDB();
     checkforoverdues();// this function will be called whenever the program runs and will check if there is an overdue on any loan
 
 //    student.setName("Ziad");
@@ -165,7 +165,8 @@ int main() {
     memberMenu();
     //libMenu();
 
-
+    exportToDB();
+    free_vectors();
     return 0;
 }
 
