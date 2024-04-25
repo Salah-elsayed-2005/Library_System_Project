@@ -18,9 +18,6 @@ using namespace std;
 using namespace OurBook;
 
 vector<Book*> library_books; // Assuming you have a vector to store Book objects
-
-
-
 vector<User*> library_users;
 vector<Loan*> library_loans;
 
@@ -63,6 +60,12 @@ void checkforoverdues();
 void returnbook();
 Member* checktype(str);
 
+
+vector<Book*> ex_library_books(library_books);
+vector<User*> ex_library_users(library_users);
+vector<Loan*> ex_library_loans(library_loans);
+
+
 bool endOfProgram=false;
 bool backToTheMainMenu=false;
 
@@ -76,7 +79,6 @@ int main() {
     dbManager.insertSampleData();
     dbManager.insertBook("9780132350884", "Effective C++", "Scott Meyers", 2005, "Programming", true, 10);
     dbManager.displayBooks();
-    dbManager.boomboom();
 
 
 
@@ -98,6 +100,7 @@ int main() {
     library_users.push_back(user1);
     library_users.push_back(user2);
     library_users.push_back(user3);
+
 
     //User* user = login();
 
@@ -141,8 +144,8 @@ int main() {
         lib->processLoanRequest(loan3, true);
     }
     dbManager.insertUser(user1);
-    dbManager.boomboom();
-
+    dbManager.insertUser(user2);
+    dbManager.exportUsers(library_users); // NOT WORKING YET
     memberMenu();
     //libMenu();
 
@@ -711,3 +714,8 @@ Member* checktype(str id) {
         return member;
     }
 }
+
+
+
+
+Book* getBookPtr(str ISBN);

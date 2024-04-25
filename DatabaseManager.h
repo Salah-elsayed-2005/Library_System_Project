@@ -29,13 +29,17 @@ public:
     void exportBooks(vector<Book*> & book_list);
     void exportUsers(vector<User*> &user_list);
     void exportLoans(vector<Loan*> &loan_list);
+    void setCheckedOutBooks(Member* member);
+    void setMemberLoans(Member* member);
 
     void searchBooks(const std::string& attribute, const std::string& value);
     void decrementBookQuantity(const std::string& isbn);
+    vector<Book*> getLoanedBooksByUser(const std::string& userId);
     void boomboom();
+    static int userCallback(void *data, int argc, char **argv, char **azColName);
 
 private:
-    sqlite3* db{};
+    sqlite3* db;
 
     static int callback(void *NotUsed, int argc, char **argv, char **azColName);
     int execute_sql(const std::string& sql, int (*callback)(void*,int,char**,char**) = nullptr, void* data = nullptr);

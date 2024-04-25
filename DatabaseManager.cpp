@@ -11,6 +11,13 @@
 
 using namespace OurBook;
 
+extern vector<Book*> ex_library_books;
+extern vector<User*> ex_library_users;
+extern vector<Loan*> ex_library_loans;
+
+Member* getMemberPtr(str, vector<User*> &);
+Book* getBookPtr(str, vector<Book*> &);
+
 DatabaseManager::DatabaseManager(const std::string& databaseName) {
     if (sqlite3_open(databaseName.c_str(), &db) != SQLITE_OK) {
         std::cerr << "Error opening database: " << sqlite3_errmsg(db) << std::endl;
@@ -230,19 +237,106 @@ void DatabaseManager::exportBooks(vector<Book*> &book_list) {
     execute_sql(sql, callback, &book_list);
 }
 
+/*void DatabaseManager::exportUsers(vector<User*>& user_list) {
+    // Clear existing users in the list
+    for (auto user : user_list) {
+        delete user;  // Proper memory management
+    }
+    user_list.clear();
 
-void DatabaseManager::exportUsers(vector<User*> &user_list){
-    for(0 to end of table){
-        if(id prefix == stu-){
-            Student new_student(id, name, password, member books, member loans, overdue fines);
-            User* new_user = new
+    // SQL query to fetch all users
+    std::string sql = "SELECT ID, Name, Password, Fines FROM Users;";
+    auto callback = [this](void* data, int argc, char** argv, char** azColName) -> int {
+        vector<User*>* userList = static_cast<vector<User*>*>(data);
+        if (argc == 4) {
+            std::string id = argv[0];
+            std::string name = argv[1];
+            std::string password = argv[2];
+            float fines = std::stof(argv[3]);
+
+            User* user = nullptr;
+            if (id.find("sta-") == 0) {
+                user = new Staff(name, id, password);
+            } else if (id.find("fac-") == 0) {
+                user = new Faculty(name, id, password);
+            } else if (id.find("stu-") == 0) {
+                user = new Student(name, id, password);
+            } else if (id.find("lib-") == 0) {
+                user = new Librarian(name, id, password);
+            }
+
+            if (user) {
+                dynamic_cast<Member*>(user)->setOverdueFines(fines);
+                userList->push_back(user);
+            }
+        }
+        return 0;
+    };
+
+    execute_sql(sql, callback, &user_list);
+
+    // After fetching all users, get their loaned books
+    for (User* user : user_list) {
+        Member* member = dynamic_cast<Member*>(user);
+        if (member) {
+            vector<Book*> loanedBooks = getLoanedBooksByUser(member->getId().str2string());  // Convert str to std::string if needed
+            member->setCheckedOutBooks(loanedBooks);  // Make sure this function takes a vector by value or modifies it properly
+        }
+    }
+}*/
+int DatabaseManager::userCallback(void *data, int argc, char **argv, char **azColName) {
+    vector<User*>* userList = static_cast<vector<User*>*>(data);
+    if (argc == 4) {
+        std::string id = argv[0];
+        std::string name = argv[1];
+        std::string password = argv[2];
+        float fines = std::stof(argv[3]);
+
+        User* user = nullptr;
+        if (id.find("sta-") == 0) {
+            user = new Staff(name, id, password);
+        } else if (id.find("fac-") == 0) {
+            user = new Faculty(name, id, password);
+        } else if (id.find("stu-") == 0) {
+            user = new Student(name, id, password);
+        } else if (id.find("lib-") == 0) {
+            user = new Librarian(name, id, password);
+        }
+
+        if (user) {
+            dynamic_cast<Member*>(user)->setOverdueFines(fines);
+            userList->push_back(user);
+        }
+    }
+    return 0;
+}
+
+void DatabaseManager::exportUsers(vector<User*>& user_list) {
+    // Clear existing users in the list
+   // for (auto user : user_list) {
+     //   delete user;  // Proper memory management
+    //}
+    user_list.clear();
+
+    std::string sql = "SELECT ID, Name, Password, Fines FROM Users;";
+    execute_sql(sql, userCallback, &user_list);
+
+    // After fetching all users, get their loaned books
+    for (User* user : user_list) {
+        Member* member = dynamic_cast<Member*>(user);
+        if (member) {
+            std::string temo =member->getId().str2string();
+            vector<Book*> loanedBooks = getLoanedBooksByUser(member->getId().str2string());
+            member->setCheckedOutBooks(loanedBooks);
         }
     }
 }
 
 
-void DatabaseManager::exportLoans(vector<Loan*> &loan_list){
 
+
+void DatabaseManager::exportLoans(vector<Loan*> &loan_list){
+    getMemberPtr("stu-22101195", ex_library_users);
 }
 
 
@@ -251,3 +345,53 @@ void DatabaseManager::boomboom() {
     std::cout << "Clearing all Tables..." << std::endl;
     execute_sql(sql);
 }
+
+
+// Method to get all loaned books by user and return it as a vector of type Book
+vector<Book*> DatabaseManager::getLoanedBooksByUser(const std::string& userId) {
+    vector<Book*> loanedBooks;
+
+    std::string sql = "SELECT b.ISBN, b.Title, b.Author, b.PublicationYear, b.Genre, b.Availability, b.Quantity "
+                      "FROM Books b "
+                      "JOIN Loans l ON b.ISBN = l.ISBN "
+                      "WHERE l.ID = '" + userId + "' AND l.Status = 1;";
+
+    auto callback = [](void* data, int argc, char** argv, char** azColName) -> int {
+        vector<Book*>* loanedBooks = static_cast<vector<Book*>*>(data);
+        std::string dbug = argv[0];
+        if (argc == 7) {
+            std::string dbugi = argv[0];
+            // Create a new Book object and add it to the vector
+            //  Book* book = new Book(argv[0], argv[1], argv[2], std::stoi(argv[3]), argv[4], argv[5], std::stoi(argv[6]));
+            loanedBooks->push_back(getBookPtr(argv[0],ex_library_books));
+        }
+        return 0;
+    };
+
+    execute_sql(sql, callback, &loanedBooks);
+
+    return loanedBooks;
+}
+
+
+
+
+
+Member* getMemberPtr(str id, vector<User*> & user_list){
+    for(auto &it : user_list){
+        if(it->getId() == id){
+            return dynamic_cast<Member*>(it);
+        }
+    }
+    return nullptr;
+}
+Book* getBookPtr(str isbn, vector<Book*> & book_list){ // ex_library_books
+    for(auto &it : book_list){
+        if(it->getIsbn() == isbn){
+            return it;
+        }
+    }
+    return nullptr;
+}
+
+

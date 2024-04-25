@@ -16,7 +16,7 @@ using namespace OurBook;
 
 class Loan{
 private:
-    Member* borrower ;
+    Member* borrower;
     Book* borrowed_book;
     Date borrowing_date;
     Date due_date;
@@ -34,6 +34,7 @@ public:
 
     //Setters
     void set_status(bool);
+    //void set_borrower();
     void set_borrowingDate();
     void set_dueDate();
 
