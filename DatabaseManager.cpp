@@ -49,7 +49,7 @@ int DatabaseManager::execute_sql(const std::string& sql, int (*callback)(void*,i
     return result;
 }
 
-void DatabaseManager::createTable() {
+void DatabaseManager::createTables() {
     // Creating Books table
     std::string sqlBooks = "CREATE TABLE IF NOT EXISTS Books ("
                            "ISBN VARCHAR(20) PRIMARY KEY,"
@@ -176,6 +176,19 @@ void DatabaseManager::searchBooks(const std::string& attribute, const std::strin
     execute_sql(sql, callback);
 }
 
+void DatabaseManager::searchUsers(const std::string& attribute, const std::string& value) {
+    std::string sql = "SELECT * FROM Users WHERE " + attribute + " LIKE '%" + value + "%';";
+    std::cout << "Searching for books with " << attribute << " like " << value << ":" << std::endl;
+    execute_sql(sql, callback);
+}
+
+void DatabaseManager::searchLoans(const std::string& attribute, const std::string& value) {
+    std::string sql = "SELECT * FROM Loans WHERE " + attribute + " LIKE '%" + value + "%';";
+    std::cout << "Searching for books with " << attribute << " like " << value << ":" << std::endl;
+    execute_sql(sql, callback);
+}
+
+
 void DatabaseManager::decrementBookQuantity(const std::string& isbn) {
     // First, check the current quantity
     std::string checkQuantitySql = "SELECT Quantity FROM Books WHERE ISBN = '" + isbn + "';";
@@ -236,6 +249,9 @@ void DatabaseManager::exportBooks(vector<Book*> &book_list) {
     std::cout << "Exporting books..." << std::endl;
     execute_sql(sql, callback, &book_list);
 }
+
+
+
 
 /*void DatabaseManager::exportUsers(vector<User*>& user_list) {
     // Clear existing users in the list
@@ -329,8 +345,8 @@ void DatabaseManager::exportUsers(vector<User*>& user_list) {
             member->setCheckedOutBooks(loanedBooks);
 
 
-            vector<Loan*> loanData = getLoanedDataByUser(member->getId().str2string());
-            member->setMemberLoans(loanData);
+            /*vector<Loan*> loanData = getLoanedDataByUser(member->getId().str2string());
+            member->setMemberLoans(loanData);*/
         }
     }
 }
@@ -339,11 +355,35 @@ void DatabaseManager::exportUsers(vector<User*>& user_list) {
 
 
 void DatabaseManager::exportLoans(vector<Loan*> &loan_list){
-    getMemberPtr("stu-22101195", ex_library_users);
-}
+        loan_list.clear();
+
+        std::string sql = "SELECT ID, ISBN, BorrowingDate, DueDate, Status FROM Loans;";
+        auto callback = [](void* data, int argc, char** argv, char** azColName) -> int {
+            vector<Loan*>* loanList = static_cast<vector<Loan*>*>(data);
+            if (argc == 5) {
+                std::string id = argv[0];
+                std::string isbn = argv[1];
+                std::string borrowingDate = argv[2];
+                std::string dueDate = argv[3];
+                bool status = std::stoi(argv[4]) != 0;
+
+                Loan* loan = new Loan (getMemberPtr(id,ex_library_users), getBookPtr(isbn,ex_library_books));
+
+                loan->set_borrowingDate(borrowingDate);
+                loan->set_dueDate(dueDate); // format of the string: 25-4-2024
+                loan->set_status(status);
 
 
-void DatabaseManager::boomboom() {
+            }
+            return 0;
+        };
+
+        std::cout << "Exporting Loans..." << std::endl;
+        execute_sql(sql, callback, &loan_list);
+    }
+
+
+    void DatabaseManager::boomboom() {
     std::string sql ="DELETE FROM Books;DELETE FROM Users;DELETE FROM Loans;";
     std::cout << "Clearing all Tables..." << std::endl;
     execute_sql(sql);
@@ -375,8 +415,8 @@ vector<Book*> DatabaseManager::getLoanedBooksByUser(const std::string& userId) {
 }
 
 
-// TODO: Continue
-vector<Loan*> DatabaseManager::getLoanedDataByUser(const std::string& userId){
+// Incomplete
+/*vector<Loan*> DatabaseManager::getLoanedDataByUser(const std::string& userId){
     vector<Loan*> loaningMembers;
 
     std::string sql = "SELECT ISBN, BorrowingDate, DueDate "
@@ -395,7 +435,7 @@ vector<Loan*> DatabaseManager::getLoanedDataByUser(const std::string& userId){
     execute_sql(sql, callback, &loaningMembers);
 
     return loaningMembers;
-}
+}*/
 
 
 Member* getMemberPtr(str id, vector<User*> & user_list){

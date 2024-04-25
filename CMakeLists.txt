@@ -16,6 +16,9 @@ add_executable(Library_System_Project main.cpp
         User.cpp
         DatabaseManager.cpp
         Date.cpp
+        Functionalities.h
+        Functionalities.h
+        Functionalities.cpp
 )
 
 find_package (SQLite3)
