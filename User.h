@@ -99,6 +99,7 @@ public:
     /* method to search for member in library users based on id */
     Member* Searchformember(vector<User*>,str);
 
+
     /******************** Operations on Loans ****************/
 
     /* function to approve or decline loan requests made by members */

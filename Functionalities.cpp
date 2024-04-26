@@ -14,11 +14,8 @@ const std::string CLEAR_COMMAND = "clear";
 #endif
 bool endOfProgram= false;
 bool backToTheMainMenu=false;
-extern Librarian lib;
-extern Student student;
-extern Staff staff;
-extern Faculty faculty;
-
+Librarian lib;
+Student student;
 bool checkBack(){
     short back=1;
     do {
