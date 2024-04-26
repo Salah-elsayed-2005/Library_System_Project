@@ -8,14 +8,19 @@
 
 using namespace OurBook;
 
+// The external vectors that holds references to books, users, and loans
 vector<Book*> ex_library_books;
 vector<User*> ex_library_users;
 vector<Loan*> ex_library_loans;
 
 
+// Function to get the pointer that points to the member by passing the member ID
 Member* getMemberPtr(str, vector<User*> &);
+
+// Function to get the pointer that points to the book by passing the book's ISBN
 Book* getBookPtr(str, vector<Book*> &);
 
+//  Open is the database file or creates it if not existing
 DatabaseManager::DatabaseManager(const std::string& databaseName) {
     if (sqlite3_open(databaseName.c_str(), &db) != SQLITE_OK) {
         std::cerr << "Error opening database: " << sqlite3_errmsg(db) << std::endl;
