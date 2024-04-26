@@ -13,7 +13,9 @@ Date Loan::getBorrowDate() { return borrowing_date; }
 Date Loan::getDueDate() { return due_date;}
 //Setters
 void Loan::set_status(bool status) { loan_status = status; }
-void Loan::set_borrowingDate() {borrowing_date.getCurrentData();}
+void Loan::set_borrowingDate() {borrowing_date.getCurrentData();
+
+}
 void Loan::set_dueDate(){ // sets due date based on the type of the member using dynamic_cast as each member has a max number of borrowing days
     if(dynamic_cast<Student*>(borrower)){
         due_date = due_date.addDate(borrowing_date, 7);
@@ -49,6 +51,7 @@ void Loan::set_borrowingDate(const string& dateInString) { // extract the date i
             buffer += dateInString[i]; // Accumulate digits in buffer
         }
     }
+    borrowing_date.stringDate = std::to_string(borrowing_date.day)+"-"+std::to_string(borrowing_date.month)+"-"+std::to_string(borrowing_date.year);
 }
 
 void Loan::set_dueDate(const string& dateInString) { // extract the date in the string and assign it to the borrowing date day, month, year
@@ -73,6 +76,7 @@ void Loan::set_dueDate(const string& dateInString) { // extract the date in the 
             buffer += dateInString[i]; // Accumulate digits in buffer
         }
     }
+    due_date.stringDate = std::to_string(due_date.day)+"-"+std::to_string(due_date.month)+"-"+std::to_string(due_date.year);
 }
 
 //Methods

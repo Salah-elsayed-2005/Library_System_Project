@@ -97,8 +97,10 @@ void Member::addToCheckedOutBooks(Book* &book) {
 void Member::removeFromCheckedOutBooks(Book* &book){
     for (auto it = checked_out_books.begin(); it != checked_out_books.end(); it++)
     {
-        if((*it) == book)
+        if((*it) == book) {
             checked_out_books.erase(it);
+            return;
+        }
     }
 }
 

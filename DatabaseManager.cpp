@@ -476,6 +476,7 @@ void DatabaseManager::importLoans(vector<Loan*> &loan_list){
 
             Loan *loan = new Loan(getMemberPtr(id, ex_library_users), getBookPtr(isbn, ex_library_books));
             loan->set_borrowingDate(borrowingDate);
+
             loan->set_dueDate(dueDate);
             loan->set_status(status);
             loan_list->push_back(loan);

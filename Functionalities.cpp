@@ -19,8 +19,6 @@ Librarian lib;
 Student student;
 // 2 Global variables are used to access methods that are the same for all users/members like Search
 
-
-
 bool checkBack(){
     short back=1;
     do {
@@ -60,7 +58,7 @@ void returnbook() {
     str id;
     cout<<"Please enter your ID: ";
     cin>>id;
-    if (lib.Searchformember(library_users,id)->getCheckedOutBooks().empty()) {
+    if (!lib.Searchformember(library_users,id)->getCheckedOutBooks().empty()) {
         if (lib.Searchformember(library_users, id)) { // make sure user exists
             Member *member = lib.Searchformember(library_users, id);
             vector<Book *> checkedoutbooks = lib.Searchformember(library_users, id)->getCheckedOutBooks();
