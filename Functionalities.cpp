@@ -8,7 +8,6 @@ extern vector<Loan*> library_loans;
 extern vector<Book*> Search_results; // Defined for every search the user needs and will be cleared after each search
 extern vector<Book*> Cart;
 
-
 #if defined(_WIN32) || defined(_WIN64)
 const std::string CLEAR_COMMAND = "cls";
 #else
