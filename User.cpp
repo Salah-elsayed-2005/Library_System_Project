@@ -312,6 +312,7 @@ void Librarian::processLoanRequest(Loan* &loan, bool response){
     }
     else {
         loan->set_status(false);
+        book->setQuantity(book->getQuantity()+1);
     }
 }
 
