@@ -40,6 +40,7 @@ void importFromDB(){
     ex_library_users = library_users;
 
     dbManager.importLoans(library_loans);
+    ex_library_loans=library_loans;
 }
 
 void exportToDB(){
@@ -79,22 +80,22 @@ int main() {
     importFromDB();
     checkforoverdues();// this function will be called whenever the program runs and will check if there is an overdue on any loan
 
-//    student.setName("Ziad");
-//    student.setId("101285");
-//    student.setPassword("242004");
-//    staff.setName("Marwan");
-//    staff.setId("3akeedo");
-//    staff.setPassword("<reham>");
-//    faculty.setName("Elshabeeh");
-//    faculty.setId("69420");
-//    faculty.setPassword("password");
-//    User *user1=&student;
-//    User *user2=&staff;
-//    User *user3=&faculty;
-//    library_users.push_back(user1);
-//    library_users.push_back(user2);
-//    library_users.push_back(user3);
-
+  /*  student.setName("Ziad");
+    student.setId("101285");
+    student.setPassword("242004");
+    staff.setName("Marwan");
+    staff.setId("3akeedo");
+    staff.setPassword("<reham>");
+    faculty.setName("Elshabeeh");
+    faculty.setId("69420");
+    faculty.setPassword("password");
+    User *user1=&student;
+    User *user2=&staff;
+    User *user3=&faculty;
+    library_users.push_back(user1);
+    library_users.push_back(user2);
+    library_users.push_back(user3);
+*/
 
     //User* user = login();
 
@@ -125,8 +126,8 @@ int main() {
 //    dbManager.insertBook(book4);
 //    dbManager.insertBook(book1);
 //
-//    ex_library_books = library_books;
-//    ex_library_users = library_users;
+    //  ex_library_books = library_books;
+      //ex_library_users = library_users;
 //
 //    dbManager.displayBooks();
 //    dbManager.disp();
@@ -162,9 +163,9 @@ int main() {
 //    //dbManager.getLoanedBooksByUser("stu-101285");
 //    //dbManager.tmep();
 //   dbManager.importLoans(library_loans);
+
     memberMenu();
     //libMenu();
-
     exportToDB();
     free_vectors();
     return 0;

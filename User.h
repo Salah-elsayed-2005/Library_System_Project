@@ -115,7 +115,7 @@ public:
 /****************************************************************************************/
 
 class Member : public User {        /* An abstract class represents the borrowing member of the library */
-                                    /* Inherits the login information from the class User */
+    /* Inherits the login information from the class User */
 protected:
     /****** attributes ******/
     vector<Book*> checked_out_books;    /* books borrowed by member */
@@ -158,6 +158,7 @@ public:                             /* inherits from Member class */
     /* constructors and destructors */
     Student();
     Student(str, str, str);
+    Student(Member*);
     ~Student() override{}
 
     void setId(str i) override; /* sets User id with prefix stu */
@@ -176,6 +177,7 @@ public:
     /* constructors and destructors */
     Faculty();
     Faculty(str, str, str);
+    Faculty(Member*);
     ~Faculty() override{}
 
     void setId(str i) override; /* sets User id with prefix fac */
@@ -194,6 +196,7 @@ public:
     /* constructors and destructors */
     Staff();
     Staff(str, str, str);
+    Staff(Member*);
     ~Staff() override{}
 
     void setId(str i) override; /* sets User id with prefix sta */

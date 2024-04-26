@@ -315,6 +315,7 @@ void Librarian::printPendingLoans(vector<Loan*> loans) const {
 /************* Student Methods **********/
 Student::Student():Member(){}
 Student::Student(str n, str i, str p):Member(n, i, p){}
+Student::Student(Member*member){name=member->getName();id=member->getId();password=member->getPassword();overdue_fines=member->getOverdueFines();checked_out_books=member->getCheckedOutBooks();}
 
 void Student::setId(str i) {
     str prefix = "stu-";
@@ -376,6 +377,7 @@ void Student::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
 /************* Faculty Methods **********/
 Faculty::Faculty():Member(){}
 Faculty::Faculty(str n, str i, str p):Member(n, i, p){}
+Faculty::Faculty(Member*member){name=member->getName();id=member->getId();password=member->getPassword();overdue_fines=member->getOverdueFines();checked_out_books=member->getCheckedOutBooks();}
 
 void Faculty::setId(str i) {
     str prefix = "fac-";
@@ -436,6 +438,7 @@ void Faculty::returnBorrowedBook(Book* &book, vector<Loan*> &loans){
 /************* Staff Methods **********/
 Staff::Staff():Member(){}
 Staff::Staff(str n, str i, str p):Member(n, i, p){}
+Staff::Staff(Member*member){name=member->getName();id=member->getId();password=member->getPassword();overdue_fines=member->getOverdueFines();checked_out_books=member->getCheckedOutBooks();}
 
 void Staff::setId(str i) {
     str prefix = "sta-";

@@ -29,7 +29,6 @@ void viewloans();
 void processloans();
 void checkforoverdues();
 void returnbook();
-Member* checktype(str);
 User* login();
 void memberMenu();
 void libMenu();
