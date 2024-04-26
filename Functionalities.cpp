@@ -305,7 +305,7 @@ void addToCart(){
 }
 void loanrequest(str id){
     Member* member = lib.Searchformember(library_users,id); //get the user
-    Loan* new_loan =new Loan(member,Cart.front());
+    Loan* new_loan ;
     new_loan= member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
     library_loans.push_back(new_loan); // add new_loan object to library_loans vector in main to be checked later by librarian
     Cart.erase(Cart.begin()); // remove book from cart to checkout
@@ -348,12 +348,19 @@ void payFines(){
         cout<<"\nEnter your ID : ";
         cin>>id;
     }while(!lib.Searchforuser(library_users,id));
-
-    float toPay;
-    cout<<"Enter the amount you want to pay : ";
-    cin>>toPay;
-    lib.Searchformember(library_users,id)->setOverdueFines(toPay);
-    cout<<"Paid successfully-)\n";
+    if ((dynamic_cast<Member*>(lib.Searchforuser(library_users,id)))->getOverdueFines()) {
+        cout<<"You need to pay "<<(dynamic_cast<Member*>(lib.Searchforuser(library_users,id)))->getOverdueFines()<<endl;
+        float toPay;
+        cout << "Enter the amount you want to pay : ";
+        cin >> toPay;
+        toPay=(dynamic_cast<Member*>(lib.Searchforuser(library_users,id)))->getOverdueFines() - toPay;
+        if (toPay<0)
+          toPay=0;
+        lib.Searchformember(library_users, id)->setOverdueFines(toPay);
+        cout << "Paid successfully-)\n";
+    }
+    else
+        cout<<"\nThere is no fines to pay "<<endl;
     checkClose();
 }
 void memberMenu(){  //menu for members
