@@ -191,6 +191,7 @@ void searchByISBN(){
         Search_results.push_back(student.searchForBook_isbn(library_books, isbn));
         Search_results.at(0)->printData();
     }
+    Search_results={};
 }
 void searchByYear(){
     system(CLEAR_COMMAND.c_str());
@@ -205,6 +206,8 @@ void searchByYear(){
             it->printData();
         }
     }
+    Search_results={};
+
 }
 void searchByTitle(){
     system(CLEAR_COMMAND.c_str());
@@ -217,6 +220,7 @@ void searchByTitle(){
         Search_results.push_back( student.searchForBook_title(library_books, title));
         Search_results.at(0)->printData();
     }
+    Search_results={};
 }
 void searchByAuthor(){
     system(CLEAR_COMMAND.c_str());
@@ -224,9 +228,14 @@ void searchByAuthor(){
     cout << "Enter Author: ";
     cin >> author;
     Search_results = student.searchForBook_author(library_books, author);
-    for (auto it:Search_results) {
-        it->printData();
+    if(Search_results.empty())
+        cout<<"\nNo results\n";
+    else {
+        for (auto it: Search_results) {
+            it->printData();
+        }
     }
+    Search_results={};
 }
 void searchByGenre(){
     system(CLEAR_COMMAND.c_str());
@@ -234,9 +243,14 @@ void searchByGenre(){
     cout << "Enter Genre: ";
     cin >> genre;
     Search_results = student.searchForBook_genre(library_books, genre);
-    for (auto it:Search_results) {
-        it->printData();
+    if(Search_results.empty())
+        cout<<"\nNo results\n";
+    else {
+        for (auto it: Search_results) {
+            it->printData();
+        }
     }
+    Search_results={};
 }
 void printLibMenu(){
     cout << "[1] Search for a book" << endl
