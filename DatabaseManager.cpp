@@ -469,8 +469,9 @@ void DatabaseManager::importLoans(vector<Loan*> &loan_list){
         if (argc == 5) {
             std::string id = argv[0];
             std::string isbn = argv[1];
-            std::string borrowingDate = argv[2];
-            std::string dueDate = argv[3];
+            // Check if argv[2] and argv[3] is not empty (not null pointer and not an empty string), if empty assign "0-0-0" to borrowingDate and/or dueDate
+            std::string borrowingDate = (argv[2] && argv[2][0] != '\0') ? argv[2] : "0-0-0";
+            std::string dueDate = (argv[3] && argv[3][0] != '\0') ? argv[3] : "0-0-0";
             bool status = std::stoi(argv[4]) != 0;
 
             Loan *loan = new Loan(getMemberPtr(id, ex_library_users), getBookPtr(isbn, ex_library_books));
