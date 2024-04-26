@@ -161,6 +161,7 @@ void DatabaseManager::insertUser(User* userPtr) {
     std::cout << "Inserting a new user record completed." << std::endl;
 }
 
+
 void insertLoan(Loan*){}
 
 void DatabaseManager::deleteBook(const std::string& isbn) {
