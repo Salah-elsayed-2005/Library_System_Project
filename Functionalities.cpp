@@ -7,6 +7,8 @@ extern vector<User*> library_users;
 extern vector<Loan*> library_loans;
 extern vector<Book*> Search_results; // Defined for every search the user needs and will be cleared after each search
 extern vector<Book*> Cart;
+
+
 #if defined(_WIN32) || defined(_WIN64)
 const std::string CLEAR_COMMAND = "cls";
 #else
@@ -16,6 +18,10 @@ bool endOfProgram= false;
 bool backToTheMainMenu=false;
 Librarian lib;
 Student student;
+// 2 Global variables are used to access methods that are the same for all users/members like Search
+
+
+
 bool checkBack(){
     short back=1;
     do {
@@ -27,6 +33,11 @@ bool checkBack(){
     }while(back!=1 && back!=2);
     return (back==2);
 }
+
+/*
+ Checkback() function is used all over the other options to check if the user wants to either go back to the previous menu or to go back to the main menu
+ It's only used of there exists a previous menu not the main menu
+ */
 bool checkClose(){
     short back=1;
     do {
@@ -38,19 +49,25 @@ bool checkClose(){
     }while(back!=1 && back!=2);
     return (back==2);
 }
+/*
+ CheckClose() function is used all over the other options to check if the user wants to either go back to the main menu or to close the program
+ It's only used of the previous menu is the main menu
+ */
+
+
 void returnbook() {
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str()); // clear page
 
     str id;
     cout<<"Please enter your ID: ";
     cin>>id;
 
-    if (lib.Searchformember(library_users,id)){
+    if (lib.Searchformember(library_users,id)){ // make sure user exists
         Member* member = lib.Searchformember(library_users,id);
         vector<Book*> checkedoutbooks = lib.Searchformember(library_users,id)->getCheckedOutBooks();
         Book* tocheck;
         int choice;
-        cout << "Search by : " << endl
+        cout << "Search by : " << endl // search for book by both its unique attributes
              << "[1] isbn" << endl
              << "[2] title : ";
         cin>>choice;
@@ -82,10 +99,12 @@ void returnbook() {
         cout<<"ID not found"<<endl;
     }
     checkClose();
-
 }
+
+
 User* login(){
-    User *toReturn;
+    system(CLEAR_COMMAND.c_str());
+    User *toReturn;// The returned user will be either member or librarian to check which menu to appear
     bool flag=false;
     do {
         str id, password;
@@ -106,14 +125,12 @@ User* login(){
             cout << "\nCheck Id or password!\n" << endl;
         }
     }while(!flag);
-
     return toReturn;
 }
 
 
 void updatepassword(){
     system(CLEAR_COMMAND.c_str());
-
     cout<<"Please Enter your ID : ";
     str id;
     cin>>id;
@@ -378,10 +395,11 @@ void updateMemberData(){
                 <<"3-Faculty"<<endl;
             cout<<"\nPlease enter your choice : ";
             cin>>type;
-            if (type>0 && type< 4)
-                lib.addMember(library_users,type);
-            else
-                cout<<"Wrong choice Please try again"<<endl;
+            if (type>0 && type< 4) {
+                lib.addMember(library_users, type);
+                cout<<"\nMember Added Successfully"<<endl;
+            }            else
+                cout<<"\nWrong choice Please try again"<<endl;
         }
         else if (choice == 2) {
             cout<<"please Enter member ID : ";
@@ -390,8 +408,8 @@ void updateMemberData(){
             if (!tosend)
                 cout<<"Member not found"<<endl;
             else {
-                lib.updateMemberId(lib.Searchformember(library_users, id));
-                cout << "Updated member ID successfully" << endl;
+                lib.removeMember(library_users,lib.Searchformember(library_users, id));
+                cout << "Member Removed Successfully" << endl;
             }
         }
         if(choice>0 && choice<5)
@@ -425,15 +443,16 @@ void updateBookData() {
         if (choice==1){
             lib.addBook(library_books);
         } else if(choice==2){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
-            Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
+            Book*tosend=new Book;
+            tosend=(lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
                 cout<<"Book not found "<<endl;
             else
                 lib.removeBook(library_books, tosend);
         }else if(choice==3){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -442,7 +461,7 @@ void updateBookData() {
                 lib.updateBookTitle(tosend);
 
         }else if (choice==4){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -451,7 +470,7 @@ void updateBookData() {
                 lib.updateBookAuthor( tosend);
 
         } else if (choice == 5){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -459,7 +478,7 @@ void updateBookData() {
             else
                 lib.updateBookISBN(  tosend);
         } else if (choice == 6){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -467,7 +486,7 @@ void updateBookData() {
             else
                 lib.updateBookGenre(  tosend);
         }else if(choice == 7){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -475,7 +494,7 @@ void updateBookData() {
             else
                 lib.updateBookQuantity(  tosend);
         } else if(choice==8){
-            cout << "Please enter Book isbn or number : ";
+            cout << "Please enter Book isbn or title : ";
             cin>>ans;
             Book*tosend= (lib.searchForBook_isbn(library_books,ans))?lib.searchForBook_isbn(library_books,ans):lib.searchForBook_title(library_books,ans);
             if (!tosend)
@@ -493,8 +512,8 @@ void diplaydata(){
     cout<<"Please Enter Id : " ;
     str id;
     cin>>id;
-    if (lib.Searchformember(library_users,id)){
-        lib.Searchformember(library_users,id)->displayInfo();
+    if (lib.Searchforuser(library_users,id)){
+        lib.Searchforuser(library_users,id)->displayInfo();
     }
     checkClose();
 }
