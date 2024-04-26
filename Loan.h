@@ -26,25 +26,29 @@ private:
     bool loan_status = false;
 
 public:
-    Loan(Member*, Book*);
+    Loan(Member*, Book*); // Parametarized constructor sets the borrower and book borrowed
     //Getters
-    Member* getBorrower();
-    Book* getBorrowedBook();
-    bool getStatus();
-    Date getBorrowDate();
-    Date getDueDate();
+    Member* getBorrower(); // return pointer to borrower object
+    Book* getBorrowedBook();// return pointer to borrowed book object
+    bool getStatus(); // get status of loan
+    Date getBorrowDate(); // return borrowing date object
+    Date getDueDate(); // return due date object
 
 
     //Setters
-    void set_status(bool);
-    //void set_borrower();
-    void set_borrowingDate();
-    void set_dueDate();
+    void set_status(bool); // set status of loan
+    void set_borrowingDate(); // set borrowing date of loan
+    void set_dueDate(); // set due date of loan
+    /*
+     over loaded functions to get the borrowing and due dates
+     form DB when importing in string format and convert it
+     to integers and set it to the borrowing and due date day, month and year
+     */
     void set_borrowingDate(const string&);
     void set_dueDate(const string&);
 
     //Methods
-    void generateReport();
+    void generateReport(); // generate a report on the loan and prints the borrower and borrowed book details with their borrowing and duedates
 };
 
 
