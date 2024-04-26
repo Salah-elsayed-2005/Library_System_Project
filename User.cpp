@@ -237,6 +237,7 @@ void Librarian::updateMemberId(Member* member ){
     cin >> new_id;
     member->setId(new_id);
 }
+
 Member* Librarian::Searchformember(vector<User*>library_users,str id){
     for (auto it:library_users) {
         if (it->getId()==id) {

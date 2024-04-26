@@ -12,6 +12,7 @@ vector<Book*> ex_library_books;
 vector<User*> ex_library_users;
 vector<Loan*> ex_library_loans;
 
+
 Member* getMemberPtr(str, vector<User*> &);
 Book* getBookPtr(str, vector<Book*> &);
 

@@ -88,6 +88,7 @@ public:
     void updateBookGenre(Book* &);
     void updateBookQuantity(Book* &);
 
+
     /******************* Opeerations on Members *****************/
     void addMember(vector<User *> &,int);   /* adds new member to the library users */
     void removeMember(vector<User *> &, Member*);   /* removes member from library users */
