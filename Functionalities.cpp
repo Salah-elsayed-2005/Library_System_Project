@@ -61,43 +61,44 @@ void returnbook() {
     str id;
     cout<<"Please enter your ID: ";
     cin>>id;
+    if (lib.Searchformember(library_users,id)->getCheckedOutBooks().empty()) {
+        if (lib.Searchformember(library_users, id)) { // make sure user exists
+            Member *member = lib.Searchformember(library_users, id);
+            vector<Book *> checkedoutbooks = lib.Searchformember(library_users, id)->getCheckedOutBooks();
+            Book *tocheck;
+            int choice;
+            cout << "Search by : " << endl // search for book by both its unique attributes
+                 << "[1] isbn" << endl
+                 << "[2] title : ";
+            cin >> choice;
 
-    if (lib.Searchformember(library_users,id)){ // make sure user exists
-        Member* member = lib.Searchformember(library_users,id);
-        vector<Book*> checkedoutbooks = lib.Searchformember(library_users,id)->getCheckedOutBooks();
-        Book* tocheck;
-        int choice;
-        cout << "Search by : " << endl // search for book by both its unique attributes
-             << "[1] isbn" << endl
-             << "[2] title : ";
-        cin>>choice;
-
-        if(choice==1){
-            str isbn;
-            cout << "Enter ISBN: ";
-            cin >> isbn;
-            if((student.searchForBook_isbn(checkedoutbooks, isbn))==nullptr)
-                cout<<"\nNo results\n";
-            else
-                tocheck = student.searchForBook_isbn(checkedoutbooks, isbn);
-        }
-        else if(choice==2) {
-            str title;
-            cout << "Enter Title : ";
-            cin >> title;
-            if((student.searchForBook_title(checkedoutbooks, title))==nullptr)
-                cout<<"\nNo results\n";
-            else
-                tocheck = student.searchForBook_title(checkedoutbooks, title);
-        }
-        for (auto book: checkedoutbooks) {
-            if(tocheck->getIsbn() == book->getIsbn() || tocheck->getTitle() == book->getTitle())
-                member->returnBorrowedBook(book, library_loans);
+            if (choice == 1) {
+                str isbn;
+                cout << "Enter ISBN: ";
+                cin >> isbn;
+                if ((student.searchForBook_isbn(checkedoutbooks, isbn)) == nullptr)
+                    cout << "\nNo results\n";
+                else
+                    tocheck = student.searchForBook_isbn(checkedoutbooks, isbn);
+            } else if (choice == 2) {
+                str title;
+                cout << "Enter Title : ";
+                cin >> title;
+                if ((student.searchForBook_title(checkedoutbooks, title)) == nullptr)
+                    cout << "\nNo results\n";
+                else
+                    tocheck = student.searchForBook_title(checkedoutbooks, title);
+            }
+            for (auto book: checkedoutbooks) {
+                if (tocheck->getIsbn() == book->getIsbn() || tocheck->getTitle() == book->getTitle())
+                    member->returnBorrowedBook(book, library_loans);
+            }
+        } else {
+            cout << "ID not found" << endl;
         }
     }
-    else{
-        cout<<"ID not found"<<endl;
-    }
+    else
+        cout<<"\nThere is no books to return "<<endl;
     checkClose();
 }
 
@@ -320,7 +321,8 @@ void addToCart(){
 }
 void loanrequest(str id){
     Member* member = lib.Searchformember(library_users,id);
-    Loan* new_loan = member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
+    Loan* new_loan =new Loan(member,Cart.front());
+    new_loan= member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
     library_loans.push_back(new_loan); // add new_loan object to library_loans vector in main to be checked later by librarian
     Cart.erase(Cart.begin()); // remove book from cart to checkout
 }
@@ -533,13 +535,12 @@ void diplaydata(){
 }
 void viewloans(){
     system(CLEAR_COMMAND.c_str());
-    short choice=1;
-    cout << "[1] View All Loan Requests"<<endl
-         << "[2] View Pending Loan Requests"<<endl;
+    short choice;
 
-    cout<<"\nPlease enter your choice : ";
-    cin>>choice;
     do {
+        system(CLEAR_COMMAND.c_str());
+        cout << "[1] View All Loan Requests"<<endl
+               << "[2] View Pending Loan Requests"<<endl;
         cout<<"\nPlease enter your choice : ";
         cin>>choice;
         if (choice == 1)

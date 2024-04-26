@@ -67,12 +67,15 @@ int main() {
     importFromDB();
     checkforoverdues();// this function will be called whenever the program runs and will check if there is an overdue on any loan
 
-    User* user = login();
-
+  /*  User* user = login();
     if(Librarian *librarianPtr = dynamic_cast <Librarian*>(user))
         libMenu();
     else
-        memberMenu();
+        memberMenu();*/
+
+    memberMenu();
+    //libMenu();
+
     exportToDB();
     free_vectors();
 

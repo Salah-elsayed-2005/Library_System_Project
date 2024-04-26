@@ -315,13 +315,12 @@ void Librarian::CheckForOverdues(Loan* &loan){
 }
 void Librarian::printAllLoans(vector<Loan*> loans) const {
     cout<<"\t\t--All requests received by members--"<<endl;
-    for (auto &&loan : loans)
+    for (auto loan : loans)
         loan->generateReport();
-
 }
 void Librarian::printPendingLoans(vector<Loan*> loans) const {
     cout<<"\t\t--Pending requests received by members--"<<endl;
-    for (auto &&loan : loans)
+    for (auto loan : loans)
         if(!loan->getStatus())
             loan->generateReport();
 
