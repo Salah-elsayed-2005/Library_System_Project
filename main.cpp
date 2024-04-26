@@ -69,9 +69,7 @@ void free_vectors(){
 
 int main() {
 
-//    DatabaseManager dbManager("test.db");
-//    dbManager.createTables();
-//    dbManager.insertSampleData();
+
 //    dbManager.insertBook("9780132350884", "Effective C++", "Scott Meyers", 2005, "Programming", true, 10);
 //    dbManager.displayBooks();
 //
@@ -164,8 +162,8 @@ int main() {
 //    //dbManager.tmep();
 //   dbManager.importLoans(library_loans);
 
-    memberMenu();
-    //libMenu();
+    //memberMenu();
+    libMenu();
     exportToDB();
     free_vectors();
     return 0;
