@@ -13,7 +13,6 @@ vector<Book*> ex_library_books;
 vector<User*> ex_library_users;
 vector<Loan*> ex_library_loans;
 
-
 // Function to get the pointer that points to the member by passing the member ID
 Member* getMemberPtr(str, vector<User*> &);
 
@@ -246,7 +245,9 @@ void DatabaseManager::insertSampleData() {
                            "('fac-101', 'Salah', 'Donuts',0),"
                            "('stu-101285', 'Ziad', '242004',0),"
                            "('sta-103', 'Hussein', 'Rehab',0),"
-                           "('lib-102', 'Fouad Hashesh', 'helloWorld',0);"
+                           "('sta-105', 'Tarek', 'Somaya',0),"
+                           "('lib-102', 'Yasser', 'helloWorld',0),"
+                           "('lib-103', 'Mohamed', 'Goat',0);"
                            ;
 
     std::cout << "Inserting sample data..." << std::endl;

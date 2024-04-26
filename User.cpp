@@ -143,9 +143,11 @@ void Librarian::addBook(vector<Book*> & list){
     }
 }
 void Librarian::removeBook(vector<Book*> &list, Book* &book){
+
     for(auto it = list.begin(); it != list.end(); it++){
         if((*it)->getIsbn() == book->getIsbn()){
             list.erase(it);
+            return;
         }
     }
 }
@@ -193,25 +195,26 @@ void Librarian::addMember(vector<User *> & users_list,int type){
     cin>>pass;
     User *member ;
     if (type == 1){
-        Student student;
-        student.setName(name);
-        student.setId(id);
-        student.setPassword(pass);
-        member=&student;
+        Student *student = new Student;
+        student->setName(name);
+        student->setId(id);
+        student->setPassword(pass);
+        member=student;
     }
     else if (type == 2){
-        Staff staff;
-        staff.setName(name);
-        staff.setId(id);
-        staff.setPassword(pass);
-        member=&staff;
+        Staff *staff = new Staff;
+
+        staff->setName(name);
+        staff->setId(id);
+        staff->setPassword(pass);
+        member=staff;
     }
     else if (type == 3){
-        Faculty faculty;
-        faculty.setName(name);
-        faculty.setId(id);
-        faculty.setPassword(pass);
-        member=&faculty;
+        Faculty *faculty = new Faculty;
+        faculty->setName(name);
+        faculty->setId(id);
+        faculty->setPassword(pass);
+        member=faculty;
     }
     users_list.push_back(member);
 }
@@ -219,6 +222,7 @@ void Librarian::removeMember(vector<User *> &users_list, Member* member){
     for(auto it = users_list.begin(); it != users_list.end(); it++){
         if((*it)->getId() == member->getId()){
             users_list.erase(it);
+            return;
         }
     }
 }
