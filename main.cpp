@@ -162,8 +162,8 @@ int main() {
 //    //dbManager.tmep();
 //   dbManager.importLoans(library_loans);
 
-    //memberMenu();
-    libMenu();
+    memberMenu();
+    //libMenu();
     exportToDB();
     free_vectors();
     return 0;

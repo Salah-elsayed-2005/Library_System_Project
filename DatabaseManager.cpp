@@ -125,7 +125,15 @@ void DatabaseManager::insertLoan(Loan* loanPtr){
     std::cout << "Loan records inserted..." << std::endl;
 }
 
-
+/*else if (Librarian *librarianPtr = dynamic_cast <Librarian*>(userPtr)) {
+// Insert user details into the Users table
+        std::string librarianSql = "INSERT OR REPLACE INTO Users (ID, Name, Password) VALUES ('" +
+                                   librarianPtr->getId().str2string() + "', '" + librarianPtr->getName().str2string() +
+                                   "', '" +
+                                   librarianPtr->getPassword().str2string() + "');";
+        execute_sql(librarianSql);
+        std::cout << "Librarian record inserted..." << std::endl;
+    } */
 
 void DatabaseManager::insertUser(User* userPtr) {
     if (Member *memberPtr = dynamic_cast<Member *>(userPtr)) {
@@ -139,7 +147,7 @@ void DatabaseManager::insertUser(User* userPtr) {
 
     } else if (Librarian *librarianPtr = dynamic_cast <Librarian*>(userPtr)) {
 // Insert user details into the Users table
-        std::string librarianSql = "INSERT OR REPLACE INTO Users (ID, Name, Password) VALUES ('" +
+        std::string librarianSql = "INSERT OR REPLACE INTO Users VALUES ('" +
                                    librarianPtr->getId().str2string() + "', '" + librarianPtr->getName().str2string() +
                                    "', '" +
                                    librarianPtr->getPassword().str2string() + "');";
