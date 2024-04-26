@@ -7,7 +7,8 @@
 #include "Loan.h"
 #include "DatabaseManager.h"
 #include "Functionalities.h"
-
+#include <fstream>
+#include <string>
 using namespace std;
 using namespace OurBook;
 
@@ -17,12 +18,21 @@ vector<Loan*> library_loans;
 
 vector<Book*> Search_results; // Defined for every search the user needs and will be cleared after each search
 vector<Book*> Cart;
-DatabaseManager dbManager("test.db");
+std::string dbName = "test.db";
+DatabaseManager dbManager(dbName);
 
+
+bool checkFileExist(const std::string& name) {
+    std::ifstream file(name.c_str());
+    return file.good();
+}
 
 void importFromDB(){
-    dbManager.createTables();   /* creates 3 tables in database */
-    dbManager.insertSampleData();
+    if (checkFileExist(dbName)) {
+        dbManager.createTables();   /* creates 3 tables in database */
+        dbManager.insertSampleData();
+    }
+
 
     /* importing books from database to library_books and copies it to ex_library_books to use it in DatabaseManager */
     dbManager.importBooks(library_books);
@@ -73,8 +83,6 @@ int main() {
     else
         memberMenu();
 
-    // memberMenu();
-    //libMenu();
 
     exportToDB();
     free_vectors();

@@ -1,8 +1,6 @@
 #include "User.h"
 #include "Loan.h"
 
-
-
 ///////////////////////////        USER FUNCTIONS
 /// setters
 void User::setName(str s) {name=s;}
@@ -306,8 +304,6 @@ void Librarian::processLoanRequest(Loan* &loan, bool response){
     if(response){
         // assign book to checkoutbooks
         member->addToCheckedOutBooks(book);
-        // Decrement book quantity by 1
-        book->setQuantity(book->getQuantity() - 1);
         // set borrow date
         loan->set_borrowingDate();
         loan->set_dueDate();

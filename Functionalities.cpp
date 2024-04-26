@@ -19,7 +19,7 @@ Librarian lib;
 Student student;
 // 2 Global variables are used to access methods that are the same for all users/members like Search
 
-bool checkBack(){
+bool checkBack(){       //check if the user want to back to the last page
     short back=1;
     do {
         cout << "\n\n[1] Back to the last page" << endl << "[2] Back to the main menu\n\n";
@@ -27,7 +27,7 @@ bool checkBack(){
         cin >> back;
         if (back == 2)
             backToTheMainMenu = true;
-    }while(back!=1 && back!=2);
+    }while(back!=1 && back!=2); //validate input
     return (back==2);
 }
 
@@ -35,7 +35,7 @@ bool checkBack(){
  Checkback() function is used all over the other options to check if the user wants to either go back to the previous menu or to go back to the main menu
  It's only used of there exists a previous menu not the main menu
  */
-bool checkClose(){
+bool checkClose(){  //check if the user want to close the program
     short back=1;
     do {
         cout << "\n\n[1] Back to the last page" << endl << "[2] Close the program\n\n";
@@ -43,7 +43,7 @@ bool checkClose(){
         cin >> back;
         if (back == 2)
             endOfProgram = true;
-    }while(back!=1 && back!=2);
+    }while(back!=1 && back!=2); //validate input
     return (back==2);
 }
 /*
@@ -52,47 +52,32 @@ bool checkClose(){
  */
 
 
-void returnbook() {
+void returnbook() {         //return the book to library
     system(CLEAR_COMMAND.c_str()); // clear page
 
     str id;
-    cout<<"Please enter your ID: ";
-    cin>>id;
-    if (!lib.Searchformember(library_users,id)->getCheckedOutBooks().empty()) {
-        if (lib.Searchformember(library_users, id)) { // make sure user exists
-            Member *member = lib.Searchformember(library_users, id);
-            vector<Book *> checkedoutbooks = lib.Searchformember(library_users, id)->getCheckedOutBooks();
-            Book *tocheck;
-            int choice;
-            cout << "Search by : " << endl // search for book by both its unique attributes
-                 << "[1] isbn" << endl
-                 << "[2] title : ";
-            cin >> choice;
+    do{
+        system(CLEAR_COMMAND.c_str());
+        cout<<"Please enter your ID: ";
+        cin>>id;
+    }while(!lib.Searchformember(library_users,id)); //validate ID
 
-            if (choice == 1) {
-                str isbn;
-                cout << "Enter ISBN: ";
-                cin >> isbn;
-                if ((student.searchForBook_isbn(checkedoutbooks, isbn)) == nullptr)
-                    cout << "\nNo results\n";
-                else
-                    tocheck = student.searchForBook_isbn(checkedoutbooks, isbn);
-            } else if (choice == 2) {
-                str title;
-                cout << "Enter Title : ";
-                cin >> title;
-                if ((student.searchForBook_title(checkedoutbooks, title)) == nullptr)
-                    cout << "\nNo results\n";
-                else
-                    tocheck = student.searchForBook_title(checkedoutbooks, title);
+    if (!lib.Searchformember(library_users,id)->getCheckedOutBooks().empty()) {     //check if there are checked out books
+        Member *member = lib.Searchformember(library_users, id);
+        vector<Book *> checkedOutBooks = lib.Searchformember(library_users, id)->getCheckedOutBooks();
+        bool flag=false;
+        str ans;
+        cout<<"\nEnter title or ISBN : ";
+        cin>>ans;
+        for (auto book: checkedOutBooks) {
+            if (book->getIsbn() == ans || book->getTitle()==ans) {      //loop through the library books to find a book
+                member->returnBorrowedBook(book, library_loans);    // return the book to the library
+                flag=true;
+                break;
             }
-            for (auto book: checkedoutbooks) {
-                if (tocheck->getIsbn() == book->getIsbn() || tocheck->getTitle() == book->getTitle())
-                    member->returnBorrowedBook(book, library_loans);
-            }
-        } else {
-            cout << "ID not found" << endl;
         }
+        if(!flag)
+            cout<<"This book isn't in your checked out books!\n";
     }
     else
         cout<<"\nThere is no books to return "<<endl;
@@ -110,7 +95,7 @@ User* login(){
         cin >> id;
         cout << "Please Enter your Password : ";
         cin >> password;
-        for (auto it: library_users) {
+        for (auto it: library_users) {  //loop through the users to find that user
             if (id == it->getId() && password == it->getPassword()) {
                 toReturn = it;
                 flag = true;
@@ -122,43 +107,43 @@ User* login(){
         if (!flag) {
             cout << "\nCheck Id or password!\n" << endl;
         }
-    }while(!flag);
-    return toReturn;
+    }while(!flag);  //validate input
+    return toReturn;        //return the member
 }
 
 
 void updatepassword(){
-    system(CLEAR_COMMAND.c_str());
-    cout<<"Please Enter your ID : ";
-    str id;
-    cin>>id;
-    if (lib.Searchforuser(library_users,id)){
-        cout<<"Please Enter your New password : ";
-        str pass;
-        cin>>pass;
-        lib.Searchforuser(library_users,id)->setPassword(pass);
-        cout<<"\nPassword Updated Successfully"<<endl;
-    }
-    else{
-        cout<<"\nPlease Try again"<<endl;
-    }
-    checkClose();
+    str id="";
+    do {
+        system(CLEAR_COMMAND.c_str());  //clear screen
+        cout << "Please Enter your ID : ";
+        cin >> id;
+    }while(!lib.Searchforuser(library_users,id));   //validate ID
+
+    cout<<"\nPlease Enter your New password : ";
+    str pass;
+    cin>>pass;
+    lib.Searchforuser(library_users,id)->setPassword(pass); //set the new password
+    cout<<"\nPassword Updated Successfully"<<endl;
+
+    checkClose();   //check if the user want to close the program
 }
 
 
-void printHeader(){
+void printHeader(){     //print the header of the main menu
     cout << "Welcome to our university system project. Please choose one of the following options:" << endl;
 }
-void printMemberMenu(){
+void printMemberMenu(){     // menu for member
     cout << "[1] Search for a book" << endl
          << "[2] View Available books" << endl
          << "[3] Add to cart "<<endl
          << "[4] View Cart "<<endl
          << "[5] Update Password"<<endl
          << "[6] Return Book"<<endl
-         << "[7] Exit system"<<endl;
+         << "[7] Pay fines"<<endl
+         << "[8] Exit system"<<endl;
 }
-void printExit(){
+void printExit(){       //exit menu
     cout<<"--------------------------------------------Thanks for using our program---------------------------------------------\n\n";
     cout<<"-------------------------------------------------------Credits-------------------------------------------------------\n\n";
     cout<<"--------------------------------------------------Salah eldin Elsayed------------------------------------------------\n\n";
@@ -170,7 +155,7 @@ void printExit(){
     cout<<"-------------------------------------Under the Supervision of Dr. Fatma Elshehaby------------------------------------\n\n";
 }
 
-void printSearchOptions(){
+void printSearchOptions(){  //menu for search
     cout << "Search by : " << endl
          << "[1] isbn" << endl
          << "[2] year" << endl
@@ -178,26 +163,28 @@ void printSearchOptions(){
          << "[4] author" << endl
          << "[5] genre ";
 }
-void searchByISBN(){
-    system(CLEAR_COMMAND.c_str());
+
+void searchByISBN(){    //search by ISBN
+    system(CLEAR_COMMAND.c_str());  //clear the screen
     str isbn;
     cout << "Enter ISBN: ";
     cin >> isbn;
-    if((student.searchForBook_isbn(library_books, isbn))==nullptr)
+    if((student.searchForBook_isbn(library_books, isbn))==nullptr)  //isbn doesn't exist
         cout<<"\nNo results\n";
     else {
-        Search_results.push_back(student.searchForBook_isbn(library_books, isbn));
-        Search_results.at(0)->printData();
+        Search_results.push_back(student.searchForBook_isbn(library_books, isbn));  //return only one book
+        Search_results.at(0)->printData();  //print book data
     }
     Search_results={};
 }
-void searchByYear(){
-    system(CLEAR_COMMAND.c_str());
+
+void searchByYear(){    //search by year
+    system(CLEAR_COMMAND.c_str());  //clear screen
     short year;
     cout << "Enter year : ";
     cin >> year;
     Search_results = student.searchForBook_publicationyear(library_books, year);
-    if(Search_results.empty())
+    if(Search_results.empty())  //no books
         cout<<"\nNo results\n";
     else {
         for (auto it: Search_results) {
@@ -207,26 +194,26 @@ void searchByYear(){
     Search_results={};
 
 }
-void searchByTitle(){
-    system(CLEAR_COMMAND.c_str());
+void searchByTitle(){   //by title
+    system(CLEAR_COMMAND.c_str());  //clear screen
     str title;
     cout << "Enter Title : ";
     cin >> title;
-    if((student.searchForBook_title(library_books, title))==nullptr)
+    if((student.searchForBook_title(library_books, title))==nullptr)    //no books
         cout<<"\nNo results\n";
     else {
-        Search_results.push_back( student.searchForBook_title(library_books, title));
+        Search_results.push_back( student.searchForBook_title(library_books, title)); //return only one book
         Search_results.at(0)->printData();
     }
     Search_results={};
 }
-void searchByAuthor(){
-    system(CLEAR_COMMAND.c_str());
+void searchByAuthor(){  //by author
+    system(CLEAR_COMMAND.c_str()); //clear screen
     str author;
     cout << "Enter Author: ";
     cin >> author;
     Search_results = student.searchForBook_author(library_books, author);
-    if(Search_results.empty())
+    if(Search_results.empty())  //no books
         cout<<"\nNo results\n";
     else {
         for (auto it: Search_results) {
@@ -235,13 +222,13 @@ void searchByAuthor(){
     }
     Search_results={};
 }
-void searchByGenre(){
-    system(CLEAR_COMMAND.c_str());
+void searchByGenre(){ //by genre
+    system(CLEAR_COMMAND.c_str()); //clear screen
     str genre;
     cout << "Enter Genre: ";
     cin >> genre;
     Search_results = student.searchForBook_genre(library_books, genre);
-    if(Search_results.empty())
+    if(Search_results.empty())  //no books
         cout<<"\nNo results\n";
     else {
         for (auto it: Search_results) {
@@ -250,7 +237,7 @@ void searchByGenre(){
     }
     Search_results={};
 }
-void printLibMenu(){
+void printLibMenu(){    //menu for librarian
     cout << "[1] Search for a book" << endl
          << "[2] View Available books" << endl
          << "[3] Update Users Data "<<endl
@@ -264,7 +251,7 @@ void printLibMenu(){
 void searchForBook(){
     short choice=1;
     do{
-        system(CLEAR_COMMAND.c_str());
+        system(CLEAR_COMMAND.c_str());  //clear screen
         printSearchOptions();
         cout<<"\nPlease enter your choice : ";
         cin>>choice;
@@ -279,80 +266,98 @@ void searchForBook(){
         else if(choice==5)
             searchByGenre();
         if(choice>0 && choice<6)
-            checkBack();
+            checkBack();    //if user want to back to the last page
         Search_results.clear();
-    }while(!backToTheMainMenu);
+    }while(!backToTheMainMenu);     //if the user want to back to the main menu
 }
-void viewAvailableBooks(){
+void viewAvailableBooks(){  //view all books in the library
 
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str());  //clear screen
 
     for (auto it : library_books) {
-        if (it->getAvailability())
+        if (it->getAvailability())  //if the books available, print it
             it->printData();
     }
-    checkClose();
+    checkClose();   //check if the user want to close
 }
 void addToCart(){
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str()); //clear screen
     str input;
     bool cartFound = false;
     Book* cartBook;
     cout<<"Please Enter the title or isbn of the needed book :";
     cin>>input;
-    for (auto it:library_books) {
+    for (auto it:library_books) {   //loop through the library books to find that book
         if ((it->getTitle() == input || it->getIsbn() == input) && it->getAvailability()) {
             cartFound = true;
             cartBook = it;
         }
     }
-    if (cartFound){
+    if (cartFound){ // if the book exists
         cout<<"Book added to Cart successfully!"<<endl;
         Cart.push_back(cartBook);
         cartBook->setQuantity(cartBook->getQuantity()-1);
     }
-    else{
+    else{// the book doesn't exist
         cout<<"\nThis book doesn't exist\n";
     }
     checkClose();
 }
 void loanrequest(str id){
-    Member* member = lib.Searchformember(library_users,id);
+    Member* member = lib.Searchformember(library_users,id); //get the user
     Loan* new_loan =new Loan(member,Cart.front());
     new_loan= member->requestLoan(Cart.front(),Cart.size()); // assign the loan object returned by requestLoan function to new_loan
     library_loans.push_back(new_loan); // add new_loan object to library_loans vector in main to be checked later by librarian
     Cart.erase(Cart.begin()); // remove book from cart to checkout
 }
 void viewCart(){
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str());  //clear screen
     if(Cart.empty())
         cout<<"The cart is empty\n\n";
     else
-        for(auto it:Cart)
+        for(auto it:Cart)   //print the books in the cart
             it->printData();
     if(!Cart.empty()) {
         char confirmLoanRequest = '1';
-        cout << "\nDo you want to request loan ? " << endl
-             << "[0] No" << endl
-             << "[1] Yes" << endl;
-        cout << "Please enter your choice : ";
-        cin >> confirmLoanRequest;
+        do {
+            cout << "\nDo you want to request loan ? " << endl
+                 << "[0] No" << endl
+                 << "[1] Yes" << endl;
+            cout << "Please enter your choice : ";
+            cin >> confirmLoanRequest;
+        }while(confirmLoanRequest!='0' && confirmLoanRequest!='1');
+
         if (confirmLoanRequest == '1') {
             str id;
             cout<<"Please Enter your id : ";
             cin>>id;
-            if (lib.Searchformember(library_users,id)) {
+            if (lib.Searchformember(library_users,id)) {    //if the ID is correct
                 while (!Cart.empty())
                     loanrequest(id);
             }
             else
-                cout<<"\nPlease Try again"<<endl;
+                cout<<"\nPlease Try again"<<endl; //wrong ID
         }
     }
     checkClose();
 }
-void memberMenu(){
-    system(CLEAR_COMMAND.c_str());
+void payFines(){
+    system(CLEAR_COMMAND.c_str()); //clear screen
+    str id="";
+    do{
+        cout<<"\nEnter your ID : ";
+        cin>>id;
+    }while(!lib.Searchforuser(library_users,id));
+
+    float toPay;
+    cout<<"Enter the amount you want to pay : ";
+    cin>>toPay;
+    lib.Searchformember(library_users,id)->setOverdueFines(toPay);
+    cout<<"Paid successfully-)\n";
+    checkClose();
+}
+void memberMenu(){  //menu for members
+    system(CLEAR_COMMAND.c_str()); //clear screen
     printHeader();
     short choice=1;
     do{
@@ -371,14 +376,16 @@ void memberMenu(){
             updatepassword();
         else if(choice==6)
             returnbook();
-        system(CLEAR_COMMAND.c_str());
-        if(backToTheMainMenu) {
+        else if(choice==7)
+            payFines();
+        system(CLEAR_COMMAND.c_str()); //clear screen
+        if(backToTheMainMenu) { //check if the user want to back to the main menu
             choice = 1;
             backToTheMainMenu=false;
         }
-        if(endOfProgram)
+        if(endOfProgram)    //if the user want to end the program
             break;
-    }while(choice!=7);
+    }while(choice!=8);
 
     printExit();
     system("pause>0");
@@ -389,7 +396,7 @@ void updateMemberMenu(){
         <<"[2] Remove a member"<<endl;
 }
 void updateMemberData(){
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str()); //clear screen
     short choice;
     str id;
     do{
@@ -400,21 +407,21 @@ void updateMemberData(){
             system(CLEAR_COMMAND.c_str());
             continue;
         }
-        if (choice == 1) {
+        if (choice == 1) {  //add member
             int type;
             cout<<"Please Enter type of member to add "<<endl
-                <<"1-Student"<<endl
-                <<"2-Staff"<<endl
-                <<"3-Faculty"<<endl;
+                <<"[1] Student"<<endl
+                <<"[2] Staff"<<endl
+                <<"[3] Faculty"<<endl;
             cout<<"\nPlease enter your choice : ";
             cin>>type;
             if (type>0 && type< 4) {
                 lib.addMember(library_users, type);
                 cout<<"\nMember Added Successfully"<<endl;
-            }            else
+            }else
                 cout<<"\nWrong choice Please try again"<<endl;
         }
-        else if (choice == 2) {
+        else if (choice == 2) {     //remove member
             cout<<"please Enter member ID : ";
             cin>>id;
             Member*tosend=lib.Searchformember(library_users, id);
@@ -426,26 +433,28 @@ void updateMemberData(){
             }
         }
         if(choice>0 && choice<5)
-            checkBack();
+            checkBack();    //check if the user want to back to the last menu
 
-    }while(!backToTheMainMenu);
+    }while(!backToTheMainMenu); //check if the user want to back to the main menu
 }
-void updateBookMenu(){
-    cout<<"1-Add book "<<endl
-        <<"2-Remove book"<<endl
-        <<"3-Update title"<<endl
-        <<"4-Update Author"<<endl
-        <<"5-Update ISBN"<<endl
-        <<"6-Update Genre"<<endl
-        <<"7-Update Quantity"<<endl
-        <<"8-Update Year"<<endl;
+
+void updateBookMenu(){  //menu for update
+    cout<<"[1] Add book "<<endl
+        <<"[2] Remove book"<<endl
+        <<"[3] Update title"<<endl
+        <<"[4] Update Author"<<endl
+        <<"[5] Update ISBN"<<endl
+        <<"[6] Update Genre"<<endl
+        <<"[7] Update Quantity"<<endl
+        <<"[8] Update Year"<<endl;
 }
+
 void updateBookData() {
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str());  //clear screen
     short choice;
     str ans;
     do {
-        system(CLEAR_COMMAND.c_str());
+        system(CLEAR_COMMAND.c_str());  //clear screen
         updateBookMenu();
         cout<<"\nPlease enter your choice : ";
         cin>>choice;
@@ -521,23 +530,27 @@ void updateBookData() {
 }
 
 void diplaydata(){
-    system(CLEAR_COMMAND.c_str());
-    cout<<"Please Enter Id : " ;
+    system(CLEAR_COMMAND.c_str());//clear screen
     str id;
+    cout<<"Please Enter Id : " ;
     cin>>id;
     if (lib.Searchforuser(library_users,id)){
         lib.Searchforuser(library_users,id)->displayInfo();
     }
+    else{
+        cout<<"\nNo results\n";
+    }
     checkClose();
 }
+
 void viewloans(){
-    system(CLEAR_COMMAND.c_str());
+    system(CLEAR_COMMAND.c_str());  //clear screen
     short choice;
 
     do {
         system(CLEAR_COMMAND.c_str());
         cout << "[1] View All Loan Requests"<<endl
-               << "[2] View Pending Loan Requests"<<endl;
+             << "[2] View Pending Loan Requests"<<endl;
         cout<<"\nPlease enter your choice : ";
         cin>>choice;
         if (choice == 1)
@@ -548,30 +561,29 @@ void viewloans(){
             checkBack();
     }while(!backToTheMainMenu);
 }
-void processloans(){
-    system(CLEAR_COMMAND.c_str());
 
+void processloans(){
+    system(CLEAR_COMMAND.c_str());  //clear screen
     char response;
     for (auto loan:library_loans) {
-        loan->generateReport();
-        cout<<"Do you want to accept this loan"<<endl
-            <<"[1] Yes"
-            <<"[2] No"<<endl;
-        cin>>response;
-        if(response=='1') {
-            lib.processLoanRequest(loan, true);
-            cout<<"Loan accepted."<<endl;
-        }
-        else if(response=='2') {
-            lib.processLoanRequest(loan, false);
-            cout << "Loan rejected." << endl;
-        }
-        else {
-            cout << "Wrong input, input range[1,2]." << endl;
-            break;
-        }
+        loan->generateReport(); //report for loans
+        do {
+            cout << "Do you want to accept this loan" << endl
+                 << "[1] Yes"
+                 << "[2] No" << endl;
+            cin >> response;
+            if (response == '1') {
+                lib.processLoanRequest(loan, true);
+                cout << "Loan accepted." << endl;
+            }
+            else if(response=='2') {
+                lib.processLoanRequest(loan, false);
+                cout << "Loan rejected." << endl;
+            }
+        }while(response!='1' && response!='2');
     }
 }
+
 void checkforoverdues(){
     for (auto &loan:library_loans) {
         lib.CheckForOverdues(loan);
