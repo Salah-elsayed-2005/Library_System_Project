@@ -41,8 +41,6 @@ public:
     // Display all records in the Books table
     void displayBooks();
 
-    void disp(); // TEMP: Temporary method for testing
-
     // import all books from the Books table into a provided vector
     void importBooks(vector<Book*> &book_list);
 
@@ -72,11 +70,6 @@ public:
 
     // Callback function to handle specific user data fetching scenarios
     static int userCallback(void *data, int argc, char **argv, char **azColName);
-
-    // Temporary method for testing
-    void tmep();
-
-    //   vector<Loan*> getLoanedDataByUser(const std::string& userId);
 
 private:
     // SQLite database connection handle
