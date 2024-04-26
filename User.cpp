@@ -247,6 +247,15 @@ Member* Librarian::Searchformember(vector<User*>library_users,str id){
     cout<<"User not found";
     return nullptr;
 }
+User*Librarian:: Searchforuser(vector<User*>library_users,str id){
+    for (auto it:library_users) {
+        if (it->getId()==id) {
+            return it;
+        }
+    }
+    cout<<"User not found";
+    return nullptr;
+}
 
 /************* Librarian Methods ***********/
 

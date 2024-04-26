@@ -116,11 +116,11 @@ void updatepassword(){
     cout<<"Please Enter your ID : ";
     str id;
     cin>>id;
-    if (lib.Searchformember(library_users,id)){
+    if (lib.Searchforuser(library_users,id)){
         cout<<"Please Enter your New password : ";
         str pass;
         cin>>pass;
-        lib.Searchformember(library_users,id)->setPassword(pass);
+        lib.Searchforuser(library_users,id)->setPassword(pass);
         cout<<"\nPassword Updated Successfully"<<endl;
     }
     else{

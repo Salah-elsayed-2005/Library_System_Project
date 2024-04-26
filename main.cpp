@@ -72,8 +72,8 @@ int main() {
 
 
 
-    memberMenu();
-    //libMenu();
+    //memberMenu();
+    libMenu();
     exportToDB();
     free_vectors();
 
