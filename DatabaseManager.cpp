@@ -63,7 +63,7 @@ void DatabaseManager::createTables() {
                            "ID VARCHAR(20) PRIMARY KEY,"
                            "Name VARCHAR(255) NOT NULL,"
                            "Password VARCHAR(255) NOT NULL,"
-                           "Fines FLOAT DEFAULT 0);";
+                           "Fines FLOAT);";
     execute_sql(sqlUsers);
 
     // Creating Loans table
@@ -150,7 +150,7 @@ void DatabaseManager::insertUser(User* userPtr) {
         std::string librarianSql = "INSERT OR REPLACE INTO Users VALUES ('" +
                                    librarianPtr->getId().str2string() + "', '" + librarianPtr->getName().str2string() +
                                    "', '" +
-                                   librarianPtr->getPassword().str2string() + "');";
+                                   librarianPtr->getPassword().str2string() + "',0);";
         execute_sql(librarianSql);
         std::cout << "Librarian record inserted..." << std::endl;
     } else {
@@ -235,15 +235,16 @@ void DatabaseManager::insertSampleData() {
 
     // Inserting sample data into Users
     std::string sqlUsers = "INSERT OR IGNORE INTO Users VALUES "
-                           "('stu-100', 'AboGendya', 'password123', 0),"
-                           "('fac-101', 'Salah', 'Donuts', 0),"
-                           "('stu-101285', 'Ziad', '242004', 0),"
-                           "('sta-103', 'Hussein', 'Rehab', 0),"
-                           "('lib-102', 'Fouad Hashesh', 'helloWorld', 0);";
-
+                           "('stu-100', 'AboGendya', 'password123',0),"
+                           "('fac-101', 'Salah', 'Donuts',0),"
+                           "('stu-101285', 'Ziad', '242004',0),"
+                           "('sta-103', 'Hussein', 'Rehab',0),"
+                           "('lib-102', 'Fouad Hashesh', 'helloWorld',0);"
+                           ;
 
     std::cout << "Inserting sample data..." << std::endl;
-    execute_sql(sql);
+    execute_sql(sqlBooks);
+    execute_sql(sqlUsers);
 }
 
 void DatabaseManager::importBooks(vector<Book*> &book_list) {
@@ -327,7 +328,7 @@ int DatabaseManager::userCallback(void *data, int argc, char **argv, char **azCo
         std::string id = argv[0];
         std::string name = argv[1];
         std::string password = argv[2];
-        float fines = std::stof(argv[3]);
+        float fines = std::stof((argv[3]));
 
         User* user = nullptr;
         if (id.find("sta-") == 0) {

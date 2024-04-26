@@ -30,6 +30,7 @@ DatabaseManager dbManager("test.db");
 
 void importFromDB(){
     dbManager.createTables();   /* creates 3 tables in database */
+    dbManager.insertSampleData();
 
     /* importing books from database to library_books and copies it to ex_library_books to use it in DatabaseManager */
     dbManager.importBooks(library_books);
