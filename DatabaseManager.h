@@ -16,22 +16,29 @@ extern vector<Loan*> ex_library_loans;
 
 class DatabaseManager {
 public:
+
     // Constructor: Initializes a DatabaseManager instance by opening a connection to the specified SQLite database
     explicit DatabaseManager(const std::string& databaseName);
+
     // Destructor: Closes the database connection when the DatabaseManager instance is destroyed
     ~DatabaseManager();
 
     // Create required tables (Books, Users, Loans) in the SQLite database
     void createTables();
+
     // Insert sample data into the database tables for testing purposes
     void insertSampleData();
+
     // Insert a book into the Books table using detailed book information
     void insertBook(const std::string& isbn, const std::string& title, const std::string& author,
                     int publicationYear, const std::string& genre, bool availability, int quantity);
+
     // Overload of insertBook to insert a book using a Book object
     void insertBook(Book*);
+
     // Insert a user into the Users table using a User object
     void insertUser(User*);
+
     // Insert a loan into the Loans table using a Loan object
     void insertLoan(Loan*);
 

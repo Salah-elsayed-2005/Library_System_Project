@@ -18,10 +18,12 @@ vector<Loan*> library_loans;
 
 vector<Book*> Search_results; // Defined for every search the user needs and will be cleared after each search
 vector<Book*> Cart;
+
+// Setting database file name
 std::string dbName = "test.db";
 DatabaseManager dbManager(dbName);
 
-
+// Check if file with this name exists
 bool checkFileExist(const std::string& name) {
     std::ifstream file(name.c_str());
     return file.good();
