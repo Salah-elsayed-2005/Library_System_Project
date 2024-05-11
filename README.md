@@ -13,7 +13,7 @@ We developed a library system as a project to the OOP course (CSE 122) at Egypt 
     <li><a href="#project-overview">Project Overview</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#built-with">Built With</a></li>
-    <li><a href="#how-to-use">How to Play</a></li>
+    <li><a href="#how-to-run">How to Run</a></li>
     <li><a href="#key-learnings">Key Learnings</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#credits">Credits</a></li>
